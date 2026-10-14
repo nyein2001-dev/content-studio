@@ -17,6 +17,7 @@ assets/voices/*.onnx.json
 */video/*.mp4
 */audio/*.wav
 */video/*.muxing.mp4
+out/
 */__pycache__/
 __pycache__/
 *.pyc

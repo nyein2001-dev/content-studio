@@ -99,6 +99,11 @@ ABIT_SKIP_BRAIN=1 bash build.sh 2026-10-13
 6. **Build.** `bash abitinside/build.sh <new-date>`. The QA gates are the judge; if a gate
    fails, the build fails and `qa-report.md` names the measurement.
 
+New videos are not drawn with coordinates. Author them with
+[`prompts/layout_contract.md`](prompts/layout_contract.md) and publish with the layout gate
+below. The 2026-10-13 episode stays on the steps above. It is the gate's negative fixture:
+`make gate-sample` must reject it.
+
 Copy a finished day and change the date to start:
 
 ```bash
@@ -148,3 +153,22 @@ The automated gates measure decoded frames and audio. They cannot tell you wheth
 
 Also worth a human eye: whether the spoken pacing lands well in the ear rather than only on
 the waveform, and whether the animation reads as calm rather than merely as fast.
+
+---
+
+## 7. Layout gate
+
+New videos go through `abitinside/layout`. Zones, floors, and gaps are `layout/layout_spec.yaml`.
+The scene format is [`prompts/layout_contract.md`](prompts/layout_contract.md). The zone diagram,
+every rule id, and the troubleshooting notes are [`docs/layout-safe-zones.md`](docs/layout-safe-zones.md).
+
+One command from a clean checkout:
+
+```bash
+bash setup.sh && make gate-showcase
+```
+
+That promotes `out/publish/layout_showcase/` and writes `layout_certificate.json`.
+`make gate-sample` must fail: the 2026-10-13 pictures stay as they are, and they are not
+certifiable. `make test` runs the pipeline tests, the D1–D8 fixtures, and the stress suite.
+`make perf` checks the 3-minute validator budget.

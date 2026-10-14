@@ -1,0 +1,227 @@
+version: "1.0.0"
+validator_version: "1.0.0"
+reference:
+  width: 1080
+  height: 1920
+grid: 8
+fps: 30
+default_profile: portrait
+profiles:
+  portrait:
+    width: 1080
+    height: 1920
+  landscape:
+    width: 1920
+    height: 1080
+  square:
+    width: 1080
+    height: 1080
+zones:
+  PLATFORM_TOP:
+    role: keepout
+    x: 0
+    y: 0
+    w: 1080
+    h: 200
+  BRAND:
+    role: content
+    x: 72
+    y: 200
+    w: 936
+    h: 100
+    max_lines: 1
+  HEADLINE:
+    role: content
+    x: 72
+    y: 320
+    w: 936
+    h: 240
+    max_lines: 2
+  STAGE:
+    role: content
+    x: 72
+    y: 600
+    w: 936
+    h: 740
+    rail_y: 1000
+    rail_x1: 944
+  FOOTNOTE:
+    role: content
+    x: 72
+    y: 1350
+    w: 872
+    h: 60
+    max_lines: 1
+  CAPTION:
+    role: content
+    x: 72
+    y: 1440
+    w: 872
+    h: 160
+    max_lines: 2
+  PLATFORM_BOTTOM:
+    role: keepout
+    x: 0
+    y: 1600
+    w: 1080
+    h: 320
+  RIGHT_RAIL:
+    role: keepout
+    x: 944
+    y: 1000
+    w: 136
+    h: 600
+spacing:
+  xs: 8
+  s: 16
+  m: 24
+  l: 40
+  xl: 64
+  sibling_gap: 24
+  chip_gap: 16
+  text_pad_x: 24
+  text_pad_y: 16
+  chip_pad_x: 20
+  chip_pad_y: 12
+  connector_inflate: 16
+  tick_gap: 12
+  center_tolerance: 2
+  glow_bleed: 8
+  stroke: 3
+  radius: 16
+  shrink_step: 2
+  line_gap: 8
+  max_stack_gap: 64
+  underline_h: 8
+type:
+  headline:
+    preferred: 66
+    floor: 64
+    max_lines: 2
+    weight: bold
+    font: bold
+  caption:
+    preferred: 72
+    floor: 52
+    max_lines: 2
+    weight: bold
+    font: bold
+  card_title:
+    preferred: 36
+    floor: 36
+    max_lines: 2
+    weight: bold
+    font: bold
+  body:
+    preferred: 34
+    floor: 30
+    max_lines: 3
+    weight: regular
+    font: regular
+  chip:
+    preferred: 32
+    floor: 28
+    max_lines: 1
+    weight: semibold
+    font: semibold
+  footnote:
+    preferred: 26
+    floor: 26
+    max_lines: 1
+    weight: regular
+    font: regular
+  mono:
+    preferred: 32
+    floor: 32
+    max_lines: 4
+    weight: regular
+    font: mono
+  brand:
+    preferred: 30
+    floor: 26
+    max_lines: 1
+    weight: semibold
+    font: semibold
+  stat:
+    preferred: 64
+    floor: 64
+    max_lines: 1
+    weight: bold
+    font: mono
+rules:
+  stage_fill_fail: 0.45
+  stage_fill_warn: 0.60
+  max_stage_components: 6
+  max_chips: 4
+  max_overlays: 1
+  max_extra_text_blocks: 3
+  min_scene_duration_s: 2.5
+  max_scale: 1.05
+  psnr_min: 35
+  pixel_sample_every: 6
+  contrast_normal: 4.5
+  contrast_large: 3.0
+  large_text_px: 64
+  enter_frames: 8
+  center_eps: 0.5
+  flex_target: 0.60
+animation:
+  max_scale: 1.05
+  max_translate: 0
+blocks:
+  chart_h_fraction: 0.50
+  meter_track: 40
+  icon: 64
+  hub: 220
+fonts:
+  bold: assets/fonts/Poppins-Bold.ttf
+  semibold: assets/fonts/Poppins-SemiBold.ttf
+  regular: assets/fonts/Poppins-Regular.ttf
+  mono: assets/fonts/JetBrainsMono.ttf
+  family:
+    bold: Poppins
+    semibold: Poppins
+    regular: Poppins
+    mono: JetBrains Mono
+brand_tokens:
+  - bg_top
+  - bg_bottom
+  - bg_corner
+  - ink
+  - ink_dim
+  - ink_faint
+  - cyan
+  - yellow
+  - coral
+  - green
+  - glow
+legacy_roots:
+  - "2026-10-13"
+lint_draw_modules:
+  - layout/render.py
+  - layout/debug.py
+  - layout/metrics.py
+  - layout/legacy.py
+fuzz_seed: 20261014
+encode:
+  crf: 16
+  preset: slow
+  perf_preset: veryfast
+  pixel_format: yuv420p
+  profile: high
+  level: "4.2"
+  tune: animation
+  gop: 60
+  bframes: 2
+  colorspace: bt709
+debug:
+  contact_scale: 0.2
+  contact_columns: 3
+z_order:
+  background: 0
+  connectors: 1
+  containers: 2
+  content: 3
+  text: 4
+  overlays: 5
+  caption: 6

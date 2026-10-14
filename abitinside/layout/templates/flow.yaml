@@ -1,0 +1,17 @@
+id: flow_steps
+profile: portrait
+duration_s: 3.0
+brand: "A Bit Inside"
+headline: "HOW IT OPENS"
+caption: "a web page in the store"
+footnote: "ILLUSTRATIVE"
+stage:
+  - id: steps
+    type: flow
+    steps:
+      - id: alarm
+        label: "LATE-NIGHT ALARM"
+      - id: clear
+        label: "CLEAR THE ALARM"
+      - id: web
+        label: "WEB MANAGEMENT"

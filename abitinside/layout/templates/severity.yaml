@@ -1,0 +1,15 @@
+id: severity
+profile: portrait
+duration_s: 3.0
+brand: "A Bit Inside"
+headline: "EIGHT POINT TWO"
+caption: "out of ten"
+footnote: "ILLUSTRATIVE"
+stage:
+  - id: meter
+    type: severity_meter
+    title: "SEVERITY"
+    score: 8.2
+    score_max: 10
+    score_label: "8.2/10 HIGH"
+    max_value: "10.0/10 HIGH"

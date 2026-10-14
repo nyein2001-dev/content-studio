@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["id", "profile", "duration_s", "brand", "headline", "caption", "stage"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "profile": {"enum": ["portrait", "landscape", "square"]},
+    "duration_s": {"type": "number", "exclusiveMinimum": 0},
+    "splittable": {"type": "boolean"},
+    "brand": {"type": "string", "minLength": 1},
+    "headline": {"type": "string", "minLength": 1},
+    "caption": {"type": "string", "minLength": 1},
+    "footnote": {"type": "string"},
+    "stage": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/component"}
+    },
+    "overlay": {"$ref": "#/$defs/overlay"},
+    "connectors": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/connector"}
+    }
+  },
+  "$defs": {
+    "component": {
+      "type": "object",
+      "required": ["id", "type"],
+      "properties": {
+        "id": {"type": "string"},
+        "type": {
+          "enum": [
+            "chip_row", "card", "stat", "line_chart", "bar_chart", "timeline",
+            "flow", "hub_and_spoke", "code_panel", "severity_meter", "callout",
+            "checklist", "comparison"
+          ]
+        },
+        "title": {"type": "string"},
+        "body": {"type": "string"},
+        "labels": {"type": "array", "items": {"type": "string"}},
+        "series": {"type": "array", "items": {"type": "number"}},
+        "y_labels": {"type": "array", "items": {"type": "string"}},
+        "x_labels": {"type": "array", "items": {"type": "string"}},
+        "value": {"type": "string"},
+        "max_value": {"type": "string"},
+        "lines": {"type": "array", "items": {"type": "string"}},
+        "items": {"type": "array", "items": {"type": "string"}},
+        "left": {"type": "object"},
+        "right": {"type": "object"},
+        "alternate": {"type": "string"},
+        "optional_labels": {"type": "boolean"},
+        "flex": {"type": "boolean"},
+        "slot": {"type": "string"},
+        "scale_to": {"type": "number"},
+        "spokes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "label"],
+            "properties": {
+              "id": {"type": "string"},
+              "label": {"type": "string"}
+            }
+          }
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "label"],
+            "properties": {
+              "id": {"type": "string"},
+              "label": {"type": "string"}
+            }
+          }
+        },
+        "ticks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "label"],
+            "properties": {
+              "id": {"type": "string"},
+              "label": {"type": "string"},
+              "optional": {"type": "boolean"}
+            }
+          }
+        },
+        "score": {"type": "number"},
+        "score_max": {"type": "number"},
+        "score_label": {"type": "string"},
+        "target": {"type": "string"}
+      }
+    },
+    "overlay": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": {"type": "string"},
+        "kind": {"const": "cursor"},
+        "place": {"enum": ["above", "below", "left", "right"]}
+      }
+    },
+    "connector": {
+      "type": "object",
+      "required": ["id", "from", "to"],
+      "properties": {
+        "id": {"type": "string"},
+        "from": {"type": "string"},
+        "to": {"type": "string"},
+        "route": {"enum": ["straight", "orthogonal"]}
+      }
+    }
+  }
+}

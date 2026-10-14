@@ -164,11 +164,13 @@ say "compiler: $(gcc --version | head -1)"
 step "Python packages"
 uvpip() { "$USERBIN/uv" pip install --python "$PY" "$@"; }
 REQ=(numpy scipy matplotlib pillow soundfile pyloudnorm fonttools
-     piper-tts faster-whisper pyspellchecker requests feedparser tqdm edge-tts)
+     piper-tts faster-whisper pyspellchecker requests feedparser tqdm edge-tts
+     "PyYAML==6.0.2" "jsonschema==4.23.0")
 "$PY" - <<'PY' || uvpip "${REQ[@]}"
 import importlib.util as u, sys
 need = ["numpy","scipy","matplotlib","PIL","soundfile","pyloudnorm","fontTools",
-        "piper","faster_whisper","spellchecker","requests","feedparser","tqdm","edge_tts"]
+        "piper","faster_whisper","spellchecker","requests","feedparser","tqdm","edge_tts",
+        "yaml","jsonschema"]
 missing = [m for m in need if u.find_spec(m) is None]
 sys.exit(0 if not missing else 1)
 PY

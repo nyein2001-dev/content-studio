@@ -1,0 +1,13 @@
+id: stat_card
+profile: portrait
+duration_s: 3.0
+brand: "A Bit Inside"
+headline: "STORES WOKE WARM"
+caption: "one hundred fifty"
+footnote: "ILLUSTRATIVE"
+stage:
+  - id: stores
+    type: stat
+    title: "STORES HIT"
+    value: "150"
+    max_value: "999"

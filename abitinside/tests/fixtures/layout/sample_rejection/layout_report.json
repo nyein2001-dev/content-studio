@@ -1,0 +1,17 @@
+{
+  "passed": false,
+  "rules": [
+    "LEGACY-UNMIGRATED",
+    "LR-01",
+    "LR-02",
+    "LR-03",
+    "LR-04",
+    "LR-05",
+    "LR-06",
+    "LR-07",
+    "LR-08",
+    "LR-09",
+    "LR-10",
+    "LR-14"
+  ]
+}

@@ -1,0 +1,11 @@
+id: checklist
+profile: portrait
+duration_s: 3.0
+brand: "A Bit Inside"
+headline: "THREE OPEN QUESTIONS"
+caption: "the sources do not know"
+footnote: "ILLUSTRATIVE"
+stage:
+  - id: questions
+    type: checklist
+    items: ["WHO", "HOW", "WHICH FLAW"]

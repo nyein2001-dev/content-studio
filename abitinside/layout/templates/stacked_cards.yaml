@@ -1,0 +1,15 @@
+id: stacked_cards
+profile: portrait
+duration_s: 3.0
+brand: "A Bit Inside"
+headline: "TWO CONTROLLERS"
+caption: "most were unsupported"
+footnote: "ILLUSTRATIVE"
+stage:
+  - id: one
+    type: card
+    title: "AK-SM 800"
+    body: "end of life"
+  - id: two
+    type: card
+    title: "AK-SC 355"

@@ -1,0 +1,11 @@
+id: terminal
+profile: portrait
+duration_s: 3.0
+brand: "A Bit Inside"
+headline: "A PASSWORD OF DATES"
+caption: "login generated"
+footnote: "ILLUSTRATIVE"
+stage:
+  - id: term
+    type: code_panel
+    lines: ["LOGIN ACCEPTED", "7F2A-91C4"]

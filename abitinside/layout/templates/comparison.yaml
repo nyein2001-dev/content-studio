@@ -1,0 +1,15 @@
+id: comparison
+profile: portrait
+duration_s: 3.0
+brand: "A Bit Inside"
+headline: "PATCHED OR NOT"
+caption: "nobody knows"
+footnote: "ILLUSTRATIVE"
+stage:
+  - id: sides
+    type: comparison
+    alternate: stack
+    left:
+      title: "PATCHED"
+    right:
+      title: "UNKNOWN"

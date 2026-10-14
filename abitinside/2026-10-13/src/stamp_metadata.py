@@ -19,9 +19,10 @@ from pathlib import Path
 
 DAY = Path(__file__).resolve().parent.parent
 ABIT = DAY.parent
-if str(ABIT) not in sys.path:
-    sys.path.insert(0, str(ABIT))
-from pipeline.export import publish_paths  # noqa: E402
+    if str(ABIT) not in sys.path:
+        sys.path.insert(0, str(ABIT))
+    from layout.gate import assert_certified  # noqa: E402
+    from pipeline.export import publish_paths  # noqa: E402
 
 FFMPEG = Path(os.environ["FFMPEG"])
 FFPROBE = Path(os.environ.get("FFPROBE", FFMPEG.with_name("ffprobe")))
@@ -54,6 +55,7 @@ def main() -> int:
     if not VIDEO.exists():
         print(f"no {VIDEO}, nothing to stamp")
         return 1
+    assert_certified(VIDEO)
     tech = probe(VIDEO)
 
     loud_path = DAY / "audio" / "loudness.json"

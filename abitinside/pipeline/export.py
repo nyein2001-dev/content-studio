@@ -25,6 +25,9 @@ def publish_paths(day: Path) -> tuple[Path, Path]:
 
 
 def remember(day: Path, final: Path, music: Path) -> None:
+    from layout.gate import assert_certified
+
+    assert_certified(final)
     meta_path = day / "youtube-metadata.json"
     meta = json.loads(meta_path.read_text(encoding="utf-8"))
     meta["file"] = f"video/{final.name}"

@@ -1,0 +1,36 @@
+name: layout
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  layout:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: abitinside
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: cairo and fontconfig
+        run: sudo apt-get update && sudo apt-get install -y libcairo2-dev pkg-config fontconfig
+      - name: pinned packages
+        working-directory: abitinside
+        run: python -m pip install "PyYAML==6.0.2" "jsonschema==4.23.0" pillow fonttools numpy pycairo
+      - name: bundled fonts
+        working-directory: abitinside
+        run: |
+          mkdir -p assets/fonts
+          base=https://raw.githubusercontent.com/google/fonts/main/ofl
+          curl -fsSL -o assets/fonts/Poppins-Bold.ttf "$base/poppins/Poppins-Bold.ttf"
+          curl -fsSL -o assets/fonts/Poppins-SemiBold.ttf "$base/poppins/Poppins-SemiBold.ttf"
+          curl -fsSL -o assets/fonts/Poppins-Regular.ttf "$base/poppins/Poppins-Regular.ttf"
+          curl -fsSL -o assets/fonts/JetBrainsMono.ttf "$base/jetbrainsmono/JetBrainsMono%5Bwght%5D.ttf"
+      - name: lint, unit tests, defect fixtures, stress
+        working-directory: abitinside
+        run: |
+          python -m layout check lint
+          python -m unittest discover -s tests -v

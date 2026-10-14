@@ -1,0 +1,12 @@
+[project]
+name = "abitinside"
+version = "1.0.0"
+description = "Local animated-video pipeline and the layout safe-zone gate."
+requires-python = ">=3.11"
+dependencies = [
+  "PyYAML==6.0.2",
+  "jsonschema==4.23.0",
+]
+
+[tool.setuptools.packages.find]
+include = ["layout*", "pipeline*"]

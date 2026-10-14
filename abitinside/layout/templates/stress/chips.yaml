@@ -1,0 +1,12 @@
+id: stress_chips
+profile: portrait
+duration_s: 3.0
+brand: "A Bit Inside"
+headline: "VENDOR NAMES"
+caption: "fixed width is gone"
+footnote: "ILLUSTRATIVE"
+stage:
+  - id: chips
+    type: chip_row
+    alternate: vertical
+    labels: ["COPELAND XWEB", "DIXELL XWEB", "AK-SM", "AK-SC"]

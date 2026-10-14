@@ -1,0 +1,19 @@
+id: hero_chart
+profile: portrait
+duration_s: 3.0
+splittable: false
+brand: "A Bit Inside"
+headline: "FIFTY DEGREES"
+caption: "by morning"
+footnote: "ILLUSTRATIVE"
+stage:
+  - id: chart
+    type: line_chart
+    title: "CASE TEMPERATURE"
+    series: [4, 4, 6, 18, 40, 50]
+    y_labels: ["0", "25", "50"]
+    x_labels: ["DUSK", "DAWN"]
+  - id: chips
+    type: chip_row
+    labels: ["AK-SM", "AK-SC"]
+    alternate: vertical

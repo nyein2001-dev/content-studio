@@ -1,0 +1,15 @@
+id: stress_timeline
+profile: portrait
+duration_s: 3.0
+brand: "A Bit Inside"
+headline: "TWO DATES"
+caption: "labels stay on the axis"
+footnote: "ILLUSTRATIVE"
+stage:
+  - id: line
+    type: timeline
+    ticks:
+      - id: shipped
+        label: "AUG 2025"
+      - id: attack
+        label: "OCT 2026"

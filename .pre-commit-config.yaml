@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: layout-lint
+        name: layout source lint
+        entry: bash -lc 'cd abitinside && source env.sh && "$PY" -m layout check lint'
+        language: system
+        pass_filenames: false
+        files: ^abitinside/(layout|examples)/

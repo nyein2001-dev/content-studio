@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "version", "validator_version", "reference", "grid", "fps", "default_profile",
+    "profiles", "zones", "spacing", "type", "rules", "fonts", "brand_tokens",
+    "legacy_roots", "encode", "z_order"
+  ],
+  "properties": {
+    "version": {"type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$"},
+    "validator_version": {"type": "string"},
+    "reference": {
+      "type": "object",
+      "required": ["width", "height"],
+      "properties": {"width": {"type": "integer"}, "height": {"type": "integer"}}
+    },
+    "grid": {"type": "integer", "minimum": 1},
+    "fps": {"type": "integer", "minimum": 1},
+    "default_profile": {"type": "string"},
+    "profiles": {"type": "object"},
+    "zones": {"type": "object"},
+    "spacing": {"type": "object"},
+    "type": {"type": "object"},
+    "rules": {"type": "object"},
+    "fonts": {"type": "object"},
+    "brand_tokens": {"type": "array", "items": {"type": "string"}},
+    "legacy_roots": {"type": "array", "items": {"type": "string"}},
+    "encode": {"type": "object"},
+    "z_order": {"type": "object"}
+  }
+}

@@ -1,0 +1,12 @@
+id: stress_card
+profile: portrait
+duration_s: 3.0
+brand: "A Bit Inside"
+headline: "CODE OF THE DAY"
+caption: "the words stay whole"
+footnote: "ILLUSTRATIVE"
+stage:
+  - id: code
+    type: card
+    title: "CODE OF THE DAY"
+    body: "built from the box's own date"

@@ -1,0 +1,13 @@
+title: Layout showcase
+profile: portrait
+scenes:
+  - ../../layout/templates/hero_chart.yaml
+  - ../../layout/templates/stat_card.yaml
+  - ../../layout/templates/timeline.yaml
+  - ../../layout/templates/stacked_cards.yaml
+  - ../../layout/templates/hub_spoke.yaml
+  - ../../layout/templates/comparison.yaml
+  - ../../layout/templates/checklist.yaml
+  - ../../layout/templates/terminal.yaml
+  - ../../layout/templates/severity.yaml
+  - ../../layout/templates/flow.yaml
