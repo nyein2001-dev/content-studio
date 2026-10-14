@@ -1,0 +1,89 @@
+{
+  "channel": "A Bit Inside",
+  "channel_tagline": "See what's happening inside the technology you use every day.",
+  "file": "video/sample-final.mp4",
+  "alternate_file": "video/sample-music-sfx-only.mp4",
+  "prepared": "2026-10-13",
+  "title": "How Hackers Heated 150 Supermarket Fridges to 50C",
+  "title_characters": 51,
+  "title_notes": "Sentence case; primary keyword inside the first 40 characters; no emoji; no #Shorts.",
+  "description": "How hackers heated 150 French supermarket fridges to 50C in a single night.\n\nYou'll see the one small box that runs every chilled case in a shop, why it was\nanswering the public internet at all, and the flaw researchers found in its login.\n\nAttackers reached Danfoss refrigeration controllers and forced a defrost cycle that\nnever stopped. Intermarché said about 150 of its stores woke up warm. Claroty's\nTeam82 had counted 2,765 exposed AK-SM 800A controllers on the open internet when\nthey did their research, and CVE-2025-41450, an authentication bypass rated 8.2 out\nof 10, had been fixed in firmware since 2025. Danfoss says most of the boxes that\nwere hit were models it no longer updates. France's CERT-FR answered with one\ninstruction: take the controller off the internet. Nobody has yet named who did it,\nor which flaw was used.\n\nSources:\nhttps://www.cert.ssi.gouv.fr/alerte/CERTFR-2026-ALE-012/\nhttps://www.claroty.com/blog/france-supermarket-hacks-expose-risks-of-internet-facing-refrigeration-systems\nhttps://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-2025-41450\nhttps://thehackernews.com/2026/10/attackers-heat-french-supermarket.html\n\nAnimations are illustrative. Narration is a synthetic voice.\n\n#Shorts #TechExplained #Cybersecurity #SmartHome #ABitInside",
+  "description_bytes": 1246,
+  "hashtags": [
+    "#Shorts",
+    "#TechExplained",
+    "#Cybersecurity",
+    "#SmartHome",
+    "#ABitInside"
+  ],
+  "tags": "smart fridge, refrigeration controller, supermarket hack, OT security, Danfoss AK-SM, industrial control systems, cybersecurity, how hackers work, CERT-FR, cold chain, IoT security, tech explained",
+  "tags_characters": 254,
+  "upload_settings": {
+    "category": "Science & Technology",
+    "language": "English",
+    "audience": "No, not made for kids",
+    "visibility": "Public",
+    "comments": "On",
+    "playlist": "A Bit Inside",
+    "subtitles": "none - captions are burned in and legible muted"
+  },
+  "synthetic_content_disclosure": {
+    "answer": "No",
+    "checked_on": "2026-10-13",
+    "policy_sources": [
+      {
+        "title": "Disclosing use of altered or synthetic content",
+        "publisher": "YouTube Help",
+        "url": "https://support.google.com/youtube/answer/14328491"
+      },
+      {
+        "title": "Improving AI labels for viewers and creators",
+        "publisher": "YouTube Blog",
+        "date": "2026-05-27",
+        "url": "https://blog.youtube/news-and-events/improving-ai-labels-viewers-creators/"
+      },
+      {
+        "title": "Disclosing AI-generated content",
+        "publisher": "YouTube Blog",
+        "date": "2024-03-18",
+        "url": "https://blog.youtube/news-and-events/disclosing-ai-generated-content/"
+      }
+    ],
+    "rule_paraphrased": "Disclosure is required for photorealistic or meaningfully altered content that appears realistic: a real person made to say something they did not say, footage of a real event or place altered, or a realistic scene that never happened. It is explicitly not required for content that is clearly unrealistic or animated, or where synthetic media is unrealistic and the changes are inconsequential.",
+    "why_no": "Every frame is stylised vector animation. No real person appears, no real place or event is depicted, no footage was altered, and the voice is a stock synthetic narrator belonging to nobody. Nothing could be mistaken for a recording of something that happened.",
+    "caveats": [
+      "Since 27 May 2026 YouTube can auto-apply an AI label when its systems detect photorealistic synthetic content. A detection label can be changed back to No in Studio > the video > Attributes > AI use.",
+      "Only labels from YouTube's own generative tools, or from C2PA fully-generative metadata, are permanent. This file carries no C2PA metadata.",
+      "YouTube's stated position is that a disclosure label does not affect reach or monetisation eligibility.",
+      "If you would rather disclose anyway, change the answer to Yes; nothing else in the upload changes."
+    ]
+  },
+  "pinned_comment": "So: is anything in your home reachable from the internet?",
+  "cover_frame": {
+    "timestamp": "0:03",
+    "frame": 90,
+    "reason": "Hook claim and the sourced 50 C number on screen together, headline and wordmark visible, and no burned-in caption competing at thumbnail size.",
+    "runner_up": {
+      "timestamp": "0:46",
+      "frame": 1380,
+      "reason": "The 2,765-controller dot grid under the headline 2,765 CONTROLLERS ON THE INTERNET."
+    }
+  },
+  "sources": [
+    "https://www.cert.ssi.gouv.fr/alerte/CERTFR-2026-ALE-012/",
+    "https://www.claroty.com/blog/france-supermarket-hacks-expose-risks-of-internet-facing-refrigeration-systems",
+    "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-2025-41450",
+    "https://thehackernews.com/2026/10/attackers-heat-french-supermarket.html"
+  ],
+  "technical": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "duration_seconds": 110.867,
+    "video_codec": "h264 High yuv420p",
+    "audio_codec": "aac 192 kbps 48000 Hz stereo",
+    "integrated_lufs": -14.0,
+    "true_peak_dbtp": -3.59,
+    "size_mb": 11.8
+  }
+}

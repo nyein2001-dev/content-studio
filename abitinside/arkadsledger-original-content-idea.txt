@@ -1,0 +1,321 @@
+
+# 🥇 1. MONEY & ECONOMICS
+
+## Channel/Niche Name
+
+### **Money, Markets & Economics**
+
+I would eventually choose a short consumer-facing brand name rather than literally calling the channel "Personal Finance."
+
+The editorial promise:
+
+> **"Understand the money systems that control everyday life."**
+
+This is broader and more defensible than a generic "finance tips" channel.
+
+---
+
+## Core Topic
+
+Explain:
+
+* money
+* prices
+* inflation
+* wages
+* debt
+* interest
+* investing concepts
+* taxes
+* housing economics
+* consumer economics
+* banking
+* markets
+* business economics
+* economic incentives
+* wealth-building principles
+
+**Not** day-trading signals or "buy this stock."
+
+That distinction is important.
+
+---
+
+## Target Audience
+
+Approximately 18–45:
+
+* young professionals
+* students
+* entrepreneurs
+* people trying to understand money
+* investors
+* financially curious viewers
+* people confused by economic news
+
+Global audience, with localization later.
+
+---
+
+## Why Humans Actually Care
+
+Money affects almost every major life decision.
+
+People constantly ask:
+
+* Why is everything getting more expensive?
+* Why can't I afford a house?
+* Why does debt grow so quickly?
+* Why do banks make money?
+* Why does inflation happen?
+* Why does compound interest matter?
+* Why do salaries differ?
+* Why are mortgages so expensive?
+* Why do markets crash?
+* Why does money lose purchasing power?
+
+These are **recurring human problems**, not entertainment trends.
+
+---
+
+## Why It Has Long-Term Demand
+
+Extremely strong.
+
+Money systems change, but the underlying questions don't.
+
+You can continuously generate:
+
+* new economic data
+* new inflation numbers
+* new housing data
+* new consumer behavior
+* new financial products
+* historical comparisons
+* country comparisons
+* economic explanations
+* "what if" simulations
+
+A video about compound interest can work today and five years from now.
+
+A video about a specific TikTok trend may not.
+
+---
+
+## Why It Fits AI/Human-Free Production
+
+**Excellent.**
+
+This is almost an ideal match for the ShakaHub engine.
+
+The playbook already demonstrates the exact capability with a compound-interest POC using animated charts, counters, narration, SFX and kinetic typography. 
+
+You can use:
+
+* animated charts
+* financial timelines
+* balance-sheet diagrams
+* UI banking simulations
+* calculators
+* counters
+* comparisons
+* maps
+* economic simulations
+* object metaphors
+* receipts
+* animated formulas
+
+---
+
+## Best Video Formats
+
+* Two Lines, One Choice
+* Data Story
+* The Receipt
+* Counter That Lies
+* Build-a-Formula
+* Scale Test
+* Before/After
+* Simulated Crowd
+* Timeline Rewind
+* Map Story
+* Myth → Mechanism
+
+The playbook's "Receipt/Ledger" and "Build-a-Formula" formats are particularly powerful here. 
+
+---
+
+## 10 Example Videos
+
+1. **Why does $100 feel smaller every year?**
+2. **What actually happens when a bank gives you a loan?**
+3. **Why compound interest gets ridiculous after 20 years**
+4. **Why houses became so expensive**
+5. **Where does your $100 paycheck actually go?**
+6. **Why minimum payments keep you in debt**
+7. **What happens when interest rates rise?**
+8. **Why "cheap" monthly payments can be expensive**
+9. **The hidden cost of a subscription**
+10. **Why timing the market is so difficult**
+
+Additional series:
+
+> "The $1,000 Experiment"
+
+> "The Economics of Everyday Things"
+
+> "One Number That Explains..."
+
+---
+
+## 1+ Minute Potential
+
+**10/10**
+
+Extremely strong.
+
+You can produce:
+
+* 60–90 second explainers
+* 2–3 minute Shorts
+* 5–15 minute YouTube videos
+* documentary-style economic explainers
+
+YouTube currently allows vertical/square Shorts up to three minutes. ([Google Help][2])
+
+---
+
+## Shorts/TikTok/Reels Potential
+
+**10/10**
+
+Financial curiosity is naturally suited to:
+
+* "Wait until you see the final number"
+* comparisons
+* simulations
+* counters
+* before/after
+* surprising statistics
+
+TikTok's Creator Rewards program specifically emphasizes original videos over one minute and factors including originality, play duration, search value and engagement. ([TikTok Newsroom][3])
+
+That makes your desired **1+ minute format particularly useful**.
+
+---
+
+## Evergreen vs Trend
+
+**85% evergreen / 15% current events**
+
+Excellent balance.
+
+---
+
+## Global Audience
+
+**10/10**
+
+Money exists everywhere.
+
+The trick is to separate:
+
+**Universal economics**
+
+from
+
+**country-specific financial advice.**
+
+For global content:
+
+> "Why inflation makes your money weaker"
+
+is better than:
+
+> "How Thailand's tax deduction works."
+
+---
+
+## Monetization
+
+### **10/10**
+
+One of the strongest.
+
+Potential advertisers include:
+
+* banks
+* fintech
+* investing platforms
+* accounting software
+* business software
+* insurance
+* financial education
+* credit products
+* productivity/business products
+
+There is also a natural path into long-form YouTube.
+
+YouTube offers multiple monetization mechanisms beyond Shorts, including Watch Page ads, Premium, Shopping, memberships and fan funding. ([Google Help][4])
+
+---
+
+## Competition
+
+**9/10 — very high**
+
+This is the biggest weakness.
+
+---
+
+## Difficulty of Unique Brand
+
+**8/10**
+
+Generic:
+
+> "5 financial tips"
+
+is terrible.
+
+But:
+
+> **"Visual explanations of the hidden machinery of money."**
+
+is much more defensible.
+
+---
+
+## Content Volume
+
+**10/10**
+
+Potentially thousands of videos.
+
+---
+
+## Main Risks
+
+* financial misinformation
+* outdated figures
+* jurisdiction-specific advice
+* investment advice liability
+* overpromising
+* sensationalism
+* lower trust if AI voice sounds generic
+
+The playbook explicitly requires numbers to be computed from stated inputs or cited from named sources and requires assumptions/disclaimers where relevant, particularly finance and health. 
+
+---
+
+## Why I Rank It #1
+
+Because it has the best combination of:
+
+**huge demand + high advertiser value + endless data + visual explainability + global relevance.**
+
+It is not simply a "finance channel."
+
+It can become a **visual economics media brand**.
+
+---

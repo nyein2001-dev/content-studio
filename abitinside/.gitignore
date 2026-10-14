@@ -1,0 +1,30 @@
+# A Bit Inside - everything below is rebuilt by setup.sh / build.sh.
+# Scoped to this folder on purpose: the git repository that contains this
+# directory is the user's whole home folder, so nothing outside here is touched.
+
+# Toolchain, all restorable by `bash setup.sh`
+.venv/
+tools/
+.cache/
+assets/fonts/*.ttf
+assets/fonts/fonts.conf
+assets/fonts/fonts.conf.tpl
+assets/voices/*.onnx
+assets/voices/*.onnx.json
+
+# Day outputs: keep the small written deliverables, drop the large binaries
+# and the intermediates that a rebuild regenerates.
+*/video/*.mp4
+*/audio/*.wav
+*/video/*.muxing.mp4
+*/__pycache__/
+__pycache__/
+*.pyc
+
+# Research and intermediate state
+*/candidates_raw.json
+*/verification_log.json
+*/scenes_plan.json
+*/tts_sentences.json
+*/align.json
+*/timeline.json

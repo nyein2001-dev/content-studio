@@ -1,0 +1,241 @@
+A Bit Inside - sound cue sheet
+generated from timeline.json, 3326 frames at 30 fps, 110.87 s
+
+  frame      time   sample@48k  type          gain dB  event
+------------------------------------------------------------------------------------------------
+      0    0.000s            0  click           -11.0  Cold-chain trace slams upward from the healthy band 
+      0    0.000s            0  impact           -5.0  key beat in hook
+      4    0.133s         6400  tick            -12.0  caption group 'Attackers drove'
+     24    0.800s        38400  tick            -12.0  caption group 'supermarket fridges'
+     57    1.900s        91200  tick            -12.0  caption group 'in France'
+     68    2.267s       108800  click           -11.0  Store cross-section flashes once behind it, then dro
+     73    2.433s       116799  tick            -12.0  caption group 'to fifty'
+     87    2.900s       139200  tick            -12.0  caption group 'degrees overnight'
+    129    4.300s       206400  whoosh           -9.0  scene cut into setup
+    137    4.567s       219200  click           -11.0  Store elevation appears: cases, one glowing controll
+    137    4.567s       219200  tick            -12.0  caption group 'About a'
+    149    4.967s       238400  tick            -12.0  caption group 'hundred and'
+    169    5.633s       270400  tick            -12.0  caption group 'fifty of'
+    183    6.100s       292800  tick            -12.0  caption group 'those stores'
+    205    6.833s       328000  tick            -12.0  caption group 'woke up'
+    217    7.233s       347200  tick            -12.0  caption group 'to warm'
+    227    7.567s       363200  click           -11.0  A 150-dot waffle of stores fills, one dot per store,
+    229    7.633s       366400  tick            -12.0  caption group 'cases and'
+    245    8.167s       392000  tick            -12.0  caption group 'food in'
+    257    8.567s       411200  tick            -12.0  caption group 'the bin'
+    283    9.433s       452800  tick            -12.0  caption group 'Nobody had'
+    298    9.933s       476800  tick            -12.0  caption group 'broken into'
+    318   10.600s       508800  click           -11.0  The web page card loads on top of the fridge, then c
+    321   10.700s       513599  tick            -12.0  caption group 'a fridge'
+    349   11.633s       558400  tick            -12.0  caption group 'Someone had'
+    368   12.267s       588800  tick            -12.0  caption group 'loaded a'
+    381   12.700s       609600  tick            -12.0  caption group 'web page'
+    401   13.367s       641600  whoosh           -9.0  scene cut into controller
+    409   13.633s       654400  click           -11.0  Camera pushes into the back wall, the box grows to f
+    409   13.633s       654400  tick            -12.0  caption group 'Behind the'
+    421   14.033s       673600  tick            -12.0  caption group 'cases sits'
+    440   14.667s       704000  tick            -12.0  caption group 'one small'
+    458   15.267s       732800  tick            -12.0  caption group 'box that'
+    475   15.833s       760000  tick            -12.0  caption group 'runs them'
+    488   16.267s       780800  click           -11.0  Three labelled taps grow out of it: PROBES, TARGET, 
+    490   16.333s       784000  tick            -12.0  caption group 'all'
+    510   17.000s       816000  tick            -12.0  caption group 'It reads'
+    534   17.800s       854400  tick            -12.0  caption group 'probes holds'
+    562   18.733s       899200  tick            -12.0  caption group 'the target'
+    568   18.933s       908800  click           -11.0  Thin signal lines run from the box to three chilled 
+    589   19.633s       942400  tick            -12.0  caption group 'and schedules'
+    601   20.033s       961600  tick            -12.0  caption group 'the defrost'
+    618   20.600s       988800  tick            -12.0  caption group 'cycle'
+    640   21.333s      1024000  whoosh           -9.0  scene cut into why_online
+    648   21.600s      1036800  click           -11.0  A router ring pulses at the bottom, a line climbs to
+    648   21.600s      1036800  tick            -12.0  caption group 'It has'
+    661   22.033s      1057600  tick            -12.0  caption group 'interface because'
+    691   23.033s      1105600  tick            -12.0  caption group 'the engineer'
+    708   23.600s      1132800  tick            -12.0  caption group 'who installed'
+    729   24.300s      1166400  tick            -12.0  caption group 'it has'
+    734   24.467s      1174400  click           -11.0  A LATE-NIGHT pill pops, an alarm card pulses on the 
+    744   24.800s      1190400  tick            -12.0  caption group 'to clear'
+    757   25.233s      1211200  tick            -12.0  caption group 'alarms at'
+    774   25.800s      1238400  tick            -12.0  caption group 'night'
+    794   26.467s      1270400  tick            -12.0  caption group 'Driving to'
+    809   26.967s      1294400  tick            -12.0  caption group 'the shop'
+    820   27.333s      1312000  click           -11.0  The engineer's van stops travelling; the line stays 
+    835   27.833s      1336000  tick            -12.0  caption group 'alarm was'
+    856   28.533s      1369600  tick            -12.0  caption group 'the problem'
+    868   28.933s      1388800  tick            -12.0  caption group 'they were'
+    880   29.333s      1408000  tick            -12.0  caption group 'solving'
+    898   29.933s      1436800  whoosh           -9.0  scene cut into the_flaw
+    906   30.200s      1449600  click           -11.0  THREE FLAWS card, three numbered slots fill
+    906   30.200s      1449600  tick            -12.0  caption group 'Security researchers'
+    934   31.133s      1494400  tick            -12.0  caption group 'found three'
+    959   31.967s      1534400  tick            -12.0  caption group 'flaws in'
+    982   32.733s      1571200  tick            -12.0  caption group 'that interface'
+   1006   33.533s      1609600  click           -11.0  A calendar page flips to today's date and a code typ
+   1019   33.967s      1630400  tick            -12.0  caption group 'One was'
+   1026   34.200s      1641600  typing          -20.0  code of the day types itself out
+   1042   34.733s      1667200  tick            -12.0  caption group 'login generated'
+   1044   34.800s      1670399  typing          -20.0  code of the day types itself out
+   1046   34.867s      1673600  tick_rise       -15.0  severity meter fills to 8.2
+   1066   35.533s      1705600  typing          -20.0  code of the day types itself out
+   1077   35.900s      1723200  tick            -12.0  caption group 'from the'
+   1082   36.067s      1731200  typing          -20.0  code of the day types itself out
+   1090   36.333s      1744000  tick_rise       -15.0  severity meter fills to 8.2
+   1092   36.400s      1747200  tick            -12.0  caption group 'controller's own'
+   1096   36.533s      1753600  typing          -20.0  code of the day types itself out
+   1106   36.867s      1769600  click           -11.0  The generated code slides into an empty login box
+   1112   37.067s      1779200  typing          -20.0  code of the day types itself out
+   1113   37.100s      1780800  tick            -12.0  caption group 'date'
+   1126   37.533s      1801600  typing          -20.0  code of the day types itself out
+   1134   37.800s      1814399  tick_rise       -15.0  severity meter fills to 8.2
+   1136   37.867s      1817600  tick            -12.0  caption group 'Anyone who'
+   1140   38.000s      1824000  typing          -20.0  code of the day types itself out
+   1149   38.300s      1838399  tick            -12.0  caption group 'could reach'
+   1170   39.000s      1872000  tick            -12.0  caption group 'could work'
+   1178   39.267s      1884800  tick_rise       -15.0  severity meter fills to 8.2
+   1184   39.467s      1894400  tick            -12.0  caption group 'out that'
+   1197   39.900s      1915200  tick            -12.0  caption group 'day's code'
+   1206   40.200s      1929600  click           -11.0  SEVERITY meter fills to 8.2 with a HIGH tag
+   1222   40.733s      1955200  tick_rise       -15.0  severity meter fills to 8.2
+   1228   40.933s      1964799  tick            -12.0  caption group 'It scored'
+   1245   41.500s      1992000  tick            -12.0  caption group '8.2 out'
+   1258   41.933s      2012799  tick            -12.0  caption group 'of 10'
+   1299   43.300s      2078399  whoosh           -9.0  scene cut into the_scale
+   1307   43.567s      2091200  click           -11.0  A 40 x 20 grid of tiny controller glyphs fades in
+   1307   43.567s      2091200  tick            -12.0  caption group 'Scanning for'
+   1326   44.200s      2121600  tick            -12.0  caption group 'exposed controllers'
+   1358   45.267s      2172800  tick            -12.0  caption group 'the researchers'
+   1382   46.067s      2211200  tick            -12.0  caption group 'counted two'
+   1399   46.633s      2238400  tick            -12.0  caption group 'thousand seven'
+   1402   46.733s      2243200  click           -11.0  2,765 of them light cyan as the counter rolls
+   1407   46.900s      2251200  tick_rise       -15.0  2,765 controllers light up
+   1422   47.400s      2275200  tick            -12.0  caption group 'hundred and'
+   1439   47.967s      2302400  tick            -12.0  caption group 'sixty-five'
+   1439   47.967s      2302400  tick_rise       -15.0  2,765 controllers light up
+   1470   49.000s      2352000  tick            -12.0  caption group 'Sitting on'
+   1470   49.000s      2352000  tick_rise       -15.0  2,765 controllers light up
+   1482   49.400s      2371200  tick            -12.0  caption group 'the public'
+   1498   49.933s      2396800  click           -11.0  A PATCHED? chip stays grey and unreadable
+   1502   50.067s      2403200  tick_rise       -15.0  2,765 controllers light up
+   1522   50.733s      2435200  tick            -12.0  caption group 'Nobody knows'
+   1533   51.100s      2452800  tick_rise       -15.0  2,765 controllers light up
+   1541   51.367s      2465600  tick            -12.0  caption group 'how many'
+   1554   51.800s      2486400  tick            -12.0  caption group 'were ever'
+   1567   52.233s      2507200  tick            -12.0  caption group 'patched'
+   1586   52.867s      2537600  whoosh           -9.0  scene cut into legacy
+   1594   53.133s      2550400  click           -11.0  A firmware timeline draws from AUG 2025 to OCT 2026
+   1594   53.133s      2550400  tick            -12.0  caption group 'The manufacturer'
+   1608   53.600s      2572800  tick            -12.0  caption group 'says most'
+   1632   54.400s      2611200  tick            -12.0  caption group 'of the'
+   1658   55.267s      2652800  tick            -12.0  caption group 'were hit'
+   1681   56.033s      2689600  tick            -12.0  caption group 'models it'
+   1699   56.633s      2718400  tick            -12.0  caption group 'no longer'
+   1714   57.133s      2742400  tick            -12.0  caption group 'updates'
+   1737   57.900s      2779200  click           -11.0  AK-SM 800 card greys out at 2021
+   1744   58.133s      2790400  tick            -12.0  caption group 'The AK-SM'
+   1764   58.800s      2822400  tick            -12.0  caption group '800 stopped'
+   1790   59.667s      2864000  tick            -12.0  caption group 'getting security'
+   1811   60.367s      2897600  tick            -12.0  caption group 'fixes in'
+   1837   61.233s      2939200  tick            -12.0  caption group '2021'
+   1880   62.667s      3008000  click           -11.0  AK-SC 355 card greys out at 2016
+   1886   62.867s      3017600  tick            -12.0  caption group 'The AK-SC'
+   1910   63.667s      3056000  tick            -12.0  caption group '355 was'
+   1953   65.100s      3124799  tick            -12.0  caption group 'phased out'
+   1970   65.667s      3152000  tick            -12.0  caption group 'in 2016'
+   2015   67.167s      3224000  whoosh           -9.0  scene cut into defrost
+   2023   67.433s      3236800  click           -11.0  A coil cross-section grows icicles, then a heater ba
+   2023   67.433s      3236800  tick            -12.0  caption group 'A freezer'
+   2053   68.433s      3284800  tick            -12.0  caption group 'run a'
+   2087   69.567s      3339200  tick            -12.0  caption group 'or ice'
+   2111   70.367s      3377599  tick            -12.0  caption group 'builds up'
+   2133   71.100s      3412799  click           -11.0  DEFROST pill pulses on a clock ring
+   2134   71.133s      3414400  tick            -12.0  caption group 'on the'
+   2164   72.133s      3462400  tick            -12.0  caption group 'That cycle'
+   2190   73.000s      3504000  tick            -12.0  caption group 'normal scheduled'
+   2216   73.867s      3545599  tick            -12.0  caption group 'job'
+   2243   74.767s      3588800  tick            -12.0  caption group 'Reporting says'
+   2244   74.800s      3590400  click           -11.0  The clock ring loses its stop mark; the heater bar s
+   2261   75.367s      3617599  tick            -12.0  caption group 'the attackers'
+   2276   75.867s      3641599  tick            -12.0  caption group 'simply turned'
+   2295   76.500s      3672000  riser           -13.0  ascending tension into the reveal
+   2300   76.667s      3680000  tick            -12.0  caption group 'it on'
+   2322   77.400s      3715200  tick            -12.0  caption group 'let it'
+   2334   77.800s      3734400  tick            -12.0  caption group 'stop'
+   2343   78.100s      3748799  silence           0.0  200-400 ms designed cut to silence before the reveal
+   2347   78.233s      3755200  whoosh           -9.0  scene cut into the_reveal
+   2355   78.500s      3768000  click           -11.0  The trace peaks at 50 C and a CASE TEMP card flips t
+   2355   78.500s      3768000  impact           -5.0  key beat in the_reveal
+   2355   78.500s      3768000  impact           -3.0  sub-drop + thump on the reveal
+   2355   78.500s      3768000  tick            -12.0  caption group 'By morning'
+   2376   79.200s      3801600  tick            -12.0  caption group 'the cases'
+   2400   80.000s      3840000  tick            -12.0  caption group 'fifty degrees'
+   2426   80.867s      3881599  click           -11.0  CERTFR-2026-ALE-012 card slides in, AK-SM and AK-SC 
+   2438   81.267s      3900800  tick            -12.0  caption group 'France's CERT'
+   2454   81.800s      3926400  tick_rise       -15.0  case temperature flips to 50
+   2460   82.000s      3936000  tick            -12.0  caption group 'published an'
+   2478   82.600s      3964799  tick            -12.0  caption group 'alert the'
+   2485   82.833s      3976000  tick_rise       -15.0  case temperature flips to 50
+   2490   83.000s      3984000  tick            -12.0  caption group 'next day'
+   2497   83.233s      3995200  click           -11.0  COPELAND XWEB and DIXELL XWEB chips tick too, then t
+   2515   83.833s      4024000  tick            -12.0  caption group 'naming the'
+   2516   83.867s      4025599  tick_rise       -15.0  case temperature flips to 50
+   2548   84.933s      4076800  tick_rise       -15.0  case temperature flips to 50
+   2565   85.500s      4104000  tick            -12.0  caption group 'A Paris'
+   2568   85.600s      4108799  click           -11.0  A gavel-free inquiry card stamps: INQUIRY OPENED
+   2579   85.967s      4126400  tick_rise       -15.0  case temperature flips to 50
+   2604   86.800s      4166400  tick            -12.0  caption group 'an inquiry'
+   2631   87.700s      4209600  whoosh           -9.0  scene cut into the_gap
+   2639   87.967s      4222400  click           -11.0  Three question cards stack: WHO, HOW, WHICH FLAW, ea
+   2639   87.967s      4222400  tick            -12.0  caption group 'Still no'
+   2645   88.167s      4232000  buzz            -17.0  no one has named the flaw
+   2664   88.800s      4262400  tick            -12.0  caption group 'one has'
+   2690   89.667s      4304000  tick            -12.0  caption group 'flaw that'
+   2706   90.200s      4329600  tick            -12.0  caption group 'was used'
+   2721   90.700s      4353600  tick            -12.0  caption group 'or how'
+   2725   90.833s      4360000  click           -11.0  They are swept off screen by a TAKE IT OFF THE INTER
+   2742   91.400s      4387200  tick            -12.0  caption group 'they got'
+   2754   91.800s      4406400  tick            -12.0  caption group 'in'
+   2783   92.767s      4452800  tick            -12.0  caption group 'The CERT's'
+   2810   93.667s      4496000  tick            -12.0  caption group 'blunt take'
+   2811   93.700s      4497600  click           -11.0  The store's connection line is cut with a drawn X
+   2834   94.467s      4534400  tick            -12.0  caption group 'the box'
+   2861   95.367s      4577600  tick            -12.0  caption group 'internet'
+   2889   96.300s      4622400  whoosh           -9.0  scene cut into payoff
+   2897   96.567s      4635200  click           -11.0  The cold-chain trace rewinds to its start, cool and 
+   2897   96.567s      4635200  tick            -12.0  caption group 'A refrigeration'
+   2920   97.333s      4672000  tick            -12.0  caption group 'controller is'
+   2942   98.067s      4707200  tick            -12.0  caption group 'not something'
+   2960   98.667s      4736000  tick            -12.0  caption group 'anyone chose'
+   2984   99.467s      4774400  tick            -12.0  caption group 'to put'
+   2994   99.800s      4790400  click           -11.0  The store elevation returns, exactly as frame one
+   2999   99.967s      4798400  tick            -12.0  caption group 'online'
+   3027  100.900s      4843200  tick            -12.0  caption group 'It just'
+   3039  101.300s      4862400  tick            -12.0  caption group 'answers a'
+   3054  101.800s      4886400  tick            -12.0  caption group 'web page'
+   3067  102.233s      4907200  tick            -12.0  caption group 'wherever it'
+   3086  102.867s      4937600  tick            -12.0  caption group 'is plugged'
+   3092  103.067s      4947200  click           -11.0  The trace holds flat for the closing beat
+   3104  103.467s      4966400  tick            -12.0  caption group 'in'
+   3122  104.067s      4995200  tick            -12.0  caption group 'The fridge'
+   3147  104.900s      5035200  tick            -12.0  caption group 'really offline'
+   3150  105.000s      5040000  chime            -6.0  two-note chime, resolves to a major chord
+   3182  106.067s      5091200  whoosh           -9.0  scene cut into question
+   3190  106.333s      5104000  click           -11.0  The trace flattens into a calm band
+   3190  106.333s      5104000  tick            -12.0  caption group 'So is'
+   3210  107.000s      5136000  tick            -12.0  caption group 'anything in'
+   3223  107.433s      5156800  click           -11.0  A simple house outline draws in, four device dots in
+   3225  107.500s      5160000  tick            -12.0  caption group 'your home'
+   3250  108.333s      5200000  chime            -6.0  two-note chime, resolves to a major chord
+   3254  108.467s      5206400  tick            -12.0  caption group 'the internet'
+   3256  108.533s      5209600  click           -11.0  One dot pulses amber and a question mark sits above 
+   3280  109.333s      5248000  whoosh_rev      -10.0  reverse whoosh into the loop frame
+   3290  109.667s      5264000  click           -11.0  Holds the frame 1 composition; the impact ring keeps
+
+Legend
+  click/tick  2-3 kHz sine, 6 ms decay + noise transient
+  whoosh      band-passed noise, sweeping centre frequency, sin^2 envelope
+  riser       ascending tone, swelling gain
+  impact      70 -> 38 Hz sweep, 350 ms decay + low-passed noise
+  chime       two-note additive sine, 0.6 s decay (the sonic logo)
+  buzz        110 Hz square, 150 ms
+  typing      random-interval micro clicks
+  silence     designed 0.4 s drop before the reveal (no audio written)
