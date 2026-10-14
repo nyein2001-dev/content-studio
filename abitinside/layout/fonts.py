@@ -25,14 +25,14 @@ def font_file(key: str) -> Path:
     rel = spec["fonts"].get(key)
     if not rel:
         raise LayoutError(
-            "fonts", "LR-04",
+            "fonts", "R09",
             f"no bundled font for {key}",
             "Name the file under fonts in layout_spec.yaml.",
         )
     path = (ABIT / rel).resolve()
     if not path.is_file():
         raise LayoutError(
-            "fonts", "LR-04",
+            "fonts", "R09",
             f"bundled font is missing: {path}",
             "Run bash setup.sh. Do not substitute a system font.",
         )
@@ -57,7 +57,7 @@ def family_name(path: Path) -> str:
         font.close()
     if not names:
         raise LayoutError(
-            "fonts", "LR-04",
+            "fonts", "R09",
             f"{path.name} has no family name",
             "Restore the official font file.",
         )
@@ -81,7 +81,7 @@ def _fc_match(query: str) -> str:
         ).strip()
     except (OSError, subprocess.CalledProcessError) as exc:
         raise LayoutError(
-            "fonts", "LR-04",
+            "fonts", "R09",
             f"fontconfig could not resolve {query}: {exc}",
             "Install fontconfig and run bash setup.sh. The build will not guess a font.",
         ) from exc
@@ -102,14 +102,14 @@ def install_fonts() -> None:
         found = family_name(path)
         if expected.split()[0].lower() not in found.lower():
             raise LayoutError(
-                "fonts", "LR-04",
+                "fonts", "R09",
                 f"{path.name} reports family {found!r}, expected {expected!r}",
                 "Replace the file with the bundled family. Refusing a fallback font.",
             )
         actual = weight_class(path)
         if actual != expected_weight[key]:
             raise LayoutError(
-                "fonts", "LR-04",
+                "fonts", "R09",
                 f"{path.name} has weight class {actual}, expected {expected_weight[key]}",
                 "Restore the official file for this role. A different weight is a fallback.",
             )
@@ -119,7 +119,7 @@ def install_fonts() -> None:
     conf_text = conf.read_text(encoding="utf-8")
     if font_file("semibold").name not in conf_text or font_file("bold").name not in conf_text:
         raise LayoutError(
-            "fonts", "LR-04",
+            "fonts", "R09",
             "fonts.conf does not name the bundled bold and semibold files",
             "Regenerate fonts.conf from assets/fonts.conf.tpl. Do not point it at a system font.",
         )
@@ -132,7 +132,7 @@ def install_fonts() -> None:
         resolved = _fc_match(query)
         if Path(resolved).name != expected.name:
             raise LayoutError(
-                "fonts", "LR-04",
+                "fonts", "R09",
                 f"fontconfig resolved {query} to {resolved}, not {expected.name}",
                 "Fix fonts.conf so this family cannot fall back to a system font.",
             )
@@ -140,7 +140,7 @@ def install_fonts() -> None:
     generic = Path(_fc_match("Poppins")).resolve()
     if generic not in bundled:
         raise LayoutError(
-            "fonts", "LR-04",
+            "fonts", "R09",
             f"fontconfig resolved Poppins to {generic}, outside the bundled fonts",
             "Fix fonts.conf so Poppins cannot fall back to a system font.",
         )

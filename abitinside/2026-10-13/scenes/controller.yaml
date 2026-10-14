@@ -1,0 +1,17 @@
+id: controller
+profile: portrait
+duration_s: 9.10
+brand: "A Bit Inside"
+headline: "ONE BOX\nBEHIND THE CASES"
+caption: "one box runs every case"
+stage:
+  - id: hub
+    type: hub_and_spoke
+    title: "SUPERVISORY CONTROLLER"
+    spokes:
+      - id: probes
+        label: "PROBES"
+      - id: target
+        label: "TARGET"
+      - id: defrost
+        label: "DEFROST"

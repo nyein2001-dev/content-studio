@@ -56,39 +56,70 @@ def check_budget(doc: dict) -> list[str]:
     scene = doc["id"]
     if float(doc["duration_s"]) < float(rules["min_scene_duration_s"]):
         problems.append(
-            f"{scene}: LR-13: duration {doc['duration_s']}s is under "
+            f"{scene}: R15: duration {doc['duration_s']}s is under "
             f"{rules['min_scene_duration_s']}s. Fix: lengthen the narration or merge this beat with the next one."
         )
     stage = doc.get("stage") or []
     if len(stage) > int(rules["max_stage_components"]):
         problems.append(
-            f"{scene}: LR-13: {len(stage)} stage components exceeds {rules['max_stage_components']}. "
+            f"{scene}: R15: {len(stage)} stage components exceeds {rules['max_stage_components']}. "
             "Fix: split this scene in the DSL."
         )
     chips = chip_count(doc)
     if chips > int(rules["max_chips"]):
         problems.append(
-            f"{scene}: LR-13: {chips} chips exceeds {rules['max_chips']}. Fix: split the chip row across two scenes."
+            f"{scene}: R15: {chips} chips exceeds {rules['max_chips']}. Fix: split the chip row across two scenes."
         )
     if doc.get("overlay") and int(rules["max_overlays"]) < 1:
-        problems.append(f"{scene}: LR-13: overlays are not allowed. Fix: remove the cursor.")
+        problems.append(f"{scene}: R15: overlays are not allowed. Fix: remove the cursor.")
     overlays = 1 if doc.get("overlay") else 0
     if overlays > int(rules["max_overlays"]):
         problems.append(
-            f"{scene}: LR-13: {overlays} overlays exceeds {rules['max_overlays']}. Fix: keep a single cursor."
+            f"{scene}: R15: {overlays} overlays exceeds {rules['max_overlays']}. Fix: keep a single cursor."
         )
     blocks = text_block_count(doc)
     if blocks > int(rules["max_extra_text_blocks"]):
         problems.append(
-            f"{scene}: LR-13: {blocks} text blocks besides the headline and caption exceeds "
+            f"{scene}: R15: {blocks} text blocks besides the headline and caption exceeds "
             f"{rules['max_extra_text_blocks']}. Fix: split the scene."
         )
-    zone = zones_for(doc.get("profile")).rect("HEADLINE")
+    zone = zones_for(doc.get("profile")).rect("TITLE")
     pad = spec["spacing"]["text_pad_x"]
     try:
-        fit_text(scene, doc["headline"], "headline", zone.w - 2 * pad, allow_shrink=False)
+        fitted = fit_text(scene, doc["headline"], "title", zone.w - 2 * pad, allow_shrink=True)
     except LayoutError as exc:
         problems.append(
-            f"{scene}: LR-13: headline does not fit in two lines at the headline size. Fix: {exc.remedy}"
+            f"{scene}: R15: title does not fit in two lines at the title size. Fix: {exc.remedy}"
         )
+        fitted = None
+    if fitted is not None:
+        limit = int(rules["title_chars_per_line"])
+        for line in fitted.lines:
+            if len(line) > limit:
+                problems.append(
+                    f"{scene}: R15: title line {line!r} is {len(line)} chars and the limit is {limit}."
+                )
+    words = len(str(doc.get("caption") or "").split())
+    if words > int(rules["subtitle_words"]):
+        problems.append(
+            f"{scene}: R15: subtitle has {words} words and the limit is {rules['subtitle_words']}."
+        )
+    chip_limit = int(rules["chip_chars"])
+    head_limit = int(rules["card_heading_chars"])
+    sub_limit = int(rules["card_sub_chars"])
+    for comp in doc.get("stage") or []:
+        for label in comp.get("labels") or []:
+            if len(label) > chip_limit:
+                problems.append(f"{scene}: R15: chip label {label!r} exceeds {chip_limit} chars.")
+        for spoke in comp.get("spokes") or []:
+            if len(spoke.get("label") or "") > chip_limit:
+                problems.append(
+                    f"{scene}: R15: chip label {spoke.get('label')!r} exceeds {chip_limit} chars."
+                )
+        title = comp.get("title") or ""
+        if title and len(title) > head_limit and comp["type"] in ("card", "callout", "hub_and_spoke"):
+            problems.append(f"{scene}: R15: card heading {title!r} exceeds {head_limit} chars.")
+        body = comp.get("body") or ""
+        if body and len(body) > sub_limit:
+            problems.append(f"{scene}: R15: card sub-line {body!r} exceeds {sub_limit} chars.")
     return problems

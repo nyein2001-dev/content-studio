@@ -15,6 +15,23 @@
     <prefer><family>JetBrains Mono</family></prefer>
   </alias>
 
+  <match target="pattern">
+    <test name="family" compare="eq"><string>ABit Bold</string></test>
+    <edit name="file" mode="assign" binding="strong"><string>FONT_POPPINSBOLD</string></edit>
+  </match>
+  <match target="pattern">
+    <test name="family" compare="eq"><string>ABit SemiBold</string></test>
+    <edit name="file" mode="assign" binding="strong"><string>FONT_POPPINSSEMIBOLD</string></edit>
+  </match>
+  <match target="pattern">
+    <test name="family" compare="eq"><string>ABit Regular</string></test>
+    <edit name="file" mode="assign" binding="strong"><string>FONT_POPPINSNORMAL</string></edit>
+  </match>
+  <match target="pattern">
+    <test name="family" compare="eq"><string>ABit Mono</string></test>
+    <edit name="file" mode="assign" binding="strong"><string>FONT_JBMONO</string></edit>
+  </match>
+
   <!-- map cairo's synthetic weight/oblique requests onto the real files -->
   <match target="pattern">
     <test qual="any" name="family"><string>Poppins</string></test>

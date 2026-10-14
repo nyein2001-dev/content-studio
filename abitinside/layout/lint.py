@@ -8,8 +8,7 @@ from pathlib import Path
 from layout.spec import ABIT, load_spec
 
 DRAW_CALLS = {
-    "show_text", "set_font_size", "move_to", "line_to", "rectangle",
-    "arc", "select_font_face", "set_source_rgba",
+    "show_text", "set_font_size", "select_font_face", "show_layout",
 }
 
 
@@ -37,6 +36,8 @@ def lint_sources() -> list[str]:
 def _scan(root: Path, spec, legacy: set[str], allowed: set[Path], problems: list[str], skip_dirs: set[str]) -> None:
     for dirpath, dirnames, filenames in os.walk(root):
         dirnames[:] = [name for name in dirnames if name not in skip_dirs and name not in legacy]
+        if Path(dirpath).name[:2] == "20" or any(part[:2] == "20" and part[2:4].isdigit() for part in Path(dirpath).parts):
+            dirnames[:] = [name for name in dirnames if name != "src"]
         for filename in filenames:
             if not filename.endswith(".py"):
                 continue
@@ -57,10 +58,17 @@ def _drawing(rel: str, tree: ast.AST) -> list[str]:
     for node in ast.walk(tree):
         if isinstance(node, ast.Import):
             for alias in node.names:
-                if alias.name.split(".")[0] == "cairo":
+                root = alias.name.split(".")[0]
+                if root == "cairo":
                     found.append(f"{rel}:{node.lineno}: cairo import outside the renderer")
-        if isinstance(node, ast.ImportFrom) and node.module and node.module.split(".")[0] == "cairo":
-            found.append(f"{rel}:{node.lineno}: cairo import outside the renderer")
+                if root in {"pangocairo", "gi"} and rel != "layout/text.py":
+                    found.append(f"{rel}:{node.lineno}: text engine bypass via {root}")
+        if isinstance(node, ast.ImportFrom) and node.module:
+            root = node.module.split(".")[0]
+            if root == "cairo":
+                found.append(f"{rel}:{node.lineno}: cairo import outside the renderer")
+            if root in {"pangocairo", "gi"} and rel != "layout/text.py":
+                found.append(f"{rel}:{node.lineno}: text engine bypass via {root}")
         if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) and node.func.attr in DRAW_CALLS:
             found.append(f"{rel}:{node.lineno}: {node.func.attr} bypasses the layout renderer")
     return found

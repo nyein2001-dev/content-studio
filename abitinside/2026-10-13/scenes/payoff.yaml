@@ -1,0 +1,11 @@
+id: payoff
+profile: portrait
+duration_s: 10.27
+brand: "A Bit Inside"
+headline: "THE FRIDGE WAS\nNEVER OFFLINE"
+caption: "never really offline"
+stage:
+  - id: box
+    type: card
+    title: "A WEB PAGE"
+    body: "the box still answers"

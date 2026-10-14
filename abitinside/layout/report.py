@@ -59,5 +59,24 @@ img {{ width: 180px; margin: 8px; }}
     path.write_text(html, encoding="utf-8")
 
 
+def write_markdown(path: Path, reports: list[dict]) -> None:
+    lines = ["# QA report", ""]
+    lines.append("| Rule | Scene | Time | Elements | Severity | Suggested change |")
+    lines.append("|---|---|---|---|---|---|")
+    for report in reports:
+        for item in report.get("violations") or []:
+            elements = ", ".join(item.get("element_ids") or [])
+            frame = item.get("frame")
+            lines.append(
+                f"| {item.get('rule')} | {report.get('scene')} | {frame} | {elements} | "
+                f"{item.get('severity')} | {item.get('remedy')} |"
+            )
+    if len(lines) == 4:
+        lines.append("")
+        lines.append("No violations.")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def _esc(value) -> str:
     return (str(value).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))

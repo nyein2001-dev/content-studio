@@ -99,10 +99,11 @@ ABIT_SKIP_BRAIN=1 bash build.sh 2026-10-13
 6. **Build.** `bash abitinside/build.sh <new-date>`. The QA gates are the judge; if a gate
    fails, the build fails and `qa-report.md` names the measurement.
 
-New videos are not drawn with coordinates. Author them with
-[`prompts/layout_contract.md`](prompts/layout_contract.md) and publish with the layout gate
-below. The 2026-10-13 episode stays on the steps above. It is the gate's negative fixture:
-`make gate-sample` must reject it.
+New videos are not drawn with coordinates. Author them as scene YAML and publish
+with `python -m layout publish`. The 2026-10-13 episode is authored that way:
+`abitinside/2026-10-13/scenes/` plus `video.yaml`. `make qa` and `python -m layout publish`
+have to pass before anything is copied into `out/publish/`. A scene that breaks a layout
+rule exits non-zero and writes no deliverable.
 
 Copy a finished day and change the date to start:
 
@@ -158,17 +159,12 @@ the waveform, and whether the animation reads as calm rather than merely as fast
 
 ## 7. Layout gate
 
-New videos go through `abitinside/layout`. Zones, floors, and gaps are `layout/layout_spec.yaml`.
-The scene format is [`prompts/layout_contract.md`](prompts/layout_contract.md). The zone diagram,
-every rule id, and the troubleshooting notes are [`docs/layout-safe-zones.md`](docs/layout-safe-zones.md).
-
-One command from a clean checkout:
+Zones and limits are [`layout/layout_spec.yaml`](layout/layout_spec.yaml). The rules are [`docs/LAYOUT_RULES.md`](docs/LAYOUT_RULES.md). The 2026-10-13 episode is authored as YAML under `2026-10-13/scenes/` and published with:
 
 ```bash
-bash setup.sh && make gate-showcase
+python -m layout validate --video 2026-10-13/video.yaml
+python -m layout qa --video 2026-10-13/video.yaml
+python -m layout publish --video 2026-10-13/video.yaml
 ```
 
-That promotes `out/publish/layout_showcase/` and writes `layout_certificate.json`.
-`make gate-sample` must fail: the 2026-10-13 pictures stay as they are, and they are not
-certifiable. `make test` runs the pipeline tests, the D1–D8 fixtures, and the stress suite.
-`make perf` checks the 3-minute validator budget.
+`publish` exits non-zero when any error-level rule fails, a font is missing, or the QA report is older than the video.

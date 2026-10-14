@@ -1,0 +1,13 @@
+id: endcard
+profile: portrait
+duration_s: 1.2
+brand: "A Bit Inside"
+headline: "FIFTY DEGREES\nIN ONE NIGHT"
+caption: "fifty degrees"
+stage:
+  - id: chart
+    type: line_chart
+    title: "CASE TEMPERATURE"
+    series: [4, 4, 6, 18, 40, 50]
+    y_labels: ["0", "25", "50"]
+    x_labels: ["DUSK", "DAWN"]

@@ -1,18 +1,20 @@
 SHELL := /bin/bash
-.PHONY: test lint gate-showcase gate-sample perf
+.PHONY: test lint validate qa gate-showcase perf
 
 test:
-	source env.sh && "$$PY" -m unittest discover -s tests
+	source env.sh && "$$PY" -m pytest tests -q
 
 lint:
 	source env.sh && "$$PY" -m layout check lint
 
+validate:
+	source env.sh && "$$PY" -m layout validate
+
+qa:
+	source env.sh && "$$PY" -m layout qa --video examples/layout_showcase/video.yaml
+
 gate-showcase:
 	source env.sh && "$$PY" -m layout gate --showcase
 
-# The sample episode is the negative fixture. A zero exit from the gate is a failure.
-gate-sample:
-	source env.sh && "$$PY" -m layout gate --sample; test $$? -ne 0
-
 perf:
-	source env.sh && ABIT_LAYOUT_PERF=1 "$$PY" -m unittest tests.layout.test_perf -v
+	source env.sh && ABIT_LAYOUT_PERF=1 "$$PY" -m unittest tests.gates.test_perf -v

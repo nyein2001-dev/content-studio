@@ -1,0 +1,17 @@
+id: the_reveal
+profile: portrait
+duration_s: 10.67
+brand: "A Bit Inside"
+headline: "BY MORNING,\nFIFTY DEGREES"
+caption: "opened an inquiry"
+stage:
+  - id: chart
+    type: line_chart
+    series: [4, 4, 8, 22, 41, 50]
+  - id: chips
+    type: chip_row
+    labels: ["AK-SM", "AK-SC", "COPELAND XWEB", "DIXELL XWEB"]
+  - id: notice
+    type: card
+    title: "PARIS PROSECUTOR"
+    body: "INQUIRY OPENED"

@@ -1,5 +1,5 @@
-version: "1.0.0"
-validator_version: "1.0.0"
+version: "2.0.0"
+validator_version: "2.0.0"
 reference:
   width: 1080
   height: 1920
@@ -16,61 +16,57 @@ profiles:
   square:
     width: 1080
     height: 1080
+safe:
+  x0: 120
+  x1: 960
 zones:
   PLATFORM_TOP:
     role: keepout
     x: 0
     y: 0
     w: 1080
-    h: 200
+    h: 180
   BRAND:
     role: content
-    x: 72
+    x: 120
     y: 200
-    w: 936
-    h: 100
+    w: 840
+    h: 90
     max_lines: 1
-  HEADLINE:
+  TITLE:
     role: content
-    x: 72
-    y: 320
-    w: 936
-    h: 240
+    x: 120
+    y: 330
+    w: 840
+    h: 210
     max_lines: 2
+  BADGE:
+    role: content
+    x: 120
+    y: 600
+    w: 840
+    h: 44
+    align: right
+    max_lines: 1
   STAGE:
     role: content
-    x: 72
-    y: 600
-    w: 936
-    h: 740
-    rail_y: 1000
-    rail_x1: 944
-  FOOTNOTE:
+    x: 120
+    y: 668
+    w: 840
+    h: 712
+  SUBTITLE:
     role: content
-    x: 72
-    y: 1350
-    w: 872
-    h: 60
-    max_lines: 1
-  CAPTION:
-    role: content
-    x: 72
-    y: 1440
-    w: 872
+    x: 120
+    y: 1420
+    w: 840
     h: 160
     max_lines: 2
   PLATFORM_BOTTOM:
     role: keepout
     x: 0
-    y: 1600
+    y: 1580
     w: 1080
-    h: 320
-  RIGHT_RAIL:
-    role: keepout
-    x: 944
-    y: 1000
-    w: 136
-    h: 600
+    h: 340
 spacing:
   xs: 8
   s: 16
@@ -78,93 +74,107 @@ spacing:
   l: 40
   xl: 64
   sibling_gap: 24
-  chip_gap: 16
+  chip_gap: 24
   text_pad_x: 24
   text_pad_y: 16
-  chip_pad_x: 20
-  chip_pad_y: 12
-  connector_inflate: 16
-  tick_gap: 12
+  text_edge_gap: 16
+  chip_pad_x: 28
+  chip_pad_y: 16
+  chip_h: 72
+  connector_inflate: 12
+  tick_gap: 24
   center_tolerance: 2
   glow_bleed: 8
   stroke: 3
   radius: 16
   shrink_step: 2
   line_gap: 8
-  max_stack_gap: 64
+  max_stack_gap: 24
+  dead_space_imbalance: 96
   underline_h: 8
+  slot_gap_s: 0.1
 type:
-  headline:
-    preferred: 66
-    floor: 64
-    max_lines: 2
-    weight: bold
-    font: bold
-  caption:
+  title:
     preferred: 72
-    floor: 52
+    floor: 56
     max_lines: 2
+    max_chars: 28
     weight: bold
     font: bold
-  card_title:
+  stage:
     preferred: 36
-    floor: 36
-    max_lines: 2
-    weight: bold
-    font: bold
-  body:
-    preferred: 34
     floor: 30
-    max_lines: 3
+    max_lines: 2
     weight: regular
     font: regular
   chip:
-    preferred: 32
+    preferred: 34
     floor: 28
+    max_lines: 1
+    max_chars: 18
+    weight: semibold
+    font: semibold
+  subtitle:
+    preferred: 56
+    floor: 44
+    max_lines: 2
+    max_words: 8
+    weight: bold
+    font: bold
+  badge:
+    preferred: 26
+    floor: 24
     max_lines: 1
     weight: semibold
     font: semibold
-  footnote:
-    preferred: 26
-    floor: 26
-    max_lines: 1
-    weight: regular
-    font: regular
-  mono:
-    preferred: 32
-    floor: 32
-    max_lines: 4
-    weight: regular
-    font: mono
   brand:
     preferred: 30
     floor: 26
     max_lines: 1
     weight: semibold
     font: semibold
+  mono:
+    preferred: 32
+    floor: 28
+    max_lines: 4
+    weight: regular
+    font: mono
   stat:
     preferred: 64
-    floor: 64
+    floor: 48
     max_lines: 1
     weight: bold
     font: mono
 rules:
-  stage_fill_fail: 0.45
-  stage_fill_warn: 0.60
-  max_stage_components: 6
-  max_chips: 4
+  stage_fill_fail: 0.0
+  stage_fill_warn: 0.0
+  flex_target: 0.0
+  max_stage_components: 7
+  max_stage_elements: 7
+  max_chips: 8
+  max_chips_per_row: 2
+  max_chip_rows: 4
   max_overlays: 1
-  max_extra_text_blocks: 3
-  min_scene_duration_s: 2.5
+  max_extra_text_blocks: 16
+  title_chars_per_line: 28
+  title_lines: 2
+  chip_chars: 18
+  card_heading_chars: 24
+  card_sub_chars: 34
+  subtitle_words: 8
+  subtitle_lines: 2
+  min_scene_duration_s: 1.2
+  reading_min_s: 1.2
+  reading_words_per_s: 3.0
   max_scale: 1.05
   psnr_min: 35
-  pixel_sample_every: 6
+  pixel_sample_every: 5
   contrast_normal: 4.5
-  contrast_large: 3.0
+  contrast_large: 4.5
   large_text_px: 64
   enter_frames: 8
   center_eps: 0.5
-  flex_target: 0.60
+  sample_pad_frames: 2
 animation:
   max_scale: 1.05
   max_translate: 0
@@ -195,11 +205,11 @@ brand_tokens:
   - coral
   - green
   - glow
-legacy_roots:
-  - "2026-10-13"
+legacy_roots: []
 lint_draw_modules:
   - layout/render.py
   - layout/debug.py
+  - layout/text.py
   - layout/metrics.py
   - layout/legacy.py
 fuzz_seed: 20261014
@@ -219,9 +229,18 @@ debug:
   contact_columns: 3
 z_order:
   background: 0
-  connectors: 1
-  containers: 2
+  glow: 1
+  connectors: 2
+  containers: 3
   content: 3
   text: 4
   overlays: 5
-  caption: 6
+  caption: 4
+templates:
+  - HERO_CHART
+  - STAT_STACK
+  - TIMELINE
+  - HUB_AND_SPOKE_DIAGRAM
+  - CARD_STACK
+  - CHIP_GRID_WITH_NOTICE
+  - MAP_CALLOUT

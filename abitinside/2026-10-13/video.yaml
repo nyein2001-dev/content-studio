@@ -1,0 +1,14 @@
+scenes:
+  - scenes/hook.yaml
+  - scenes/setup.yaml
+  - scenes/controller.yaml
+  - scenes/why_online.yaml
+  - scenes/the_flaw.yaml
+  - scenes/the_scale.yaml
+  - scenes/legacy.yaml
+  - scenes/defrost.yaml
+  - scenes/the_reveal.yaml
+  - scenes/the_gap.yaml
+  - scenes/payoff.yaml
+  - scenes/question.yaml
+  - scenes/endcard.yaml

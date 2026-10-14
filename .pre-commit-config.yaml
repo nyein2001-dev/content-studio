@@ -6,4 +6,10 @@ repos:
         entry: bash -lc 'cd abitinside && source env.sh && "$PY" -m layout check lint'
         language: system
         pass_filenames: false
-        files: ^abitinside/(layout|examples)/
+        files: ^abitinside/(layout|examples|2026-10-13/scenes)/
+      - id: layout-validate
+        name: layout validate
+        entry: bash -lc 'cd abitinside && source env.sh && "$PY" -m layout validate'
+        language: system
+        pass_filenames: false
+        files: ^abitinside/(layout|examples|2026-10-13/scenes)/

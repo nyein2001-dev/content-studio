@@ -9,8 +9,8 @@ from PIL import Image
 
 from layout.brand import colour
 from layout.model import PlacedScene
-from layout.render import text_raster
-from layout.rules import Violation
+from layout.render import opacity_at, text_raster
+from layout.rules import Violation, _concurrent
 from layout.spec import load_spec
 from layout.swept import sample_frames
 from layout.zones import zones_for
@@ -19,13 +19,14 @@ from layout.zones import zones_for
 def check_pixels(scene: PlacedScene, workers: int | None = None) -> list[Violation]:
     spec = load_spec()
     zones = zones_for(scene.profile)
-    frames = sample_frames(scene.duration_frames, spec)
+    frames = sample_frames(scene.duration_frames, spec, scene.nodes)
     texts = [node for node in scene.nodes if node.kind == "text" and node.text]
     masks = {node.id: _mask(node) for node in texts}
     found: list[Violation] = []
     with ThreadPoolExecutor(max_workers=workers or os.cpu_count() or 2) as pool:
         for batch in pool.map(lambda frame: _frame(scene, frame, texts, masks, zones, spec), frames):
             found.extend(batch)
+    found.extend(_ocr(scene))
     return found
 
 
@@ -37,6 +38,8 @@ def _frame(scene, frame, texts, masks, zones, spec) -> list[Violation]:
     found = []
     boxes = []
     for node in texts:
+        if opacity_at(node, frame) <= 0.01:
+            continue
         mask = masks[node.id]
         alpha = np.array(mask)
         ys, xs = np.where(alpha > 16)
@@ -51,23 +54,45 @@ def _frame(scene, frame, texts, masks, zones, spec) -> list[Violation]:
         boxes.append((node, ink, alpha))
         if ink[0] < -0.5 or ink[1] < -0.5 or ink[2] > scene.width + 0.5 or ink[3] > scene.height + 0.5:
             found.append(Violation(
-                scene.scene_id, "LR-01", "fail",
+                scene.scene_id, "R01", "fail",
                 f"pixels of {node.text!r} leave the canvas on frame {frame}",
                 "Shorten the line so the glyphs stay inside the zone.",
                 (node.id,), frame,
             ))
         if not zones.contains(node.zone, node.rect):
             found.append(Violation(
-                scene.scene_id, "LR-01", "fail",
+                scene.scene_id, "R01", "fail",
                 f"pixels of {node.text!r} leave {node.zone}",
                 "Keep this text inside its zone.",
                 (node.id,), frame,
             ))
+        if ink[0] < zones.safe_x0 - 0.5 or ink[2] > zones.safe_x1 + 0.5:
+            found.append(Violation(
+                scene.scene_id, "R01", "fail",
+                f"ink of {node.text!r} leaves the safe x range on frame {frame}",
+                "Keep the glyphs inside x 120-960.",
+                (node.id,), frame,
+            ))
+        parent = scene.by_id().get(node.parent) if node.parent else None
+        if parent is not None and parent.stroke:
+            inset = float(spec["spacing"]["stroke"])
+            if (
+                ink[0] < parent.rect.x + inset
+                or ink[1] < parent.rect.y + inset
+                or ink[2] > parent.rect.right - inset
+                or ink[3] > parent.rect.bottom - inset
+            ):
+                found.append(Violation(
+                    scene.scene_id, "R03", "fail",
+                    f"ink of {node.text!r} touches the stroke of {parent.id}",
+                    "Inset the type from the container stroke.",
+                    (node.id, parent.id), frame,
+                ))
         ratio = _contrast(node, alpha, scene.height)
         floor = spec["rules"]["contrast_large"] if node.font_size >= spec["rules"]["large_text_px"] else spec["rules"]["contrast_normal"]
         if ratio + 0.05 < floor:
             found.append(Violation(
-                scene.scene_id, "LR-12", "fail",
+                scene.scene_id, "R13", "fail",
                 f"{node.text!r} contrast is {ratio:.2f}:1 and needs {floor}:1",
                 "Use a theme token with enough contrast against the background.",
                 (node.id,), frame, {"contrast": ratio},
@@ -76,11 +101,13 @@ def _frame(scene, frame, texts, masks, zones, spec) -> list[Violation]:
         for right, right_ink, right_alpha in boxes[i + 1:]:
             if left.parent and left.parent == right.parent:
                 continue
+            if not _concurrent(left, right):
+                continue
             if not _overlap(left_ink, right_ink):
                 continue
             if _masks_touch(left, left_alpha, right, right_alpha):
                 found.append(Violation(
-                    scene.scene_id, "LR-02", "fail",
+                    scene.scene_id, "R04", "fail",
                     f"glyphs {left.text!r} and {right.text!r} touch on frame {frame}",
                     "Separate these labels.",
                     (left.id, right.id), frame,
@@ -128,6 +155,55 @@ def _ratio(fg, bg) -> float:
     a, b = lum(fg), lum(bg)
     hi, lo = max(a, b), min(a, b)
     return (hi + 0.05) / (lo + 0.05)
+
+
+def _ocr(scene: PlacedScene) -> list[Violation]:
+    """OCR is optional. A missing binary is a warning and does not block publish."""
+    import shutil
+    import subprocess
+
+    binary = shutil.which("tesseract")
+    if not binary:
+        return [Violation(
+            scene.scene_id, "R15", "warn",
+            "tesseract is not installed; Stage B OCR was skipped",
+            "Install tesseract to compare rendered frames with the scene strings.",
+        )]
+    import tempfile
+    from pathlib import Path
+
+    from layout.render import render_frame
+
+    frame = scene.duration_frames // 2
+    image = render_frame(scene, frame)
+    with tempfile.TemporaryDirectory() as tmp:
+        path = Path(tmp) / "frame.png"
+        image.save(path)
+        proc = subprocess.run(
+            [binary, str(path), "stdout", "--psm", "6"],
+            capture_output=True,
+            check=False,
+        )
+    if proc.returncode != 0:
+        return [Violation(
+            scene.scene_id, "R15", "warn",
+            "tesseract could not read the sample frame",
+            "Install a tesseract build that accepts a PNG on stdin, then rerun qa.",
+        )]
+    heard = proc.stdout.decode("utf-8", "replace").upper()
+    missing = [
+        node.text.strip()
+        for node in scene.nodes
+        if node.kind == "text" and len(node.text.strip()) >= 4 and node.text.strip().upper() not in heard
+    ]
+    if not missing:
+        return []
+    return [Violation(
+        scene.scene_id, "R15", "warn",
+        "OCR did not see " + ", ".join(missing[:6]),
+        "Check the sample frame. OCR misses are warnings; geometry failures still block publish.",
+        frame=frame,
+    )]
 
 
 def _rgb(hex_colour: str) -> tuple[int, int, int]:

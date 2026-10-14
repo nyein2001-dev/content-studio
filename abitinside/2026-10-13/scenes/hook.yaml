@@ -1,0 +1,14 @@
+id: hook
+profile: portrait
+duration_s: 5.47
+brand: "A Bit Inside"
+headline: "FIFTY DEGREES\nIN ONE NIGHT"
+caption: "fifty degrees, overnight"
+footnote: "ILLUSTRATIVE"
+stage:
+  - id: chart
+    type: line_chart
+    title: "CASE TEMPERATURE"
+    series: [4, 4, 6, 18, 40, 50]
+    y_labels: ["0", "25", "50"]
+    x_labels: ["DUSK", "DAWN"]

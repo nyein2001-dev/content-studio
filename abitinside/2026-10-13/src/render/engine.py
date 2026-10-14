@@ -23,12 +23,6 @@ import theme as T
 
 W, H, FPS = T.W, T.H, T.FPS
 
-# ------------------------------------------------------------------ fonts
-_POP_BOLD = cairo.FONT_WEIGHT_BOLD
-_POP_NORM = cairo.FONT_WEIGHT_NORMAL
-_MONO = cairo.FONT_WEIGHT_NORMAL
-
-
 def install_fonts() -> str:
     """Point fontconfig at the four TTFs this project owns. Idempotent."""
     import os
@@ -155,31 +149,36 @@ class Text:
         self._cur = None
 
     def font(self, family: str, size: float, weight: str = "bold") -> None:
-        key = (family, size, weight)
-        if self._cur == key:
-            return
-        w = _POP_BOLD if weight == "bold" else _POP_NORM
         if family == "mono":
-            family = "JetBrains Mono"
-            w = _MONO
-        self.cr.select_font_face(family, cairo.FONT_SLANT_NORMAL, w)
-        self.cr.set_font_size(size)
-        self._cur = key
+            self._key = "mono"
+        elif weight == "bold":
+            self._key = "bold"
+        else:
+            self._key = "regular"
+        self._size = float(size)
+        self._cur = (family, size, weight)
 
     def width(self, s: str) -> float:
-        return float(self.cr.text_extents(s)[4])
+        from layout.text import measure
+
+        return measure(s, self._key, self._size).advance
 
     def height(self, s: str) -> float:
-        return float(self.cr.text_extents(s)[3])
+        from layout.text import measure
+
+        return measure(s, self._key, self._size).height
 
     def ascent(self) -> float:
-        return float(self.cr.font_extents()[0])
+        return self._size * 0.8
 
     def draw(self, x: float, y: float, s: str, colour: str, alpha: float = 1.0) -> None:
-        r, g, b = T.hex_to_rgb(colour)
-        self.cr.set_source_rgba(r, g, b, alpha)
-        self.cr.move_to(x, y)
-        self.cr.show_text(s)
+        from layout.text import draw as paint
+
+        red, green, blue = T.hex_to_rgb(colour)
+        self.cr.save()
+        self.cr.translate(x, y)
+        paint(self.cr, s, self._key, self._size, (red, green, blue), alpha)
+        self.cr.restore()
 
     def draw_c(self, xc: float, y: float, s: str, colour: str,
                alpha: float = 1.0) -> float:

@@ -1,0 +1,21 @@
+id: why_online
+profile: portrait
+duration_s: 9.53
+brand: "A Bit Inside"
+headline: "A WEB PAGE\nIN THE STORE"
+caption: "were solving"
+footnote: "ILLUSTRATIVE"
+stage:
+  - id: alarm
+    type: card
+    title: "LATE-NIGHT ALARM"
+    body: "the engineer has to clear it"
+  - id: web
+    type: card
+    title: "WEB MANAGEMENT"
+    body: "reachable from anywhere"
+connectors:
+  - id: clear
+    from: alarm
+    to: web
+    route: orthogonal

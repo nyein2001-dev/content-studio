@@ -1,4 +1,4 @@
-id: hero_chart
+id: HERO_CHART
 profile: portrait
 duration_s: 3.0
 splittable: false
@@ -16,4 +16,3 @@ stage:
   - id: chips
     type: chip_row
     labels: ["AK-SM", "AK-SC"]
-    alternate: vertical

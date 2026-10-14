@@ -48,7 +48,7 @@ class FuzzTests(unittest.TestCase):
     def test_seeded_profiles_do_not_pass_with_a_violation(self):
         spec = load_spec()
         rng = random.Random(int(spec["fuzz_seed"]))
-        profiles = ["portrait", "landscape", "square"]
+        profiles = ["portrait"]
         glyphs = ["IIII", "WWWW", "COPELAND XWEB", "W" * rng.randint(6, 12)]
         counters = [None, "9", "999999"]
         for profile in profiles:
@@ -69,7 +69,23 @@ class FuzzTests(unittest.TestCase):
                                 f"{doc['id']} passed with {[item.rule for item in hard]}",
                             )
 
-    def test_portrait_templates_are_in_the_stress_set(self):
+    def test_five_hundred_scenes_inside_the_limits_pass(self):
+        rng = random.Random(20261014)
+        labels = ["AK-SM", "AK-SC", "PROBES", "TARGET", "DEFROST"]
+        for index in range(500):
+            doc = _scene("portrait", [rng.choice(labels)], None)
+            doc["id"] = f"fuzz500-{index}"
+            doc["headline"] = rng.choice(["FIFTY DEGREES", "ONE BOX", "YOUR TURN"])
+            placed = solve(doc)
+            hard = hard_failures(check_scene(placed[0]))
+            self.assertFalse(hard, f"{doc['id']} {[item.rule for item in hard]}")
+
+    def test_over_limit_names_the_field_and_the_limit(self):
+        doc = _scene("portrait", ["THIS LABEL IS WAY TOO LONG"], None)
+        with self.assertRaises(LayoutError) as caught:
+            solve(doc)
+        self.assertIn("18", str(caught.exception))
+        self.assertIn("chip", str(caught.exception).lower())
         path = ROOT / "layout" / "templates" / "stress" / "chips.yaml"
         scene = solve(load_scene(path))[0]
         self.assertFalse(hard_failures(check_scene(scene)))

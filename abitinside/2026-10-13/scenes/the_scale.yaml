@@ -1,0 +1,16 @@
+id: the_scale
+profile: portrait
+duration_s: 10.73
+brand: "A Bit Inside"
+headline: "2,765 CONTROLLERS\nON THE INTERNET"
+caption: "on the internet"
+stage:
+  - id: count
+    type: stat
+    title: "EXPOSED"
+    value: "2765"
+    max_value: "9999"
+  - id: patched
+    type: card
+    title: "PATCHED?"
+    body: "nobody knows how many"

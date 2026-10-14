@@ -1,0 +1,33 @@
+id: the_flaw
+profile: portrait
+duration_s: 15.27
+brand: "A Bit Inside"
+headline: "A PASSWORD\nMADE OF DATES"
+caption: "scored 8.2 out of 10"
+footnote: "ILLUSTRATIVE"
+stage:
+  - id: flaws
+    type: card
+    title: "THREE FLAWS FOUND"
+    body: "in the management interface"
+  - id: steps
+    type: chip_row
+    labels: ["01", "02", "03"]
+  - id: login
+    type: card
+    slot: auth
+    title: "LOGIN ACCEPTED"
+  - id: code
+    type: card
+    slot: auth
+    title: "CODE OF THE DAY"
+    body: "built from the box's own date"
+  - id: meter
+    type: severity_meter
+    title: "SEVERITY"
+    score: 8.2
+    score_max: 10
+    score_label: "8.2 / 10 HIGH"
+  - id: cve
+    type: card
+    title: "CVE-2025-41450"

@@ -1,0 +1,15 @@
+id: defrost
+profile: portrait
+duration_s: 11.80
+brand: "A Bit Inside"
+headline: "DEFROST, FOREVER"
+caption: "and never stopped"
+footnote: "ILLUSTRATIVE"
+stage:
+  - id: coil
+    type: card
+    title: "ICE ON THE COIL"
+    body: "and never stopped"
+  - id: cycle
+    type: chip_row
+    labels: ["DEFROST CYCLE"]

@@ -1,0 +1,12 @@
+id: question
+profile: portrait
+duration_s: 3.80
+brand: "A Bit Inside"
+headline: "YOUR TURN"
+caption: "reachable from home"
+stage:
+  - id: ask
+    type: stat
+    title: "QUESTION"
+    value: "?"
+    max_value: "?"

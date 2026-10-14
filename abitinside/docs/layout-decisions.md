@@ -26,7 +26,7 @@ pycairo only. Charts are cairo paths. The renderer entry point accepts a `Placed
 
 ## Sample episode
 
-`2026-10-13/` is an explicit legacy root. Lint reports it as uncertifiable and does not rewrite it. Its sources and the existing mp4 are not edited. The probe records text and geometry from the existing scene functions and the gate rejects the result with `LEGACY-UNMIGRATED` plus the rules the recorded geometry actually breaks.
+`2026-10-13/` is authored as scene YAML under `scenes/` and rendered by the layout engine. `legacy_roots` is empty. A scene that still sets `legacy` fails with `LEGACY-UNMIGRATED` and is not published.
 
 `pipeline/export.py` `remember()` and `2026-10-13/src/stamp_metadata.py` call `assert_certified` before upload metadata is written. The sample can still render. It can no longer be stamped as a publishable package.
 

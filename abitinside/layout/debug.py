@@ -13,8 +13,15 @@ from layout.spec import load_spec
 from layout.zones import zones_for
 
 
-def debug_frame(scene: PlacedScene, violations: list[Violation] | None = None) -> Image.Image:
-    image = render_frame(scene, scene.duration_frames // 2).convert("RGBA")
+def debug_frame(
+    scene: PlacedScene,
+    violations: list[Violation] | None = None,
+    frame: int | None = None,
+) -> Image.Image:
+    if frame is None:
+        frame = scene.duration_frames // 2
+    frame = min(max(0, int(frame)), max(0, scene.duration_frames - 1))
+    image = render_frame(scene, frame).convert("RGBA")
     draw = ImageDraw.Draw(image)
     zones = zones_for(scene.profile)
     for name, zone in zones.zones.items():
@@ -43,14 +50,34 @@ def debug_frame(scene: PlacedScene, violations: list[Violation] | None = None) -
     return image.convert("RGB")
 
 
+def annotate(scene: PlacedScene, item: Violation) -> Image.Image:
+    """One red-box PNG for a violation, drawn on the frame where it was measured."""
+    image = debug_frame(scene, frame=item.frame).convert("RGBA")
+    draw = ImageDraw.Draw(image)
+    ids = set(item.element_ids)
+    drawn = False
+    for node in scene.nodes:
+        if node.id in ids or (node.parent and node.parent in ids):
+            draw.rectangle(
+                (node.rect.x, node.rect.y, node.rect.right, node.rect.bottom),
+                outline=(255, 40, 40),
+                width=4,
+            )
+            drawn = True
+    if not drawn:
+        draw.rectangle((24, 24, scene.width - 24, 96), outline=(255, 40, 40), width=4)
+    return image.convert("RGB")
+
+
 def contact_sheet(scenes: list[PlacedScene], path: Path, violations: dict[str, list[Violation]] | None = None) -> Path:
     spec = load_spec()
     scale = float(spec["debug"]["contact_scale"])
     columns = int(spec["debug"]["contact_columns"])
     frames = []
     for scene in scenes:
-        frame = debug_frame(scene, (violations or {}).get(scene.scene_id))
-        frames.append(frame.resize((int(frame.width * scale), int(frame.height * scale)), Image.Resampling.BILINEAR))
+        for frame in (0, scene.duration_frames // 2, max(0, scene.duration_frames - 1)):
+            shot = debug_frame(scene, (violations or {}).get(scene.scene_id), frame=frame)
+            frames.append(shot.resize((int(shot.width * scale), int(shot.height * scale)), Image.Resampling.BILINEAR))
     if not frames:
         raise RuntimeError("no scenes for the contact sheet")
     cell_w, cell_h = frames[0].size

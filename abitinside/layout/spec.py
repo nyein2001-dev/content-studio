@@ -36,8 +36,8 @@ def load_spec() -> dict:
 
 def _require_zones(spec: dict) -> None:
     needed = {
-        "PLATFORM_TOP", "BRAND", "HEADLINE", "STAGE", "FOOTNOTE",
-        "CAPTION", "PLATFORM_BOTTOM", "RIGHT_RAIL",
+        "PLATFORM_TOP", "BRAND", "TITLE", "BADGE", "STAGE",
+        "SUBTITLE", "PLATFORM_BOTTOM",
     }
     missing = needed - set(spec["zones"])
     if missing:

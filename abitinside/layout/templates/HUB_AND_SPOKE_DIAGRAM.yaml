@@ -1,0 +1,18 @@
+id: HUB_AND_SPOKE_DIAGRAM
+profile: portrait
+duration_s: 3.0
+brand: "A Bit Inside"
+headline: "ONE BOX BEHIND"
+caption: "one box runs every case"
+footnote: "ILLUSTRATIVE"
+stage:
+  - id: hub
+    type: hub_and_spoke
+    title: "SUPERVISORY CONTROLLER"
+    spokes:
+      - id: probes
+        label: "PROBES"
+      - id: target
+        label: "TARGET"
+      - id: defrost
+        label: "DEFROST"

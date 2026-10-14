@@ -18,12 +18,12 @@ def solve(doc: dict) -> list[PlacedScene]:
     problems = check_budget(doc)
     if problems:
         first = problems[0]
-        raise LayoutError(doc["id"], "LR-13", first, "Edit the scene DSL until the density budget passes.")
+        raise LayoutError(doc["id"], "R15", first, "Edit the scene DSL until the density budget passes.")
     spec = load_spec()
     scale = float(doc.get("scale_to") or 1.0)
     if scale > float(spec["rules"]["max_scale"]):
         raise LayoutError(
-            doc["id"], "LR-11",
+            doc["id"], "R11",
             f"scale {scale} exceeds {spec['rules']['max_scale']}",
             "Keep scale_to at or below the maximum in layout_spec.yaml.",
         )
@@ -39,7 +39,7 @@ def _split(doc: dict, spec: dict) -> list[PlacedScene]:
     stage = list(doc.get("stage") or [])
     if len(stage) < 2:
         raise LayoutError(
-            doc["id"], "LR-04",
+            doc["id"], "R09",
             "this scene does not fit and has nothing to split",
             "Shorten the wording or remove a component. Splitting needs at least two stage components.",
         )
@@ -47,7 +47,7 @@ def _split(doc: dict, spec: dict) -> list[PlacedScene]:
     half = float(doc["duration_s"]) / 2.0
     if half < minimum:
         raise LayoutError(
-            doc["id"], "LR-13",
+            doc["id"], "R15",
             "splitting this scene would make a beat shorter than the minimum duration",
             "Lengthen the narration before marking the scene splittable, or cut a component.",
         )
@@ -85,6 +85,9 @@ def _place(doc: dict, stage: list, spec: dict) -> PlacedScene:
     half = float(spec["spacing"]["stroke"]) / 2.0
     column = column.inflate(-half)
     blocks = [_component(doc["id"], comp, column, spec, motion, decisions, zones) for comp in stage]
+    for comp, block in zip(stage, blocks):
+        block.slot = comp.get("slot") or ""
+    blocks = _sequence_slots(doc["id"], blocks, frames, spec, decisions)
     blocks = _grow(doc["id"], blocks, column, spec, motion, decisions)
     _stack(doc["id"], blocks, column, spec)
     for block in blocks:
@@ -181,7 +184,7 @@ def _brand(doc, zones: ZoneMap, spec, motion) -> list[Node]:
 
 
 def _headline(doc, zones, spec, motion, decisions) -> list[Node]:
-    zone = zones.rect("HEADLINE")
+    zone = zones.rect("TITLE")
     pad_x = spec["spacing"]["text_pad_x"]
     fitted = fit_text(doc["id"], doc["headline"], "headline", zone.w - 2 * pad_x)
     _note_shrink(decisions, "headline", fitted, spec)
@@ -192,23 +195,23 @@ def _headline(doc, zones, spec, motion, decisions) -> list[Node]:
     group = Rect(zone.cx - block_w / 2.0, zone.cy - block_h / 2.0, block_w, block_h)
     text_inner = Rect(group.x, group.y, block_w, fitted.height)
     underline = Rect(group.x, text_inner.bottom + gap, block_w, underline_h)
-    nodes = [Node("headline", "headline", "HEADLINE", group, group, _z(spec, "containers"), motion=motion)]
-    nodes.extend(_text_nodes("headline", "HEADLINE", fitted, text_inner, _z(spec, "text"), "ink", motion))
+    nodes = [Node("headline", "headline", "TITLE", group, group, _z(spec, "containers"), motion=motion)]
+    nodes.extend(_text_nodes("headline", "TITLE", fitted, text_inner, _z(spec, "text"), "ink", motion))
     nodes.append(Node(
-        "headline.underline", "underline", "HEADLINE", underline, underline,
+        "headline.underline", "underline", "TITLE", underline, underline,
         _z(spec, "content"), parent="headline", color="cyan", fill=True, motion=motion,
     ))
     return nodes
 
 
 def _caption(doc, zones, spec, motion, decisions) -> list[Node]:
-    zone = zones.rect("CAPTION")
+    zone = zones.rect("SUBTITLE")
     pad_x = spec["spacing"]["text_pad_x"]
     fitted = fit_text(doc["id"], doc["caption"], "caption", zone.w - 2 * pad_x)
     _note_shrink(decisions, "caption", fitted, spec)
     if fitted.height > zone.h:
         raise LayoutError(
-            doc["id"], "LR-04",
+            doc["id"], "R09",
             f"caption is {fitted.height:.0f}px tall and the caption band is {zone.h:.0f}px",
             "Shorten the caption so two lines stay inside the caption band.",
         )
@@ -219,20 +222,65 @@ def _caption(doc, zones, spec, motion, decisions) -> list[Node]:
         fitted.height,
     )
     nodes = [Node(
-        "caption", "caption", "CAPTION", group, group, _z(spec, "caption"), motion=motion,
+        "caption", "caption", "SUBTITLE", group, group, _z(spec, "caption"), motion=motion,
     )]
-    nodes.extend(_text_nodes("caption", "CAPTION", fitted, group, _z(spec, "caption"), "ink", motion))
+    nodes.extend(_text_nodes("caption", "SUBTITLE", fitted, group, _z(spec, "caption"), "ink", motion))
     return nodes
 
 
 def _footnote(doc, zones, spec, motion) -> list[Node]:
-    zone = zones.rect("FOOTNOTE")
+    zone = zones.rect("BADGE")
     pad_x = spec["spacing"]["text_pad_x"]
-    fitted = fit_text(doc["id"], doc["footnote"], "footnote", zone.w - 2 * pad_x, max_lines=1)
-    group = Rect(zone.cx - fitted.width / 2.0, zone.cy - fitted.height / 2.0, fitted.width, fitted.height)
-    nodes = [Node("footnote", "footnote", "FOOTNOTE", group, group, _z(spec, "text"), role="badge", motion=motion)]
-    nodes.extend(_text_nodes("footnote", "FOOTNOTE", fitted, group, _z(spec, "text"), "ink_dim", motion))
+    fitted = fit_text(doc["id"], doc["footnote"], "badge", zone.w - 2 * pad_x, max_lines=1)
+    group = Rect(zone.right - pad_x - fitted.width, zone.cy - fitted.height / 2.0, fitted.width, fitted.height)
+    nodes = [Node("footnote", "footnote", "BADGE", group, group, _z(spec, "text"), role="badge", motion=motion)]
+    nodes.extend(_text_nodes("footnote", "BADGE", fitted, group, _z(spec, "text"), "ink_dim", motion, role="badge"))
     return nodes
+
+
+def _sequence_slots(scene: str, blocks: list[_Block], frames: int, spec: dict, decisions: list) -> list[_Block]:
+    """Elements that share a slot occupy one rectangle and take turns."""
+    grouped: dict[str, list[_Block]] = {}
+    order: list[str] = []
+    for index, block in enumerate(blocks):
+        key = block.slot or f"__solo_{index}"
+        if key not in grouped:
+            order.append(key)
+            grouped[key] = []
+        grouped[key].append(block)
+    gap = max(1, int(round(float(spec["spacing"]["slot_gap_s"]) * spec["fps"])))
+    sequenced: list[_Block] = []
+    for key in order:
+        group = grouped[key]
+        if len(group) == 1:
+            sequenced.append(group[0])
+            continue
+        height = max(item.height for item in group)
+        usable = frames - gap * (len(group) - 1)
+        if usable < len(group):
+            raise LayoutError(
+                scene, "R11",
+                f"slot {key} cannot sequence {len(group)} elements in {frames} frames",
+                "Lengthen the scene or remove a card from this slot.",
+            )
+        slice_len = max(1, usable // len(group))
+        cursor = 0
+        merged = group[0]
+        for item in group:
+            end = min(frames, cursor + slice_len)
+            for index, node in enumerate(item.nodes):
+                motion = node.motion or Motion(cursor, end)
+                item.nodes[index] = replace(
+                    node,
+                    motion=Motion(cursor, end, motion.opacity0, motion.opacity1, motion.scale0, motion.scale1, key),
+                )
+            cursor = end + gap
+        merged.nodes = [node for item in group for node in item.nodes]
+        merged.height = height
+        merged.slot = key
+        decisions.append(Decision("restack", f"slot {key} sequences {len(group)} elements with a 0.1s gap"))
+        sequenced.append(merged)
+    return sequenced
 
 
 def _note_shrink(decisions: list[Decision], name: str, fitted: FittedText, spec: dict) -> None:
@@ -246,6 +294,7 @@ class _Block:
         self.nodes = nodes
         self.height = height
         self.flex = flex
+        self.slot = ""
 
     @property
     def top(self) -> float:
@@ -291,11 +340,14 @@ def _component(scene, comp, column: Rect, spec, motion, decisions, zones) -> _Bl
 def _chips(scene, comp, column, spec, motion, decisions, zones) -> _Block:
     labels = list(comp.get("labels") or [])
     if not labels:
-        raise LayoutError(scene, "LR-04", f"{comp['id']} has no chip labels", "Add label text in the DSL.")
+        raise LayoutError(scene, "R09", f"{comp['id']} has no chip labels", "Add label text in the DSL.")
     pad_x = float(spec["spacing"]["chip_pad_x"])
     pad_y = float(spec["spacing"]["chip_pad_y"])
     gap = float(spec["spacing"]["chip_gap"])
     step = int(spec["spacing"]["shrink_step"])
+    chip_h = float(spec["spacing"]["chip_h"])
+    per_row = int(spec["rules"]["max_chips_per_row"])
+    max_rows = int(spec["rules"]["max_chip_rows"])
     size = int(spec["type"]["chip"]["preferred"])
     floor = int(spec["type"]["chip"]["floor"])
     placed = None
@@ -315,34 +367,39 @@ def _chips(scene, comp, column, spec, motion, decisions, zones) -> _Block:
             size = max(floor, size - step)
             continue
         widths = [item.width + 2 * pad_x for item in trial]
-        height = max(item.height for item in trial) + 2 * pad_y
-        if sum(widths) + gap * (len(widths) - 1) <= column.w + 0.1:
-            placed = ("row", trial, widths, height)
-            used = size
-            break
-        # Reflow into wrapped rows before giving up this size.
+        height = chip_h
+        if any((chip_h - item.height) / 2.0 < pad_y - 0.1 for item in trial):
+            if size == floor:
+                break
+            size = max(floor, size - step)
+            continue
         rows: list[list[int]] = [[]]
         row_w = 0.0
         for index, width in enumerate(widths):
             extra = width if not rows[-1] else width + gap
-            if rows[-1] and row_w + extra > column.w:
+            if rows[-1] and (len(rows[-1]) >= per_row or row_w + extra > column.w):
                 rows.append([])
                 row_w = 0.0
                 extra = width
             rows[-1].append(index)
             row_w += extra
-        if len(rows) > 1:
-            placed = ("grid", trial, widths, height, rows)
+        if len(rows) > max_rows:
+            if size == floor:
+                break
+            size = max(floor, size - step)
+            continue
+        if len(rows) == 1:
+            placed = ("row", trial, widths, height)
             used = size
-            decisions.append(Decision("reflow", f"{comp['id']} chips wrapped to {len(rows)} rows"))
             break
-        if size == floor:
-            break
-        size = max(floor, size - step)
+        placed = ("grid", trial, widths, height, rows)
+        used = size
+        decisions.append(Decision("reflow", f"{comp['id']} chips wrapped to {len(rows)} rows"))
+        break
     if placed is None:
         if comp.get("alternate") != "vertical":
             raise LayoutError(
-                scene, "LR-04",
+                scene, "R09",
                 f"chips in {comp['id']} do not fit {column.w:.0f}px",
                 "Declare alternate: vertical, or shorten the chip labels.",
             )
@@ -401,7 +458,7 @@ def _chips_vertical(scene, comp, column, spec, motion, labels) -> _Block:
     for index, label in enumerate(labels):
         fitted = fit_text(scene, label, "chip", column.w - 2 * pad_x, max_lines=1)
         width = fitted.width + 2 * pad_x
-        height = fitted.height + 2 * pad_y
+        height = float(spec["spacing"]["chip_h"])
         x = column.x + (column.w - width) / 2.0
         _append_chip(nodes, comp["id"], index, fitted, x, y, width, height, spec, motion, pad_x, pad_y)
         y += height + gap
@@ -548,7 +605,7 @@ def _axis_labels(nodes, comp, spec, motion, x_fitted, y_fitted, plot, tick_gap, 
                 if optional:
                     continue
                 raise LayoutError(
-                    scene, "LR-08",
+                    scene, "R01",
                     f"tick label {fitted.lines[0]!r} runs past the axis",
                     "Shorten the tick label or mark it optional in the DSL.",
                 )
@@ -556,7 +613,7 @@ def _axis_labels(nodes, comp, spec, motion, x_fitted, y_fitted, plot, tick_gap, 
                 if optional:
                     continue
                 raise LayoutError(
-                    scene, "LR-08",
+                    scene, "R01",
                     f"tick label {fitted.lines[0]!r} collides with the previous tick",
                     "Drop alternate labels by marking them optional, or shorten them.",
                 )
@@ -604,7 +661,7 @@ def _axis_labels(nodes, comp, spec, motion, x_fitted, y_fitted, plot, tick_gap, 
 def _timeline(scene, comp, column, spec, motion, decisions, zones) -> _Block:
     ticks = list(comp.get("ticks") or [])
     if len(ticks) < 2:
-        raise LayoutError(scene, "LR-08", f"{comp['id']} needs two timeline ticks", "Add the first and last tick in the DSL.")
+        raise LayoutError(scene, "R01", f"{comp['id']} needs two timeline ticks", "Add the first and last tick in the DSL.")
     fitted = [fit_text(scene, tick["label"], "body", column.w * 0.45, max_lines=1) for tick in ticks]
     tick_gap = float(spec["spacing"]["tick_gap"])
     axis_y = max(item.height for item in fitted) + tick_gap
@@ -631,33 +688,26 @@ def _timeline(scene, comp, column, spec, motion, decisions, zones) -> _Block:
         f"{comp['id']}.axis", "axis", "STAGE", axis, axis, _z(spec, "content"),
         parent=comp["id"], role="axis", color="ink_dim", motion=motion, fill=True,
     ))
-    previous = None
+    # Labels alternate above and below the axis, centered on the tick, clamped to the safe column.
+    previous_above = None
+    previous_below = None
     for index, (tick, item) in enumerate(zip(ticks, fitted)):
-        if index == 0:
-            x = axis.x
-            tick_x = axis.x
-        elif index == len(ticks) - 1:
-            x = axis.right - item.width
-            tick_x = axis.right
-        else:
-            tx = axis.x + axis.w * (index / (len(ticks) - 1))
-            x = tx - item.width / 2.0
-            tick_x = tx
-        rect = Rect(x, axis.bottom + tick_gap, item.width, item.height)
-        if rect.x < axis.x - 0.5 or rect.right > axis.right + 0.5:
+        tx = axis.x + axis.w * (index / (len(ticks) - 1))
+        x = tx - item.width / 2.0
+        x = min(max(x, column.x), column.right - item.width)
+        below = index % 2 == 0
+        y = axis.bottom + tick_gap if below else axis.y - tick_gap - item.height
+        rect = Rect(x, y, item.width, item.height)
+        sibling = previous_below if below else previous_above
+        if sibling is not None and rect.gap(sibling) < spec["spacing"]["sibling_gap"]:
+            shift = spec["spacing"]["sibling_gap"] - rect.gap(sibling)
+            rect = Rect(min(rect.x + shift, column.right - item.width), rect.y, item.width, item.height)
+        if rect.x < column.x - 0.5 or rect.right > column.right + 0.5:
             if tick.get("optional"):
                 continue
-            raise LayoutError(scene, "LR-08", f"{tick['label']!r} runs past the axis", "Shorten the tick label.")
-        if previous is not None and rect.gap(previous) < spec["spacing"]["chip_gap"]:
-            if tick.get("optional"):
-                continue
-            raise LayoutError(scene, "LR-08", f"{tick['label']!r} collides with another tick", "Mark alternate ticks optional or shorten them.")
-        mark = Rect(
-            min(tick_x, axis.right - spec["spacing"]["stroke"]),
-            axis.y - spec["spacing"]["xs"],
-            spec["spacing"]["stroke"],
-            spec["spacing"]["xs"],
-        )
+            raise LayoutError(scene, "R01", f"{tick['label']!r} leaves the safe area", "Shorten the tick label.")
+        mark_x = min(max(tx - spec["spacing"]["stroke"] / 2.0, axis.x), axis.right - spec["spacing"]["stroke"])
+        mark = Rect(mark_x, axis.y, spec["spacing"]["stroke"], axis.h)
         nodes.append(Node(
             f"{comp['id']}.mark{index}", "tick", "STAGE", mark, mark, _z(spec, "content"),
             parent=comp["id"], role="tick", color="cyan", motion=motion, fill=True,
@@ -668,7 +718,10 @@ def _timeline(scene, comp, column, spec, motion, decisions, zones) -> _Block:
             parent=comp["id"], role="tick_label", motion=motion,
         ))
         nodes.extend(_text_nodes(node_id, "STAGE", item, rect, _z(spec, "text"), "ink", motion))
-        previous = rect
+        if below:
+            previous_below = rect
+        else:
+            previous_above = rect
     return _Block(nodes, outer.h, True)
 
 
@@ -698,7 +751,7 @@ def _flow(scene, comp, column, spec, motion, decisions, zones) -> _Block:
 def _hub(scene, comp, column, spec, motion, decisions, zones) -> _Block:
     spokes = list(comp.get("spokes") or [])
     if len(spokes) > int(spec["rules"]["max_chips"]):
-        raise LayoutError(scene, "LR-13", "too many spokes", "Use at most four spokes.")
+        raise LayoutError(scene, "R15", "too many spokes", "Use at most four spokes.")
     hub = _card(scene, {"id": comp["id"], "title": comp.get("title") or comp["id"]}, column, spec, motion, decisions, zones)
     chips = _chips(
         scene,
@@ -816,7 +869,7 @@ def _comparison(scene, comp, column, spec, motion, decisions, zones) -> _Block:
 
 def _grow(scene, blocks: list[_Block], column: Rect, spec, motion, decisions) -> list[_Block]:
     if not blocks:
-        raise LayoutError(scene, "LR-10", "the stage is empty", "Add one stage component.")
+        raise LayoutError(scene, "R16", "the stage is empty", "Add one stage component.")
     gap = float(spec["spacing"]["sibling_gap"])
     stage_h = column.h
     total = sum(block.height for block in blocks) + gap * (len(blocks) - 1)
@@ -824,7 +877,7 @@ def _grow(scene, blocks: list[_Block], column: Rect, spec, motion, decisions) ->
     fail_at = float(spec["rules"]["stage_fill_fail"]) * stage_h
     if total > stage_h:
         raise LayoutError(
-            scene, "LR-10",
+            scene, "R16",
             f"stage content is {total:.0f}px and the stage is {stage_h:.0f}px",
             "Remove a stage component or mark the scene splittable with a longer narration.",
         )
@@ -838,7 +891,7 @@ def _grow(scene, blocks: list[_Block], column: Rect, spec, motion, decisions) ->
         total = sum(block.height for block in blocks) + gap * (len(blocks) - 1)
     if total + 0.5 < fail_at:
         raise LayoutError(
-            scene, "LR-10",
+            scene, "R16",
             f"stage content fills {total / stage_h:.0%} of the stage",
             "Add an illustration component or allow the template figure to grow. Do not leave the stage empty.",
         )
@@ -906,7 +959,7 @@ def _stack(scene, blocks: list[_Block], column: Rect, spec) -> None:
     for (a_top, a_bot), (b_top, b_bot) in zip(ceilings, ceilings[1:]):
         if b_top - a_bot > limit + 0.5:
             raise LayoutError(
-                scene, "LR-10",
+                scene, "R16",
                 f"empty gap of {b_top - a_bot:.0f}px inside the stage stack",
                 "Bring the stage components together. Large empty holes in the stack are not allowed.",
             )
@@ -929,7 +982,7 @@ def _overlay(doc, nodes, column, spec, motion, zones) -> list[Node]:
                 role="overlay", color="yellow", motion=motion, fill=True,
             )]
     raise LayoutError(
-        doc["id"], "LR-11",
+        doc["id"], "R11",
         "the cursor has no empty slot that avoids text",
         "Remove the cursor or remove a stage component so a corner stays clear.",
     )
@@ -956,7 +1009,7 @@ def _connectors(doc, nodes: list[Node], zones: ZoneMap, spec) -> None:
         left_id, _, right_id = request.text.partition("|")
         if left_id not in by_id or right_id not in by_id:
             raise LayoutError(
-                doc["id"], "LR-06",
+                doc["id"], "R08",
                 f"connector {request.id} points at a missing component",
                 "Connectors must name component ids that exist in this scene.",
             )
@@ -985,7 +1038,7 @@ def _assert_inside(scene: str, nodes: list[Node], zones: ZoneMap) -> None:
         visual = node.rect.inflate(node.glow)
         if not zones.contains(node.zone, visual):
             raise LayoutError(
-                scene, "LR-01",
+                scene, "R01",
                 f"{node.id} leaves the {node.zone} zone",
                 "Shorten this component or move it into its own scene.",
                 element=node.id,

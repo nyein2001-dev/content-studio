@@ -1,14 +1,10 @@
-id: timeline_gap
+id: TIMELINE
 profile: portrait
 duration_s: 3.0
 brand: "A Bit Inside"
 headline: "ALREADY UNSUPPORTED"
 caption: "the manufacturer"
 footnote: "ILLUSTRATIVE"
-overlay:
-  id: pointer
-  kind: cursor
-  place: above
 stage:
   - id: line
     type: timeline

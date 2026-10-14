@@ -10,7 +10,8 @@ from PIL import Image
 
 from layout.errors import LayoutError
 from layout.model import PlacedScene
-from layout.render import render_frame
+from layout.render import opacity_at, render_frame
+from layout.swept import _scale
 from layout.spec import load_spec
 
 
@@ -26,7 +27,7 @@ def ffmpeg_bin() -> str:
     if found:
         return found
     raise LayoutError(
-        "encode", "LR-12",
+        "encode", "R13",
         "ffmpeg was not found",
         "Run bash setup.sh so tools/ffmpeg is installed.",
     )
@@ -35,7 +36,7 @@ def ffmpeg_bin() -> str:
 def write_video(scenes: list[PlacedScene], path: Path, preset: str | None = None) -> None:
     spec = load_spec()
     if not scenes:
-        raise LayoutError("encode", "LR-13", "no scenes to encode", "Add a scene.")
+        raise LayoutError("encode", "R15", "no scenes to encode", "Add a scene.")
     width, height = scenes[0].width, scenes[0].height
     fps = scenes[0].fps
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -61,22 +62,30 @@ def write_video(scenes: list[PlacedScene], path: Path, preset: str | None = None
     assert proc.stdin is not None
     try:
         for scene in scenes:
+            previous = b""
+            previous_key = None
             for frame in range(scene.duration_frames):
-                image = render_frame(scene, frame).convert("RGB")
-                proc.stdin.write(image.tobytes())
+                key = tuple(
+                    (node.id, round(opacity_at(node, frame), 3), round(_scale(node, frame), 3))
+                    for node in scene.nodes
+                )
+                if key != previous_key:
+                    previous = render_frame(scene, frame).convert("RGB").tobytes()
+                    previous_key = key
+                proc.stdin.write(previous)
     finally:
         proc.stdin.close()
     err = proc.stderr.read().decode("utf-8", "replace") if proc.stderr else ""
     code = proc.wait()
     if code != 0:
-        raise LayoutError("encode", "LR-12", f"ffmpeg failed: {err[-500:]}", "Fix the encoder error and rerun the gate.")
+        raise LayoutError("encode", "R13", f"ffmpeg failed: {err[-500:]}", "Fix the encoder error and rerun the gate.")
 
 
 def psnr(left: Image.Image, right: Image.Image) -> float:
     a = np.asarray(left.convert("RGB"), dtype=np.float32)
     b = np.asarray(right.convert("RGB"), dtype=np.float32)
     if a.shape != b.shape:
-        raise LayoutError("parity", "LR-12", f"frame size {a.shape} != {b.shape}", "Encode at the scene canvas size.")
+        raise LayoutError("parity", "R13", f"frame size {a.shape} != {b.shape}", "Encode at the scene canvas size.")
     mse = float(np.mean((a - b) ** 2))
     if mse <= 1e-8:
         return 99.0
@@ -100,7 +109,7 @@ def check_parity(
         score = psnr(rendered, decoded)
         if score < floor:
             found.append(Violation(
-                scene.scene_id, "LR-12", "fail",
+                scene.scene_id, "R13", "fail",
                 f"frame {frame} PSNR {score:.1f} is below {floor}",
                 "The encoded file does not match the renderer. Do not publish it.",
                 frame=frame, measured={"psnr": score},
@@ -117,7 +126,7 @@ def _decode(video: Path, frame: int, width: int, height: int) -> Image.Image:
     proc = subprocess.run(cmd, check=False, capture_output=True)
     if proc.returncode != 0 or len(proc.stdout) < width * height * 3:
         raise LayoutError(
-            "parity", "LR-12",
+            "parity", "R13",
             f"could not decode frame {frame}",
             "Re-encode the draft. A frame the renderer cannot read back cannot be published.",
         )

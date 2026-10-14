@@ -1,0 +1,15 @@
+{
+  "spec_version": "2.0.0",
+  "validator_version": "2.0.0",
+  "video_sha256": "5fbf981df071f1c3998e87afcdca5c6be6c0097bd2d834a87d70541547d12a5a",
+  "video_name": "how-hackers-heated-150-supermarket-fridges-to-50c.mp4",
+  "passed": {
+    "lint": true,
+    "static": true,
+    "swept": true,
+    "pixels": true,
+    "parity": true,
+    "budget": true
+  },
+  "timestamp": "2026-10-14T15:05:12.588624+00:00"
+}

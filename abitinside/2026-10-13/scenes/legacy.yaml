@@ -1,0 +1,23 @@
+id: legacy
+profile: portrait
+duration_s: 15.30
+brand: "A Bit Inside"
+headline: "MOST WERE\nALREADY UNSUPPORTED"
+caption: "the manufacturer"
+stage:
+  - id: line
+    type: timeline
+    title: "NO LONGER SUPPORTED"
+    ticks:
+      - id: shipped
+        label: "AUG 2025"
+      - id: attack
+        label: "OCT 2026"
+  - id: aksm
+    type: card
+    title: "AK-SM 800"
+    body: "end of life"
+  - id: aksc
+    type: card
+    title: "AK-SC 355"
+    body: "phased out"

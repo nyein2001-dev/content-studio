@@ -3,11 +3,11 @@ from __future__ import annotations
 
 import cairo
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image
 
 from layout.brand import colour
 from layout.errors import LayoutError
-from layout.fonts import font_file, install_fonts
+from layout.fonts import install_fonts
 from layout.model import Node, PlacedScene
 from layout.spec import load_spec
 
@@ -15,7 +15,7 @@ from layout.spec import load_spec
 def render_frame(scene: PlacedScene, frame: int = 0) -> Image.Image:
     if type(scene) is not PlacedScene:
         raise LayoutError(
-            "frame", "LR-11",
+            "frame", "R11",
             "the renderer received raw coordinates",
             "Pass a solved PlacedScene. Do not call the renderer with x, y, or a font size.",
         )
@@ -79,6 +79,13 @@ def opacity_at(node: Node, frame: int) -> float:
     motion = node.motion
     if motion is None:
         return 1.0
+    if motion.slot:
+        if frame < motion.start or frame >= motion.end:
+            return 0.0
+        fade = min(8, max(1, motion.end - motion.start))
+        if frame < motion.start + fade:
+            return (frame - motion.start) / fade
+        return 1.0
     if frame <= motion.start:
         return motion.opacity0
     if frame >= motion.end:
@@ -124,26 +131,21 @@ def _known() -> set[str]:
 
 
 def _polyline(context, node: Node, alpha: float) -> None:
+    from layout.manim_slot import chart_image
+
     if len(node.points) < 2:
         return
-    context.move_to(*node.points[0])
-    for point in node.points[1:]:
-        context.line_to(*point)
-    red, green, blue = _unit(colour(node.color))
-    context.set_source_rgba(red, green, blue, alpha)
-    context.set_line_width(node.stroke or 3)
-    context.stroke()
+    image = chart_image(node.points, int(node.rect.w), int(node.rect.h), colour(node.color))
+    _blit(context, image, node.rect.x, node.rect.y, alpha)
 
 
 def _bars(context, node: Node, alpha: float, spec: dict) -> None:
+    from layout.manim_slot import chart_image
+
     if not node.points:
         return
-    width = max(float(spec["spacing"]["s"]), node.rect.w / max(1, len(node.points) * 2))
-    red, green, blue = _unit(colour(node.color))
-    context.set_source_rgba(red, green, blue, alpha)
-    for x, y in node.points:
-        context.rectangle(x - width / 2, y, width, node.rect.bottom - y)
-        context.fill()
+    image = chart_image(node.points, int(node.rect.w), int(node.rect.h), colour(node.color))
+    _blit(context, image, node.rect.x, node.rect.y, alpha)
 
 
 def _connector(context, node: Node, alpha: float) -> None:
@@ -166,21 +168,27 @@ def _connector(context, node: Node, alpha: float) -> None:
 
 
 def _paint_text(context, node: Node, alpha: float) -> None:
-    raster = text_raster(node)
-    _blit(context, raster, node.rect.x, node.rect.y, alpha)
+    from layout.text import draw
+
+    if node.role == "counter":
+        from layout.manim_slot import stat_image
+
+        image = stat_image(node.text, int(node.rect.w), int(node.rect.h), colour(node.color))
+        context.save()
+        _blit(context, image, node.rect.x, node.rect.y, alpha)
+        context.restore()
+        return
+    red, green, blue = _unit(colour(node.color))
+    context.save()
+    context.translate(node.rect.x, node.rect.y)
+    draw(context, node.text, node.font_key, node.font_size, (red, green, blue), alpha)
+    context.restore()
 
 
 def text_raster(node: Node) -> Image.Image:
-    install_fonts()
-    font = ImageFont.truetype(str(font_file(node.font_key)), size=int(round(node.font_size)))
-    left, top, right, bottom = font.getbbox(node.text)
-    width = max(1, int(right - left))
-    height = max(1, int(bottom - top))
-    raster = Image.new("RGBA", (width, height), (0, 0, 0, 0))
-    ImageDraw.Draw(raster).text(
-        (-left, -top), node.text, font=font, fill=_rgb(colour(node.color)) + (255,),
-    )
-    return raster
+    from layout.text import raster
+
+    return raster(node.text, node.font_key, node.font_size, _rgb(colour(node.color)))
 
 
 def _blit(context, raster: Image.Image, x: float, y: float, alpha: float) -> None:

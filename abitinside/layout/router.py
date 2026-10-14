@@ -71,7 +71,7 @@ def route(
     path = _astar(start, end, obstacles, bounds, step)
     if path is None:
         raise LayoutError(
-            scene, "LR-06",
+            scene, "R08",
             "no connector route avoids text and icons",
             "Move the two endpoints further apart in the scene DSL, or remove the connector. "
             "The engine will not draw a line through a label.",

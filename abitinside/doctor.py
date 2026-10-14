@@ -240,20 +240,14 @@ def _():
     return "no .notdef boxes for the full on-screen corpus"
 
 
-@check("fonts: Poppins renders vector text in pycairo")
+@check("fonts: Poppins renders through the layout text engine")
 def _():
-    import cairo
+    from layout.text import measure
 
-    surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, 400, 120)
-    cr = cairo.Context(surf)
-    cr.select_font_face("Poppins", cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
-    cr.set_font_size(64)
-    cr.move_to(10, 70)
-    cr.show_text("A Bit Inside 1080")
-    ext = cr.text_extents("A Bit Inside 1080")
-    if ext.width < 100:
+    ink = measure("A Bit Inside 1080", "bold", 64)
+    if ink.width < 100:
         raise AssertionError("Poppins did not shape text (no fontconfig/system font here?)")
-    return f"glyph run width {ext.width:.0f}px"
+    return f"glyph run width {ink.width:.0f}px"
 
 
 # ------------------------------------------------------------------ pycairo render

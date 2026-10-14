@@ -1,0 +1,12 @@
+id: MAP_CALLOUT
+profile: portrait
+duration_s: 3.0
+brand: "A Bit Inside"
+headline: "A WEB PAGE"
+caption: "in the store"
+footnote: "ILLUSTRATIVE"
+stage:
+  - id: call
+    type: callout
+    title: "WEB MANAGEMENT"
+    body: "reachable from anywhere"

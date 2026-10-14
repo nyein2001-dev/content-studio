@@ -1,0 +1,20 @@
+id: the_gap
+profile: portrait
+duration_s: 9.07
+brand: "A Bit Inside"
+headline: "NO CVE.\nNO NAMES."
+caption: "off the internet"
+stage:
+  - id: who
+    type: card
+    title: "WHO?"
+  - id: how
+    type: card
+    title: "HOW?"
+  - id: which
+    type: card
+    title: "WHICH FLAW?"
+  - id: take
+    type: card
+    title: "TAKE THE BOX"
+    body: "OFF THE INTERNET"

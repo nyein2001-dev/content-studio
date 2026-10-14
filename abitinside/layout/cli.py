@@ -36,14 +36,142 @@ def main(argv: list[str] | None = None) -> int:
     gate.add_argument("--draft", type=Path)
     gate.add_argument("--publish", type=Path)
 
+    render = sub.add_parser("render")
+    render.add_argument("--video", type=Path, required=True)
+    render.add_argument("--debug-zones", action="store_true")
+    render.add_argument("--preset")
+
+    validate = sub.add_parser("validate")
+    validate.add_argument("--video", type=Path)
+    validate.add_argument("--scene", type=Path)
+
+    qa = sub.add_parser("qa")
+    qa.add_argument("--video", type=Path, required=True)
+    qa.add_argument("--debug-zones", action="store_true")
+
+    publish = sub.add_parser("publish")
+    publish.add_argument("--video", type=Path, required=True)
+
     args = parser.parse_args(argv)
     try:
         if args.command == "check":
             return _check(args)
+        if args.command == "validate":
+            return _validate(args.video or args.scene)
+        if args.command == "render":
+            return _render(args)
+        if args.command == "qa":
+            return _qa(args)
+        if args.command == "publish":
+            return _publish(args)
         return _gate(args)
     except LayoutError as exc:
         print(f"{exc.scene}: {exc.rule}: {exc.message}\nFix: {exc.remedy}", file=sys.stderr)
         return 1
+
+
+def _output_name(path: Path) -> str:
+    """A video.yaml lives in the day folder, so the release uses that day."""
+    if path.name.startswith("video"):
+        return path.parent.name
+    return path.stem
+
+
+def _documents(path: Path) -> list[dict]:
+    if path.name.startswith("video"):
+        return load_video(path)["scene_docs"]
+    return [load_scene(path)]
+
+
+def _validate(path: Path | None) -> int:
+    if path is None:
+        root = ABIT / "layout" / "templates"
+        paths = list(root.glob("*.yaml")) + list((root / "stress").glob("*.yaml"))
+        code = 0
+        for item in paths:
+            if _validate(item):
+                code = 1
+        return code
+    docs = _documents(path)
+    code = 0
+    for doc in docs:
+        for scene in solve(doc):
+            found = hard_failures(check_scene(scene) + check_swept(scene))
+            for item in found:
+                print(f"{item.scene} {item.rule} frame={item.frame}: {item.message}")
+            if found:
+                code = 1
+    return code
+
+
+def _render(args) -> int:
+    if _validate(args.video):
+        print("validate failed; render did not start", file=sys.stderr)
+        return 1
+    docs = _documents(args.video)
+    scenes = [scene for doc in docs for scene in solve(doc)]
+    from layout.parity import write_video
+    out = ABIT / "out" / "draft" / _output_name(args.video)
+    out.mkdir(parents=True, exist_ok=True)
+    video = out / "video.mp4"
+    spec = load_spec()
+    write_video(scenes, video, preset=args.preset or spec["encode"]["perf_preset"])
+    if args.debug_zones:
+        from layout.debug import debug_frame
+        for scene in scenes:
+            debug_frame(scene).save(out / f"{scene.scene_id}-zones.png")
+    if _validate(args.video):
+        print("validate failed after render", file=sys.stderr)
+        return 1
+    print(video)
+    return 0
+
+
+def _qa(args) -> int:
+    spec = load_spec()
+    draft = ABIT / "out" / "draft" / _output_name(args.video)
+    docs = _documents(args.video)
+    code = gate_documents(docs, draft, None, preset=spec["encode"]["perf_preset"], parity=False)
+    from layout.debug import contact_sheet
+    scenes = []
+    if code == 0:
+        scenes = [scene for doc in docs for scene in solve(doc)]
+        contact_sheet(scenes, draft / "contact_sheet.png")
+    return code
+
+
+def _publish(args) -> int:
+    spec = load_spec()
+    draft = ABIT / "out" / "draft" / _output_name(args.video)
+    publish = ABIT / "out" / "publish" / _output_name(args.video)
+    docs = _documents(args.video)
+    code = gate_documents(docs, draft, None, preset=spec["encode"]["preset"])
+    report = draft / "qa_report.json"
+    video = draft / "video.mp4"
+    if code != 0 or not report.is_file() or not video.is_file():
+        print("publish refused: validation errors", file=sys.stderr)
+        return 1
+    if report.stat().st_mtime < video.stat().st_mtime:
+        print("publish refused: qa report is older than the video", file=sys.stderr)
+        return 1
+    from layout.gate import promote
+    _release_metadata(args.video, draft)
+    promote(draft, publish)
+    print(publish)
+    return 0
+
+
+def _release_metadata(video: Path, draft: Path) -> None:
+    """Copy the title, caption, and hashtags the publish folder is required to carry."""
+    day = video.resolve().parent
+    meta_path = day / "youtube-metadata.json"
+    if not meta_path.is_file():
+        return
+    meta = json.loads(meta_path.read_text(encoding="utf-8"))
+    (draft / "title.txt").write_text(str(meta.get("title") or "") + "\n", encoding="utf-8")
+    (draft / "caption.txt").write_text(str(meta.get("description") or "") + "\n", encoding="utf-8")
+    tags = meta.get("hashtags") or []
+    (draft / "hashtags.txt").write_text("\n".join(tags) + "\n", encoding="utf-8")
 
 
 def _check(args) -> int:
@@ -102,8 +230,8 @@ def _gate(args) -> int:
         print("pass --video, --showcase, or --sample", file=sys.stderr)
         return 2
     docs = load_video(args.video)["scene_docs"] if args.video.name.startswith("video") else [load_scene(args.video)]
-    draft = args.draft or (ABIT / "out" / "draft" / args.video.stem)
-    publish = args.publish or (ABIT / "out" / "publish" / args.video.stem)
+    draft = args.draft or (ABIT / "out" / "draft" / _output_name(args.video))
+    publish = args.publish or (ABIT / "out" / "publish" / _output_name(args.video))
     return gate_documents(docs, draft, publish, preset=args.preset)
 
 

@@ -7,13 +7,13 @@ import shutil
 from datetime import datetime, timezone
 from pathlib import Path
 
-from layout.debug import contact_sheet, debug_frame
+from layout.debug import annotate, contact_sheet, debug_frame
 from layout.errors import LayoutError
 from layout.lint import lint_sources
 from layout.model import PlacedScene
 from layout.parity import check_parity, write_video
 from layout.pixels import check_pixels
-from layout.report import dump_json, scene_report, write_html
+from layout.report import dump_json, scene_report, write_html, write_markdown
 from layout.rules import Violation, check_scene, hard_failures
 from layout.solver import solve
 from layout.spec import ABIT, load_spec
@@ -101,6 +101,7 @@ def gate_documents(
 ) -> int:
     placed: list[PlacedScene] = []
     reports = []
+    annotated: list[tuple[PlacedScene, Violation]] = []
     ok = True
     lint = lint_sources()
     if lint:
@@ -112,7 +113,7 @@ def gate_documents(
             "duration_frames": 0,
             "decisions": [],
             "violations": [
-                Violation("lint", "LR-13", "fail", item, "Remove the coordinate or drawing call.", ()).as_dict()
+                Violation("lint", "R15", "fail", item, "Remove the coordinate or drawing call.", ()).as_dict()
                 for item in lint
             ],
         })
@@ -142,14 +143,22 @@ def gate_documents(
                 ok = False
             reports.append(scene_report(scene, found))
             placed.append(scene)
+            annotated.extend((scene, item) for item in found if item.severity == "fail")
     draft.mkdir(parents=True, exist_ok=True)
     dump_json(draft / "layout_report.json", {"passed": ok, "scenes": reports})
+    dump_json(draft / "qa_report.json", {"passed": ok, "scenes": reports})
+    write_markdown(draft / "qa_report.md", reports)
     frames = []
     for scene in placed:
         image = debug_frame(scene)
         dest = draft / f"{scene.scene_id}.png"
         image.save(dest)
         frames.append(dest)
+    for index, (scene, item) in enumerate(annotated):
+        annotate(scene, item).save(draft / f"violation-{scene.scene_id}-{item.rule}-{index}.png")
+    if placed:
+        contact_sheet(placed, draft / "contact_sheet.png")
+        debug_frame(placed[0]).save(draft / "thumbnail.png")
     write_html(draft / "layout_report.html", "Layout gate", reports, frames)
     if not ok or not placed:
         return 1
@@ -170,6 +179,9 @@ def gate_documents(
             return 1
     passed = {"lint": True, "static": True, "swept": True, "pixels": pixels, "parity": parity, "budget": True}
     write_certificate(draft, video, passed)
+    dump_json(draft / "layout_report.json", {"passed": True, "scenes": reports})
+    dump_json(draft / "qa_report.json", {"passed": True, "scenes": reports})
+    write_markdown(draft / "qa_report.md", reports)
     if publish is not None:
         promote(draft, publish)
     return 0

@@ -1,0 +1,17 @@
+id: setup
+profile: portrait
+duration_s: 9.30
+brand: "A Bit Inside"
+headline: "150 STORES\nWOKE UP WARM"
+caption: "woke up to warm"
+footnote: "ILLUSTRATIVE"
+stage:
+  - id: stores
+    type: stat
+    title: "STORES HIT"
+    value: "150"
+    max_value: "999"
+  - id: page
+    type: card
+    title: "A WEB PAGE LOADED"
+    body: "NO DOOR FORCED"

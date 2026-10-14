@@ -19,7 +19,7 @@ def load_scene(path: Path | str) -> dict:
     data = yaml.safe_load(path.read_text(encoding="utf-8"))
     if not isinstance(data, dict):
         raise LayoutError(
-            path.stem, "LR-13",
+            path.stem, "R15",
             "scene file is not a mapping",
             "Write a scene DSL document. Do not put coordinates in this file.",
         )
@@ -29,7 +29,7 @@ def load_scene(path: Path | str) -> dict:
             f"{'/'.join(map(str, err.path)) or '<root>'}: {err.message}" for err in errors[:6]
         )
         raise LayoutError(
-            str(data.get("id") or path.stem), "LR-13",
+            str(data.get("id") or path.stem), "R15",
             f"scene DSL is invalid: {detail}",
             "Match prompts/layout_contract.md. Remove coordinates, font sizes, and unknown fields.",
         )
@@ -50,7 +50,7 @@ def _reject_coordinates(data, scene: str) -> None:
             found = banned & set(node)
             if found:
                 raise LayoutError(
-                    scene, "LR-13",
+                    scene, "R15",
                     f"scene DSL contains layout fields {sorted(found)}",
                     "Delete coordinates, sizes, and colours. The solver places the scene and the theme supplies colour.",
                 )
@@ -67,7 +67,7 @@ def load_video(path: Path | str) -> dict:
     path = Path(path)
     data = yaml.safe_load(path.read_text(encoding="utf-8"))
     if not isinstance(data, dict) or "scenes" not in data:
-        raise LayoutError(path.stem, "LR-13", "video file needs a scenes list", "List scene DSL paths under scenes.")
+        raise LayoutError(path.stem, "R15", "video file needs a scenes list", "List scene DSL paths under scenes.")
     base = path.parent
     scenes = []
     for item in data["scenes"]:

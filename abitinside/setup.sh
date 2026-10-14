@@ -96,9 +96,10 @@ fi
 # surface.c includes cairo-xlib.h, so the real X11 protocol headers are needed too.
 # The X11 stack moved to the `xorg-*` package names on conda-forge; --override-channels
 # is required because the legacy `xorg` channel 404s on noarch.
-"$MMAMBA_DIR/bin/micromamba" install -y -q --override-channels --platform linux-64 \
+  "$MMAMBA_DIR/bin/micromamba" install -y -q --override-channels --platform linux-64 \
     -r "$ABIT_HOME/.cache/mamba" -p "$CDEPS_DIR" -c conda-forge \
     zlib libpng freetype fontconfig pixman expat brotli bzip2 \
+    pygobject pango 'harfbuzz>=11' \
     xorg-xorgproto xorg-libx11 xorg-libxext xorg-libxrender xorg-kbproto \
     xorg-libxau xorg-libxdmcp \
     || die "micromamba could not install the cairo/X11 dependencies"
@@ -184,15 +185,15 @@ fi
 "$PY" -c 'import cairo; print("   pycairo", cairo.version, "cairo", cairo.cairo_version_string())' \
   || die "pycairo cannot import"
 
-# manim is optional and must never block the build.
+# Chart and counting-stat slots render with Manim. A failed install stops those
+# components; setup does not continue with a cairo substitute.
 if [ "${ABIT_SKIP_MANIM:-0}" != "1" ]; then
-  step "manim (best effort, non-blocking)"
+  step "manim (required for Chart and Stat)"
   if "$PY" -c 'import manim' 2>/dev/null; then
     say "manim already importable"
   else
-    uvpip manim >/dev/null 2>&1 \
-      && say "manim installed" \
-      || say "manim unavailable (needs more system libs) - continuing, pycairo is the renderer"
+    uvpip 'manim==0.18.1' \
+      || die "manim install failed. Chart and Stat cannot render. There is no cairo fallback. Re-run bash setup.sh."
   fi
 fi
 

@@ -10,14 +10,23 @@ from layout.rules import Violation, check_scene
 from layout.spec import load_spec
 
 
-def sample_frames(duration: int, spec: dict | None = None) -> list[int]:
+def sample_frames(duration: int, spec: dict | None = None, nodes=()) -> list[int]:
+    """Every Nth frame, the last frame, and enter/exit padded by the spec."""
     spec = spec or load_spec()
     step = max(1, int(spec["rules"]["pixel_sample_every"]))
-    enter = int(spec["rules"]["enter_frames"])
-    frames = set(range(0, duration, step))
-    frames.update(range(0, min(duration, enter + 1)))
+    pad = int(spec["rules"]["sample_pad_frames"])
+    frames = set(range(0, max(duration, 1), step))
     frames.add(0)
     frames.add(max(0, duration - 1))
+    for node in nodes:
+        motion = getattr(node, "motion", None)
+        if motion is None:
+            continue
+        for edge in (int(motion.start), int(motion.end)):
+            for delta in range(-pad, pad + 1):
+                frame = edge + delta
+                if 0 <= frame < duration:
+                    frames.add(frame)
     return sorted(frames)
 
 
@@ -33,7 +42,7 @@ def check_swept(scene: PlacedScene) -> list[Violation]:
             scale = _scale(node, frame)
             if scale > max_scale + 1e-6:
                 found.append(Violation(
-                    scene.scene_id, "LR-11", "fail",
+                    scene.scene_id, "R11", "fail",
                     f"{node.id} scales to {scale:.2f} on frame {frame}",
                     "Keep scale at or below the maximum in the spec.",
                     (node.id,), frame,
@@ -41,7 +50,7 @@ def check_swept(scene: PlacedScene) -> list[Violation]:
             rect = _scaled(node.rect, scale)
             if not node.rect.contains(rect, eps=1.0):
                 found.append(Violation(
-                    scene.scene_id, "LR-01", "fail",
+                    scene.scene_id, "R01", "fail",
                     f"{node.id} leaves its slot on frame {frame}",
                     "Animate inside the reserved slot only.",
                     (node.id,), frame,
@@ -52,9 +61,8 @@ def check_swept(scene: PlacedScene) -> list[Violation]:
             if alpha > 0.01:
                 visible.append(scaled)
         found.extend(_text_collisions(scene.scene_id, visible, frame))
-        if frame in (0, scene.duration_frames - 1) or frame % max(1, int(spec["rules"]["pixel_sample_every"])) == 0:
-            probed = replace(scene, nodes=tuple(live))
-            found.extend(item for item in check_scene(probed, frame=frame) if item.rule != "LEGACY-UNMIGRATED" or scene.legacy)
+        probed = replace(scene, nodes=tuple(live))
+        found.extend(item for item in check_scene(probed, frame=frame) if item.rule != "LEGACY-UNMIGRATED" or scene.legacy)
     return _unique(found)
 
 
@@ -100,7 +108,7 @@ def _text_collisions(scene: str, nodes: list[Node], frame: int) -> list[Violatio
             if same:
                 continue
             found.append(Violation(
-                scene, "LR-11", "fail",
+                scene, "R11", "fail",
                 f"{left.text!r} and {right.text!r} occupy the same pixels on frame {frame}",
                 "Give them separate slots, or sequence them so the first has left before the second appears.",
                 (left.id, right.id), frame,
@@ -110,7 +118,7 @@ def _text_collisions(scene: str, nodes: list[Node], frame: int) -> list[Violatio
         for text in texts:
             if cursor.rect.intersects(text.rect):
                 found.append(Violation(
-                    scene, "LR-11", "fail",
+                    scene, "R11", "fail",
                     f"cursor covers {text.text!r} on frame {frame}",
                     "Move the cursor off the type.",
                     (cursor.id, text.id), frame,

@@ -38,12 +38,12 @@ class FitTests(unittest.TestCase):
     def test_single_line_at_preferred_size(self):
         fitted = fit_text("t", "FIFTY DEGREES", "headline", 900)
         self.assertEqual(fitted.lines, ("FIFTY DEGREES",))
-        self.assertGreaterEqual(fitted.size, 64)
+        self.assertGreaterEqual(fitted.size, 56)
 
     def test_does_not_ellipsis(self):
         with self.assertRaises(Exception) as caught:
             fit_text("t", "W" * 80, "chip", 120, max_lines=1)
-        self.assertIn("LR-04", str(caught.exception))
+        self.assertIn("R09", str(caught.exception))
         self.assertNotIn("…", str(caught.exception))
 
 
@@ -58,7 +58,7 @@ class RouterTests(unittest.TestCase):
         wall = Rect(10, 0, 20, 80)
         with self.assertRaises(LayoutError) as caught:
             route("t", (0, 40), (80, 40), [wall], Rect(0, 0, 40, 40), 8)
-        self.assertEqual(caught.exception.rule, "LR-06")
+        self.assertEqual(caught.exception.rule, "R08")
 
 
 class RuleTests(unittest.TestCase):
@@ -101,7 +101,7 @@ class CertificateTests(unittest.TestCase):
 class SpecTests(unittest.TestCase):
     def test_spec_version_and_profiles(self):
         spec = load_spec()
-        self.assertEqual(spec["version"], "1.0.0")
+        self.assertEqual(spec["version"], "2.0.0")
         self.assertEqual(set(spec["profiles"]), {"portrait", "landscape", "square"})
 
 

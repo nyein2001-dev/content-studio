@@ -42,6 +42,7 @@ export PYTHONDONTWRITEBYTECODE="1"
 # shared library (runtime).
 export PKG_CONFIG_PATH="$CDEPS_DIR/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
 export LD_LIBRARY_PATH="$CDEPS_DIR/lib:${LD_LIBRARY_PATH:-}"
+export GI_TYPELIB_PATH="$CDEPS_DIR/lib/girepository-1.0:${GI_TYPELIB_PATH:-}"
 # Rootless C toolchain (conda-forge gcc); only needed to compile pycairo once.
 export CC="${CC:-x86_64-conda-linux-gnu-gcc}"
 export CXX="${CXX:-x86_64-conda-linux-gnu-g++}"
