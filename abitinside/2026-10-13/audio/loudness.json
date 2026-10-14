@@ -1,13 +1,13 @@
 {
  "integrated_lufs": -14.0,
- "true_peak_dbtp": -3.59,
- "true_peak_dbtp_4x_oversampled": -3.584365343014672,
- "lra": 1.9,
- "pre_master_lufs": -16.23,
- "applied_gain_db": 2.23,
+ "true_peak_dbtp": -3.65,
+ "true_peak_dbtp_4x_oversampled": -3.6406483692741625,
+ "lra": 2.6,
+ "pre_master_lufs": -16.31,
+ "applied_gain_db": 2.31,
  "peak_trim_db": 0.0,
- "sample_peak_linear": 0.6614627242088318,
- "sample_peak_dbfs": -3.5898924966966224,
+ "sample_peak_linear": 0.6571903824806213,
+ "sample_peak_dbfs": -3.646176015699899,
  "target_i": -14.0,
  "target_tp": -2.0,
  "gate_tp": -1.5,
@@ -18,5 +18,5 @@
  "duck_attack_s": 0.02,
  "duck_release_s": 0.4,
  "music_bed_relative_db": -22.0,
- "events": 226
+ "events": 185
 }

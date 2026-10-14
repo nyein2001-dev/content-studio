@@ -30,7 +30,7 @@ from PIL import Image
 HERE = Path(__file__).resolve().parent        # .../abitinside/2026-10-13/src
 DAY = HERE.parent                             # .../abitinside/2026-10-13
 ABIT = DAY.parent                             # .../abitinside
-REPO = ABIT.parent                            # .../ABitInside  (holds face-id-dots.mp4)
+REPO = ABIT.parent                            # content-studio (holds face-id-dots.mp4)
 REF = REPO / "face-id-dots.mp4"
 OUT = ABIT / ".cache" / "reference"
 

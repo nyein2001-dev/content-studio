@@ -57,13 +57,21 @@ def mux(video_in: Path, audio_in: Path, out: Path) -> None:
     raise RuntimeError(f"could not replace {out}: {last}")
 
 
-def deliver(video_only: Path, final_audio: Path, music_sfx_audio: Path,
+def deliver(video_in: Path, audio_in: Path, music_audio: Path,
             video_dir: Path) -> tuple[Path, Path]:
-    """Write both deliverables and return their paths."""
-    final = video_dir / "sample-final.mp4"
-    music_only = video_dir / "sample-music-sfx-only.mp4"
-    mux(video_only, final_audio, final)
-    mux(video_only, music_sfx_audio, music_only)
+    """Write both deliverables under the title slug and return their paths."""
+    import sys
+    root = Path(__file__).resolve().parents[2]
+    if str(root) not in sys.path:
+        sys.path.insert(0, str(root))
+    from pipeline.export import publish_paths, remember
+
+    day = video_dir.parent
+    final, music_only = publish_paths(day)
+    video_dir.mkdir(exist_ok=True)
+    mux(video_in, audio_in, final)
+    mux(video_in, music_audio, music_only)
+    remember(day, final, music_only)
     return final, music_only
 
 

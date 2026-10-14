@@ -13,7 +13,8 @@ abitinside/
   .venv/            CPython 3.11 virtualenv            (gitignored, rebuilt by setup.sh)
   tools/            ffmpeg/ (static), cdeps/, toolchain/, micromamba/   (gitignored)
   assets/fonts/     Poppins + JetBrains Mono TTFs      (gitignored, re-downloaded)
-  assets/voices/    Piper en_US-ryan-high             (gitignored, re-downloaded)
+  assets/voices/    local models restored by setup.sh  (gitignored)
+  pipeline/         shared voice, captions, layout, and QA
   .cache/           whisper model, font cache, QA scratch                (gitignored)
   2026-10-13/       one day's output, built from scratch
 ```
@@ -24,9 +25,9 @@ abitinside/
 
 ```bash
 wsl -d Ubuntu
-cd /mnt/c/Users/dell/AnimationContentStudio/ABitInside
-bash abitinside/setup.sh          # ~10 min the very first time, seconds afterwards
-python abitinside/doctor.py       # must print "All 24 checks passed"
+cd /mnt/c/Users/dell/content-studio/abitinside
+bash setup.sh                     # ~10 min the very first time, seconds afterwards
+python doctor.py                  # must print that every check passed
 ```
 
 `setup.sh` is **rootless on purpose** - this machine's WSL `sudo` needs a password, so nothing
@@ -50,31 +51,29 @@ Re-running `setup.sh` is safe and fast: every step checks for what it already pr
 ## 2. Rebuilding a day
 
 ```bash
-bash abitinside/build.sh 2026-10-13
+bash build.sh 2026-10-13
 ```
 
-Eight steps, each aborting the build on failure:
+The shared pipeline in `pipeline/` speaks with `en-US-AndrewNeural`, builds captions from that voice's word boundaries, and writes a title-derived mp4. Set `ABIT_SKIP_BRAIN=1` to keep the day's already chosen topic.
 
 | step | script | produces |
 |---|---|---|
 | 0 | `doctor.py` | environment verified, or the build stops here |
-| 1 | `src/brain/gather.py`, `verify.py`, `select.py` | `candidates_raw.json`, `verification_log.json`, `brain-report.md` |
+| 1 | `src/brain/` unless `ABIT_SKIP_BRAIN=1` | `brain-report.md` |
 | 2 | `src/script_gen.py` | `scenes_plan.json`, `script.md` |
-| 3 | `src/tts.py` | `tts_sentences.json`, `audio/narration.wav` |
-| 4 | `src/align.py` | `align.json` (word-level caption timings) |
-| 5 | `src/timeline.py` | `timeline.json` - **the single source of truth for time** |
+| 3 | `pipeline/tts.py` | `tts_sentences.json`, `audio/narration.wav` |
+| 4 | `pipeline/captions.py` | `align.json` (word-boundary caption timings) |
+| 5 | `src/timeline.py` | `timeline.json` |
 | 6 | `src/audio/mix.py` | `cue-sheet.txt`, `audio/*.wav` |
-| 7 | `src/render.py`, `src/mux.py` | `video/sample-final.mp4`, `video/sample-music-sfx-only.mp4` |
+| 7 | `src/render.py` | the title-derived mp4 and the music-and-sfx cut |
 | 8 | `src/qa.py` | `qa-report.md`, `contact-sheet.png` |
 
-Scene lengths are **measured, never estimated**: step 3 measures each sentence with Piper, and
-step 5 derives every scene, beat and caption frame from those measurements. Change a sentence
-and the whole timeline reflows around it.
+Scene lengths are measured from Andrew's audio. A caption stays on screen until its last word ends, with a space between words.
 
 ### Useful overrides
 
 ```bash
-ABIT_WORKERS=1 bash abitinside/build.sh 2026-10-13   # single-core render
+ABIT_SKIP_BRAIN=1 bash build.sh 2026-10-13
 ```
 
 ---
@@ -104,7 +103,7 @@ Copy a finished day and change the date to start:
 
 ```bash
 cp -r abitinside/2026-10-13 abitinside/2026-10-14
-bash abitinside/build.sh 2026-10-14
+bash build.sh 2026-10-14
 ```
 
 ---

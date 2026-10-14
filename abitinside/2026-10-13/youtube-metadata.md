@@ -1,5 +1,5 @@
 # A Bit Inside - YouTube upload package
-**File:** `video/sample-final.mp4` · 1080x1920 · 30 fps · 1:50.9 · 11.8 MB
+**File:** `video/how-hackers-heated-150-supermarket-fridges-to-50c.mp4` · 1080x1920 · 30 fps · 2:01.5 · 14.0 MB
 **Prepared:** 13 October 2026
 
 ---
@@ -12,9 +12,6 @@ How Hackers Heated 150 Supermarket Fridges to 50C
 
 51 characters. Sentence case. Primary keyword ("hackers … supermarket fridges")
 lands inside the first 40 characters. No emoji, no `#Shorts`, no clickbait word.
-
-*If you prefer the degree symbol in the title, use `50°C` — YouTube accepts it and
-the character is in both our fonts.*
 
 ---
 
@@ -138,6 +135,3 @@ its healthy band, the big yellow "50°C" in the lower right, the wordmark, and *
 burned-in caption**, so nothing competes with it at thumbnail size. It sits at
 24.5% of the runtime, well inside the window YouTube samples for the Shorts frame
 picker.
-
-Runner-up if you prefer: **0:46 (frame 1380)** — the 2,765-controller dot grid with
-the headline "2,765 CONTROLLERS ON THE INTERNET".

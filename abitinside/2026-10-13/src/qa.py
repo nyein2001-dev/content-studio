@@ -34,9 +34,12 @@ from PIL import Image, ImageFilter
 HERE = Path(__file__).resolve().parent
 DAY = HERE.parent
 ABIT = DAY.parent
+if str(ABIT) not in sys.path:
+    sys.path.insert(0, str(ABIT))
+from pipeline.export import publish_paths  # noqa: E402
+
 VIDEO = DAY / "video"
-FINAL = VIDEO / "sample-final.mp4"
-MUSIC_ONLY = VIDEO / "sample-music-sfx-only.mp4"
+FINAL, MUSIC_ONLY = publish_paths(DAY)
 FFMPEG = os.environ.get("FFMPEG", str(ABIT / "tools" / "ffmpeg" / "bin" / "ffmpeg"))
 FFPROBE = os.environ.get("FFPROBE", str(ABIT / "tools" / "ffmpeg" / "bin" / "ffprobe"))
 TMP = ABIT / ".cache" / "qa"
@@ -746,7 +749,7 @@ def gate_rhythm(tl: dict) -> dict:
 def gate_brand() -> dict:
     src = DAY / "src"
     needles = ("requests.get(\"http", "urllib.request.urlopen(\"http",
-               "edge_tts", "suno", "runway", "kling", "stock footage", "shutterstock")
+               "suno", "runway", "kling", "stock footage", "shutterstock")
     external = []
     scanned = 0
     for p in sorted(src.rglob("*.py")):
@@ -889,6 +892,18 @@ def main() -> int:
     gate_brand()
     print("\n[11] contact sheet")
     gate_contact_sheet()
+    print("\n[12] shared contract")
+    from pipeline.qa_contract import (
+        check_caption_contract, check_publish_name, check_voice,
+    )
+    for name, fn in (
+        ("12a Andrew voice on every segment", lambda: check_voice(DAY)),
+        ("12b captions keep spaces and end when the last word ends",
+         lambda: check_caption_contract(DAY)),
+        ("12c publish file is named from the title", lambda: check_publish_name(DAY)),
+    ):
+        ok, detail = fn()
+        gate(name, ok, detail, detail)
 
     extra = {"loudness": audio_info["loudness"],
              "duration": float(info["format"]["duration"])}

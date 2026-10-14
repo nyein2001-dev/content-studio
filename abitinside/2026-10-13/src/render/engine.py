@@ -285,6 +285,11 @@ _STATE: dict = {}
 
 def _init_worker(timeline_path: str, frames_path: str) -> None:
     import json
+    import sys
+
+    root = Path(__file__).resolve().parents[3]
+    if str(root) not in sys.path:
+        sys.path.insert(0, str(root))
 
     install_fonts()
     surf, cr = new_surface()

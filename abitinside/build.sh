@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # =====================================================================
 #  A Bit Inside - one command rebuilds the whole day's video.
 #
@@ -8,11 +8,11 @@
 #    0  environment doctor            (abort on any FAIL)
 #    1  topic research + selection    -> brain-report.md
 #    2  script from facts.json        -> scenes_plan.json, script.md
-#    3  narration (Piper)             -> tts_sentences.json, audio/narration.wav
-#    4  word alignment (whisper)      -> align.json
+#    3  narration (en-US-AndrewNeural) -> tts_sentences.json, audio/narration.wav
+#    4  captions from word boundaries -> align.json
 #    5  timeline from measured audio  -> timeline.json (the single source of truth)
 #    6  audio engine                  -> cue-sheet.txt, audio/*.wav
-#    7  render + mux                  -> video/sample-final.mp4 (and the no-narration cut)
+#    7  render + mux                  -> video/<title-slug>.mp4 (and the music-sfx cut)
 #    8  delivery QA                   -> qa-report.md, contact-sheet.png
 # =====================================================================
 set -uo pipefail
@@ -37,22 +37,28 @@ step "0/9  environment doctor"
 "$PY_BIN" "$HERE/doctor.py" || fail "doctor.py reported a FAIL - run setup.sh first"
 
 # ---------------------------------------------------------------- 1
-step "1/9  social content brain"
-"$PY_BIN" "$SRC/brain/gather.py" || fail "candidate gathering failed"
-"$PY_BIN" "$SRC/brain/verify.py" || fail "source verification failed"
-"$PY_BIN" "$SRC/brain/select.py" || fail "winner selection failed"
+if [ "${ABIT_SKIP_BRAIN:-0}" = "1" ]; then
+  step "1/9  social content brain (skipped; topic already chosen)"
+else
+  step "1/9  social content brain"
+  "$PY_BIN" "$SRC/brain/gather.py" || fail "candidate gathering failed"
+  "$PY_BIN" "$SRC/brain/verify.py" || fail "source verification failed"
+  "$PY_BIN" "$SRC/brain/select.py" || fail "winner selection failed"
+fi
 
 # ---------------------------------------------------------------- 2
 step "2/9  script"
 "$PY_BIN" "$SRC/script_gen.py" || fail "script validation failed"
 
 # ---------------------------------------------------------------- 3
-step "3/9  narration (Piper, offline)"
-"$PY_BIN" "$SRC/tts.py" || fail "narration synthesis failed"
+step "3/9  narration (en-US-AndrewNeural)"
+PYTHONPATH="$HERE${PYTHONPATH:+:$PYTHONPATH}" "$PY_BIN" -m pipeline.tts "$DAY_DIR" \
+  || fail "narration synthesis failed"
 
 # ---------------------------------------------------------------- 4
-step "4/9  word alignment (faster-whisper, offline)"
-"$PY_BIN" "$SRC/align.py" || fail "word alignment failed"
+step "4/9  captions from Andrew word boundaries"
+PYTHONPATH="$HERE${PYTHONPATH:+:$PYTHONPATH}" "$PY_BIN" -m pipeline.captions "$DAY_DIR" \
+  || fail "caption build failed"
 
 # ---------------------------------------------------------------- 5
 step "5/9  timeline"
@@ -76,8 +82,7 @@ step "9/9  stamp the measured numbers into the YouTube package"
 "$PY_BIN" "$SRC/stamp_metadata.py" || fail "could not stamp youtube-metadata"
 
 printf '\n\033[1;32m==> BUILD COMPLETE\033[0m\n'
-printf '    video/sample-final.mp4\n'
-printf '    video/sample-music-sfx-only.mp4\n'
+printf '    title-derived mp4 in %s/video/\n' "$DAY_DIR"
 printf '    script.md, facts.json, sources.md, cue-sheet.txt\n'
 printf '    qa-report.md, contact-sheet.png, brain-report.md\n'
 printf '\n\033[1;33mA human must still watch the mp4 once with sound on and once muted.\033[0m\n'

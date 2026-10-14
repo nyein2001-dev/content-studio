@@ -8,7 +8,7 @@
 
 **Spoken words:** 317  (target 240-330)
 
-**Runtime:** 1:50.9 s (3326 frames at 30 fps), measured from real TTS durations
+**Runtime:** 2:01.5 s (3645 frames at 30 fps), measured from real TTS durations
 
 Narration is Piper `en_US-ryan-high`, synthesised sentence by sentence. Every timestamp below is derived from the measured length of the audio, never estimated.
 
@@ -16,7 +16,7 @@ Narration is Piper `en_US-ryan-high`, synthesised sentence by sentence. Every ti
 
 ## Full voiceover, scene by scene
 
-### 00. `0:00.0 - 0:04.6`  **hook**
+### 00. `0:00.0 - 0:05.5`  **hook**
 
 - **On-screen headline:** `FIFTY DEGREAS` / `IN ONE NIGHT`
 - **Illustration:** `trace_crash`
@@ -29,12 +29,11 @@ Narration is Piper `en_US-ryan-high`, synthesised sentence by sentence. Every ti
 
 - **Caption groups** (frame = first frame the word is spoken):
   - f    4 `Attackers drove`  (yellow)
-  - f   24 `supermarket fridges`  (yellow)
-  - f   57 `in France`  (yellow)
-  - f   73 `to fifty`  (yellow)
-  - f   87 `degrees overnight`  (yellow)
+  - f   34 `supermarket fridges`  (yellow)
+  - f   69 `in France to fifty`  (yellow)
+  - f  103 `degrees, overnight.`  (yellow)
 
-### 01. `0:04.6 - 0:13.6`  **setup**
+### 01. `0:05.5 - 0:14.8`  **setup**
 
 - **On-screen headline:** `150 STORES` / `WOKE UP WARM`
 - **Illustration:** `store_elevation`
@@ -49,23 +48,17 @@ Narration is Piper `en_US-ryan-high`, synthesised sentence by sentence. Every ti
   - The web page card loads on top of the fridge, then covers the fridge
 
 - **Caption groups** (frame = first frame the word is spoken):
-  - f  137 `About a`  (yellow)
-  - f  149 `hundred and`  (yellow)
-  - f  169 `fifty of`  (yellow)
-  - f  183 `those stores`  (cyan)
-  - f  205 `woke up`  (yellow)
-  - f  217 `to warm`  (yellow)
-  - f  229 `cases and`  (cyan)
-  - f  245 `food in`  (yellow)
-  - f  257 `the bin`  (yellow)
-  - f  283 `Nobody had`  (yellow)
-  - f  298 `broken into`  (yellow)
-  - f  321 `a fridge`  (yellow)
-  - f  349 `Someone had`  (yellow)
-  - f  368 `loaded a`  (yellow)
-  - f  381 `web page`  (yellow)
+  - f  164 `About a hundred and`  (yellow)
+  - f  183 `fifty of those stores`  (yellow)
+  - f  215 `woke up to warm`  (yellow)
+  - f  246 `cases and food in the`  (yellow)
+  - f  285 `bin.`  (yellow)
+  - f  312 `Nobody had broken`  (yellow)
+  - f  336 `into a fridge.`  (yellow)
+  - f  382 `Someone had loaded`  (yellow)
+  - f  401 `a web page.`  (yellow)
 
-### 02. `0:13.6 - 0:21.6`  **controller**
+### 02. `0:14.8 - 0:23.9`  **controller**
 
 - **On-screen headline:** `ONE BOX` / `BEHIND THE CASES`
 - **Illustration:** `controller_cutaway`
@@ -79,21 +72,16 @@ Narration is Piper `en_US-ryan-high`, synthesised sentence by sentence. Every ti
   - Thin signal lines run from the box to three chilled cases
 
 - **Caption groups** (frame = first frame the word is spoken):
-  - f  409 `Behind the`  (yellow)
-  - f  421 `cases sits`  (cyan)
-  - f  440 `one small`  (yellow)
-  - f  458 `box that`  (yellow)
-  - f  475 `runs them`  (yellow)
-  - f  490 `all`  (yellow)
-  - f  510 `It reads`  (yellow)
-  - f  519 `the temperature`  (yellow)
-  - f  534 `probes holds`  (yellow)
-  - f  562 `the target`  (yellow)
-  - f  589 `and schedules`  (yellow)
-  - f  601 `the defrost`  (cyan)
-  - f  618 `cycle`  (yellow)
+  - f  443 `Behind the cases sits`  (yellow)
+  - f  478 `one small box that`  (yellow)
+  - f  514 `runs them all.`  (yellow)
+  - f  554 `It reads the`  (yellow)
+  - f  570 `temperature probes,`  (yellow)
+  - f  608 `holds the target,`  (yellow)
+  - f  643 `and schedules the`  (yellow)
+  - f  667 `defrost cycle.`  (yellow)
 
-### 03. `0:21.6 - 0:30.2`  **why_online**
+### 03. `0:23.9 - 0:33.4`  **why_online**
 
 - **On-screen headline:** `A WEB PAGE` / `IN THE STORE`
 - **Illustration:** `engineer_path`
@@ -107,24 +95,17 @@ Narration is Piper `en_US-ryan-high`, synthesised sentence by sentence. Every ti
   - The engineer's van stops travelling; the line stays lit
 
 - **Caption groups** (frame = first frame the word is spoken):
-  - f  648 `It has`  (yellow)
-  - f  652 `a web`  (cyan)
-  - f  661 `interface because`  (cyan)
-  - f  691 `the engineer`  (yellow)
-  - f  708 `who installed`  (yellow)
-  - f  729 `it has`  (yellow)
-  - f  744 `to clear`  (yellow)
-  - f  757 `alarms at`  (yellow)
-  - f  774 `night`  (yellow)
-  - f  794 `Driving to`  (yellow)
-  - f  809 `the shop`  (yellow)
-  - f  819 `for every`  (yellow)
-  - f  835 `alarm was`  (yellow)
-  - f  856 `the problem`  (yellow)
-  - f  868 `they were`  (yellow)
-  - f  880 `solving`  (yellow)
+  - f  716 `It has a web`  (yellow)
+  - f  734 `interface, because`  (yellow)
+  - f  767 `the engineer who`  (yellow)
+  - f  791 `installed it has to`  (yellow)
+  - f  820 `clear alarms at night.`  (yellow)
+  - f  875 `Driving to the shop`  (yellow)
+  - f  900 `for every alarm was`  (yellow)
+  - f  937 `the problem they`  (yellow)
+  - f  964 `were solving.`  (yellow)
 
-### 04. `0:30.2 - 0:43.6`  **the_flaw**
+### 04. `0:33.4 - 0:48.7`  **the_flaw**
 
 - **On-screen headline:** `A PASSWORD` / `MADE OF DATES`
 - **Illustration:** `code_of_day`
@@ -141,28 +122,21 @@ Narration is Piper `en_US-ryan-high`, synthesised sentence by sentence. Every ti
   - SEVERITY meter fills to 8.2 with a HIGH tag
 
 - **Caption groups** (frame = first frame the word is spoken):
-  - f  906 `Security researchers`  (yellow)
-  - f  934 `found three`  (yellow)
-  - f  959 `flaws in`  (cyan)
-  - f  982 `that interface`  (yellow)
-  - f 1019 `One was`  (yellow)
-  - f 1029 `a hidden`  (yellow)
-  - f 1042 `login generated`  (yellow)
-  - f 1077 `from the`  (yellow)
-  - f 1092 `controller's own`  (yellow)
-  - f 1113 `date`  (yellow)
-  - f 1136 `Anyone who`  (yellow)
-  - f 1149 `could reach`  (yellow)
-  - f 1159 `the page`  (cyan)
-  - f 1170 `could work`  (yellow)
-  - f 1184 `out that`  (yellow)
-  - f 1197 `day's code`  (yellow)
-  - f 1228 `It scored`  (yellow)
-  - f 1245 `8.2 out`  (yellow)
-  - f 1258 `of 10`  (yellow)
-  - f 1267 `for severity`  (yellow)
+  - f 1002 `Security researchers`  (yellow)
+  - f 1034 `found three flaws in`  (yellow)
+  - f 1076 `that interface.`  (yellow)
+  - f 1122 `One was a hidden`  (yellow)
+  - f 1143 `login, generated`  (yellow)
+  - f 1180 `from the controller's`  (yellow)
+  - f 1207 `own date.`  (yellow)
+  - f 1243 `Anyone who could`  (yellow)
+  - f 1261 `reach the page could`  (yellow)
+  - f 1291 `work out that day's`  (yellow)
+  - f 1325 `code.`  (yellow)
+  - f 1356 `It scored 8.2 out of 10`  (yellow)
+  - f 1419 `for severity.`  (yellow)
 
-### 05. `0:43.6 - 0:53.1`  **the_scale**
+### 05. `0:48.7 - 0:59.4`  **the_scale**
 
 - **On-screen headline:** `2,765 CONTROLLERS` / `ON THE INTERNET`
 - **Illustration:** `exposed_grid`
@@ -177,22 +151,20 @@ Narration is Piper `en_US-ryan-high`, synthesised sentence by sentence. Every ti
   - A PATCHED? chip stays grey and unreadable
 
 - **Caption groups** (frame = first frame the word is spoken):
-  - f 1307 `Scanning for`  (yellow)
-  - f 1326 `exposed controllers`  (cyan)
-  - f 1358 `the researchers`  (yellow)
-  - f 1382 `counted two`  (yellow)
-  - f 1399 `thousand seven`  (yellow)
-  - f 1422 `hundred and`  (yellow)
-  - f 1439 `sixty-five`  (yellow)
-  - f 1470 `Sitting on`  (yellow)
-  - f 1482 `the public`  (yellow)
-  - f 1492 `internet`  (yellow)
-  - f 1522 `Nobody knows`  (yellow)
-  - f 1541 `how many`  (yellow)
-  - f 1554 `were ever`  (yellow)
-  - f 1567 `patched`  (yellow)
+  - f 1460 `Scanning for`  (yellow)
+  - f 1477 `exposed controllers,`  (yellow)
+  - f 1520 `the researchers`  (yellow)
+  - f 1543 `counted two`  (yellow)
+  - f 1563 `thousand seven`  (yellow)
+  - f 1589 `hundred and`  (yellow)
+  - f 1601 `sixty-five.`  (yellow)
+  - f 1644 `Sitting on the public`  (yellow)
+  - f 1667 `internet.`  (yellow)
+  - f 1705 `Nobody knows how`  (yellow)
+  - f 1725 `many were ever`  (yellow)
+  - f 1746 `patched.`  (yellow)
 
-### 06. `0:53.1 - 1:07.4`  **legacy**
+### 06. `0:59.4 - 1:14.7`  **legacy**
 
 - **On-screen headline:** `MOST WERE` / `ALREADY UNSUPPORTED`
 - **Illustration:** `support_timeline`
@@ -207,26 +179,18 @@ Narration is Piper `en_US-ryan-high`, synthesised sentence by sentence. Every ti
   - AK-SC 355 card greys out at 2016
 
 - **Caption groups** (frame = first frame the word is spoken):
-  - f 1594 `The manufacturer`  (yellow)
-  - f 1608 `says most`  (yellow)
-  - f 1632 `of the`  (yellow)
-  - f 1639 `boxes that`  (yellow)
-  - f 1658 `were hit`  (yellow)
-  - f 1668 `were older`  (yellow)
-  - f 1681 `models it`  (yellow)
-  - f 1699 `no longer`  (yellow)
-  - f 1714 `updates`  (yellow)
-  - f 1744 `The AK-SM`  (yellow)
-  - f 1764 `800 stopped`  (yellow)
-  - f 1790 `getting security`  (yellow)
-  - f 1811 `fixes in`  (yellow)
-  - f 1837 `2021`  (yellow)
-  - f 1886 `The AK-SC`  (yellow)
-  - f 1910 `355 was`  (yellow)
-  - f 1953 `phased out`  (yellow)
-  - f 1970 `in 2016`  (yellow)
+  - f 1782 `The manufacturer`  (yellow)
+  - f 1807 `says most of the`  (yellow)
+  - f 1831 `boxes that were hit`  (yellow)
+  - f 1861 `were older models it`  (yellow)
+  - f 1899 `no longer updates.`  (yellow)
+  - f 1952 `The AK-SM 800`  (yellow)
+  - f 1997 `stopped getting`  (yellow)
+  - f 2018 `security fixes in 2021`  (yellow)
+  - f 2097 `The AK-SC 355 was`  (yellow)
+  - f 2161 `phased out in 2016`  (yellow)
 
-### 07. `1:07.4 - 1:18.5`  **defrost**
+### 07. `1:14.7 - 1:26.5`  **defrost**
 
 - **On-screen headline:** `DEFROST, FOREVER`
 - **Illustration:** `defrost_cycle`
@@ -241,27 +205,18 @@ Narration is Piper `en_US-ryan-high`, synthesised sentence by sentence. Every ti
   - The clock ring loses its stop mark; the heater bar stays lit
 
 - **Caption groups** (frame = first frame the word is spoken):
-  - f 2023 `A freezer`  (yellow)
-  - f 2032 `has to`  (yellow)
-  - f 2053 `run a`  (yellow)
-  - f 2061 `defrost cycle`  (cyan)
-  - f 2087 `or ice`  (yellow)
-  - f 2111 `builds up`  (yellow)
-  - f 2134 `on the`  (yellow)
-  - f 2142 `coil`  (yellow)
-  - f 2164 `That cycle`  (yellow)
-  - f 2174 `is a`  (yellow)
-  - f 2190 `normal scheduled`  (yellow)
-  - f 2216 `job`  (yellow)
-  - f 2243 `Reporting says`  (yellow)
-  - f 2261 `the attackers`  (yellow)
-  - f 2276 `simply turned`  (yellow)
-  - f 2300 `it on`  (yellow)
-  - f 2310 `and never`  (yellow)
-  - f 2322 `let it`  (yellow)
-  - f 2334 `stop`  (yellow)
+  - f 2241 `A freezer has to run a`  (yellow)
+  - f 2273 `defrost cycle, or ice`  (yellow)
+  - f 2326 `builds up on the coil.`  (yellow)
+  - f 2377 `That cycle is a`  (yellow)
+  - f 2399 `normal, scheduled`  (yellow)
+  - f 2432 `job.`  (yellow)
+  - f 2462 `Reporting says the`  (yellow)
+  - f 2485 `attackers simply`  (yellow)
+  - f 2517 `turned it on and`  (yellow)
+  - f 2548 `never let it stop.`  (yellow)
 
-### 08. `1:18.5 - 1:28.0`  **the_reveal**
+### 08. `1:26.5 - 1:37.2`  **the_reveal**
 
 - **On-screen headline:** `BY MORNING,` / `FIFTY DEGREES`
 - **Illustration:** `morning_scene`
@@ -277,21 +232,18 @@ Narration is Piper `en_US-ryan-high`, synthesised sentence by sentence. Every ti
   - A gavel-free inquiry card stamps: INQUIRY OPENED
 
 - **Caption groups** (frame = first frame the word is spoken):
-  - f 2355 `By morning`  (yellow)
-  - f 2376 `the cases`  (cyan)
-  - f 2385 `were at`  (yellow)
-  - f 2400 `fifty degrees`  (yellow)
-  - f 2438 `France's CERT`  (yellow)
-  - f 2460 `published an`  (yellow)
-  - f 2478 `alert the`  (cyan)
-  - f 2490 `next day`  (yellow)
-  - f 2515 `naming the`  (yellow)
-  - f 2526 `controller series`  (cyan)
-  - f 2565 `A Paris`  (yellow)
-  - f 2575 `prosecutor opened`  (yellow)
-  - f 2604 `an inquiry`  (yellow)
+  - f 2595 `By morning, the`  (yellow)
+  - f 2620 `cases were at fifty`  (yellow)
+  - f 2651 `degrees.`  (yellow)
+  - f 2688 `France's CERT`  (yellow)
+  - f 2708 `published an alert`  (yellow)
+  - f 2737 `the next day,`  (yellow)
+  - f 2769 `naming the`  (yellow)
+  - f 2781 `controller series.`  (yellow)
+  - f 2834 `A Paris prosecutor`  (yellow)
+  - f 2865 `opened an inquiry.`  (yellow)
 
-### 09. `1:28.0 - 1:36.6`  **the_gap**
+### 09. `1:37.2 - 1:46.2`  **the_gap**
 
 - **On-screen headline:** `NO CVE.` / `NO NAMES.`
 - **Illustration:** `unknown_then_advice`
@@ -305,22 +257,15 @@ Narration is Piper `en_US-ryan-high`, synthesised sentence by sentence. Every ti
   - The store's connection line is cut with a drawn X
 
 - **Caption groups** (frame = first frame the word is spoken):
-  - f 2639 `Still no`  (yellow)
-  - f 2664 `one has`  (yellow)
-  - f 2674 `named the`  (yellow)
-  - f 2690 `flaw that`  (cyan)
-  - f 2706 `was used`  (yellow)
-  - f 2721 `or how`  (yellow)
-  - f 2742 `they got`  (yellow)
-  - f 2754 `in`  (yellow)
-  - f 2783 `The CERT's`  (yellow)
-  - f 2791 `advice is`  (yellow)
-  - f 2810 `blunt take`  (yellow)
-  - f 2834 `the box`  (yellow)
-  - f 2845 `off the`  (yellow)
-  - f 2861 `internet`  (yellow)
+  - f 2915 `Still, no one has`  (yellow)
+  - f 2949 `named the flaw that`  (yellow)
+  - f 2974 `was used, or how`  (yellow)
+  - f 3009 `they got in.`  (yellow)
+  - f 3056 `The CERT's advice is`  (yellow)
+  - f 3086 `blunt: take the box`  (yellow)
+  - f 3134 `off the internet.`  (yellow)
 
-### 10. `1:36.6 - 1:46.3`  **payoff**
+### 10. `1:46.2 - 1:56.5`  **payoff**
 
 - **On-screen headline:** `THE FRIDGE WAS` / `NEVER OFFLINE`
 - **Illustration:** `loop_trace`
@@ -335,23 +280,17 @@ Narration is Piper `en_US-ryan-high`, synthesised sentence by sentence. Every ti
   - The trace holds flat for the closing beat
 
 - **Caption groups** (frame = first frame the word is spoken):
-  - f 2897 `A refrigeration`  (yellow)
-  - f 2920 `controller is`  (cyan)
-  - f 2942 `not something`  (yellow)
-  - f 2960 `anyone chose`  (yellow)
-  - f 2984 `to put`  (yellow)
-  - f 2999 `online`  (yellow)
-  - f 3027 `It just`  (yellow)
-  - f 3039 `answers a`  (yellow)
-  - f 3054 `web page`  (cyan)
-  - f 3067 `wherever it`  (yellow)
-  - f 3086 `is plugged`  (yellow)
-  - f 3104 `in`  (yellow)
-  - f 3122 `The fridge`  (cyan)
-  - f 3129 `was never`  (yellow)
-  - f 3147 `really offline`  (yellow)
+  - f 3187 `A refrigeration`  (yellow)
+  - f 3209 `controller is not`  (yellow)
+  - f 3241 `something anyone`  (yellow)
+  - f 3269 `chose to put online.`  (yellow)
+  - f 3325 `It just answers a web`  (yellow)
+  - f 3358 `page, wherever it is`  (yellow)
+  - f 3394 `plugged in.`  (yellow)
+  - f 3428 `The fridge was never`  (yellow)
+  - f 3451 `really offline.`  (yellow)
 
-### 11. `1:46.3 - 1:49.7`  **question**
+### 11. `1:56.5 - 2:00.3`  **question**
 
 - **On-screen headline:** `YOUR TURN`
 - **Illustration:** `home_network`
@@ -364,13 +303,11 @@ Narration is Piper `en_US-ryan-high`, synthesised sentence by sentence. Every ti
   - One dot pulses amber and a question mark sits above it
 
 - **Caption groups** (frame = first frame the word is spoken):
-  - f 3190 `So is`  (yellow)
-  - f 3210 `anything in`  (yellow)
-  - f 3225 `your home`  (yellow)
-  - f 3235 `reachable from`  (yellow)
-  - f 3254 `the internet`  (yellow)
+  - f 3495 `So: is anything in`  (yellow)
+  - f 3535 `your home reachable`  (yellow)
+  - f 3562 `from the internet?`  (yellow)
 
-### 12. `1:49.7 - 1:50.9`  **endcard**
+### 12. `2:00.3 - 2:01.5`  **endcard**
 
 - **On-screen headline:** `FIFTY DEGREAS` / `IN ONE NIGHT`
 - **Illustration:** `loop_frame`

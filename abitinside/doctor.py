@@ -22,6 +22,10 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 os.environ.setdefault("HF_HOME", str(HERE / ".cache" / "huggingface"))
 
+from pipeline.fonts import write_fonts_conf  # noqa: E402
+
+write_fonts_conf()
+
 RESULTS: list[tuple[str, str, bool, str]] = []
 
 
@@ -280,32 +284,25 @@ def _():
 
 
 # ------------------------------------------------------------------ voice
-@check("voice: Piper model loads and synthesises")
+@check("voice: en-US-AndrewNeural via edge-tts")
 def _():
-    import numpy as np
-    import soundfile as sf
-    from piper import PiperVoice, SynthesisConfig
+    import asyncio
 
-    vdir = HERE / "assets" / "voices"
-    models = sorted(vdir.glob("*.onnx"))
-    if not models:
-        raise AssertionError(f"no .onnx in {vdir}")
-    voice = PiperVoice.load(str(models[0]))
-    chunks = list(voice.synthesize(
-        "The dot projector reads depth in milliseconds.",
-        syn_config=SynthesisConfig(length_scale=1.0, noise_scale=0.667,
-                                   noise_w_scale=0.8, volume=1.0)))
-    if not chunks:
-        raise AssertionError("synthesise returned no audio chunks")
-    audio = np.concatenate([c.audio_int16_array for c in chunks]).astype(np.float32) / 32768.0
-    if audio.size < 8000:
-        raise AssertionError(f"suspiciously short utterance ({audio.size} samples)")
-    peak = float(np.max(np.abs(audio)))
-    if peak <= 0.01:
-        raise AssertionError("utterance is silent")
-    out = CACHE / "doctor_voice.wav"
-    sf.write(str(out), audio, 22050)
-    return f"{models[0].name}, {audio.size / 22050:.2f}s, peak {peak:.2f}"
+    from pipeline.config import VOICE_ID, require_voice
+    from pipeline.tts import ensure_voice, synthesise
+
+    require_voice(VOICE_ID)
+    try:
+        require_voice("en_US-ryan-high")
+    except SystemExit:
+        pass
+    else:
+        raise AssertionError("a non-Andrew voice was accepted")
+    asyncio.run(ensure_voice())
+    audio, words, _loud = synthesise("The controller reads the temperature probe.", "+0%")
+    if audio.size < 8000 or len(words) < 2:
+        raise AssertionError(f"Andrew returned {audio.size} samples and {len(words)} words")
+    return f"{VOICE_ID}, {audio.size / 48000:.2f}s, {len(words)} words"
 
 
 @check("voice: espeak-ng data is bundled (no system espeak needed)")

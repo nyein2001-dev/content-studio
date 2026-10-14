@@ -18,9 +18,14 @@ import sys
 from pathlib import Path
 
 DAY = Path(__file__).resolve().parent.parent
+ABIT = DAY.parent
+if str(ABIT) not in sys.path:
+    sys.path.insert(0, str(ABIT))
+from pipeline.export import publish_paths  # noqa: E402
+
 FFMPEG = Path(os.environ["FFMPEG"])
 FFPROBE = Path(os.environ.get("FFPROBE", FFMPEG.with_name("ffprobe")))
-VIDEO = DAY / "video" / "sample-final.mp4"
+VIDEO, _MUSIC = publish_paths(DAY)
 JOUT = DAY / "youtube-metadata.json"
 MOUT = DAY / "youtube-metadata.md"
 
@@ -70,7 +75,7 @@ def main() -> int:
     if MOUT.exists():
         md = MOUT.read_text(encoding="utf-8")
         mins, secs = divmod(tech["duration_seconds"], 60)
-        stamp = (f"**File:** `video/sample-final.mp4` \u00b7 {tech['width']}x{tech['height']} \u00b7 "
+        stamp = (f"**File:** `video/{VIDEO.name}` \u00b7 {tech['width']}x{tech['height']} \u00b7 "
                  f"{tech['fps']} fps \u00b7 {int(mins)}:{secs:04.1f} \u00b7 {tech['size_mb']} MB")
         new = re.sub(r"^\*\*File:\*\*.*$", stamp.replace("\\", "\\\\"), md, count=1, flags=re.M)
         if new != md:

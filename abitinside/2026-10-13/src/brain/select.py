@@ -38,6 +38,14 @@ def main() -> int:
     winner = eligible[0]
     runner = eligible[1] if len(eligible) > 1 else None
 
+    sys.path.insert(0, str(DAY.parent))
+    from pipeline.brain.guard import assert_not_duplicate
+    assert_not_duplicate(
+        {"title": winner.get("title", ""), "question": winner.get("question", ""),
+         "mechanism": winner.get("id", ""), "id": winner.get("id", "")},
+        DAY.name,
+    )
+
     # Section 4.6 emerging-vs-evergreen clause. It only ever *promotes* an
     # emerging candidate that is within 3 points of the best evergreen, so when
     # the leader is already emerging and ahead, the clause is not reached.

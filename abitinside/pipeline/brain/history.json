@@ -1,0 +1,24 @@
+{
+  "entries": [
+    {"day": "2026-10-08", "title": "tap to pay payment tokens", "question": "how tap to pay tokens work", "mechanism": "payment tokens"},
+    {"day": "2026-10-08", "title": "touchscreen capacitive sensing", "question": "how a touchscreen senses a finger", "mechanism": "capacitive sensing"},
+    {"day": "2026-10-09", "title": "dns lookup", "question": "how a phone finds a website", "mechanism": "dns lookup"},
+    {"day": "2026-10-09", "title": "variable aperture", "question": "how a phone aperture changes", "mechanism": "variable aperture"},
+    {"day": "2026-10-09", "title": "intelligent ui", "question": "how an intelligent ui is generated", "mechanism": "intelligent ui"},
+    {"day": "2026-10-10", "title": "qr code error correction", "question": "how a qr code survives damage", "mechanism": "qr code error correction"},
+    {"day": "2026-10-10", "title": "gps and relativity", "question": "why gps needs relativity", "mechanism": "gps relativity"},
+    {"day": "2026-10-10", "title": "ai agent loop", "question": "how an ai agent loops", "mechanism": "agent loop"},
+    {"day": "2026-10-10", "title": "digital legacy", "question": "what happens to an account after death", "mechanism": "digital legacy"},
+    {"day": "2026-10-10", "title": "ai tokens", "question": "how a model counts tokens", "mechanism": "ai tokens"},
+    {"day": "2026-10-11", "title": "file deletion trim", "question": "what happens when a file is deleted", "mechanism": "trim"},
+    {"day": "2026-10-11", "title": "undersea cables", "question": "how data crosses the ocean", "mechanism": "undersea cables"},
+    {"day": "2026-10-11", "title": "link rot", "question": "why links die", "mechanism": "link rot"},
+    {"day": "2026-10-11", "title": "wireless charging road", "question": "how a road charges a car", "mechanism": "wireless charging road"},
+    {"day": "2026-10-11", "title": "diffusion image generation", "question": "how a diffusion model makes an image", "mechanism": "diffusion image generation"},
+    {"day": "2026-10-11", "title": "bot traffic", "question": "how much traffic is bots", "mechanism": "bot traffic"},
+    {"day": "2026-10-11", "title": "year 2038", "question": "what breaks in 2038", "mechanism": "year 2038"},
+    {"day": "2026-10-11", "title": "voyager light day", "question": "how far voyager is", "mechanism": "voyager light day"},
+    {"day": "2026-10-11", "title": "face id dot projector", "question": "how face id projects dots", "mechanism": "face id dot projector"},
+    {"day": "2026-10-13", "title": "How Hackers Heated 150 Supermarket Fridges to 50C", "question": "How did attackers get to a supermarket fridge?", "mechanism": "refrigeration controller web interface"}
+  ]
+}

@@ -98,13 +98,26 @@ def caption(txt: Text, group: dict, frame: float, scene_end: int) -> list | None
 
 
 def draw_caption(cr: cairo.Context, txt: Text, c, alpha: float = 1.0) -> None:
-    words, key, colour, e, frame = c
-    size = T.SIZE_CAPTION
-    txt.font("pop", size, "bold")
-    runs = [(w, colour if w == key else T.INK) for w in words]
-    total = sum(txt.width(w) for w, _ in runs)
-    x = T.CENTER_X - total / 2 + (1 - e) * 18
-    y = T.CAPTION_CENTER_Y + size * CAP_RATIO * 0.5 + (1 - e) * 12
+    """Delegate to the shared caption painter. Day code must not draw words itself."""
+    import sys
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[3]
+    if str(root) not in sys.path:
+        sys.path.insert(0, str(root))
+    from pipeline.captions import visible_runs
+
+    frame = c[4] if isinstance(c, tuple) else c.get("frame", 0)
+    group = c if isinstance(c, dict) else None
+    if group is None:
+        return
+    runs, ease = visible_runs(group, frame)
+    if not runs:
+        return
+    txt.font("pop", T.SIZE_CAPTION, "bold")
+    total = sum(txt.width(piece) for piece, _colour in runs)
+    x = T.CENTER_X - total / 2 + (1 - ease) * 18
+    y = T.CAPTION_CENTER_Y + T.SIZE_CAPTION * 0.70 * 0.5 + (1 - ease) * 12
     txt.runs(x, y, runs, alpha, align="left")
 
 

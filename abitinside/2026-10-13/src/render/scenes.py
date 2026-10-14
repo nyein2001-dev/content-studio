@@ -19,7 +19,7 @@ from pathlib import Path
 import cairo
 
 import theme as T
-from components import (big_number, caption, card, chip, chilled_case, controller_box,
+from components import (big_number, card, chip, chilled_case, controller_box,
                          dot_grid, headline, house, illustrative, meter, pill,
                          store_elevation, trace, wordmark)
 from engine import Text, fill_colour, line, paint_glow, rrect, stroke_colour
@@ -406,8 +406,6 @@ def compose_frame(cr: cairo.Context, txt: Text, frame: int, tl: dict,
                   bg: cairo.ImageSurface, state: dict) -> None:
     """One complete frame: background, the scene's own artwork, headline,
     underline and the burned-in caption that belongs to this frame."""
-    from components import draw_caption
-
     scenes = tl["scenes"]
     sc = next((s for s in scenes if s["start_frame"] <= frame < s["end_frame"]),
               scenes[-1])
@@ -454,17 +452,24 @@ def compose_frame(cr: cairo.Context, txt: Text, frame: int, tl: dict,
         headline(cr, txt, sc["headline"], frame, sc["start_frame"],
                  sc["end_frame"], accent)
 
-    # caption for this frame
+    # caption for this frame, drawn by the shared pipeline so spaces and
+    # word-end times cannot drift back into a day-local renderer
+    import sys
+    from pathlib import Path as _Path
+    _root = _Path(__file__).resolve().parents[3]
+    if str(_root) not in sys.path:
+        sys.path.insert(0, str(_root))
+    from pipeline.captions import visible_runs
+
     for c in sc["captions"]:
-        cap = caption(txt, c, frame, sc["end_frame"])
-        if cap is not None:
-            words, key, colour, e, _ = cap
-            txt.font("pop", T.SIZE_CAPTION, "bold")
-            runs = [(w, colour if w == key else T.INK) for w in words]
-            total = sum(txt.width(w) for w, _ in runs)
-            x = T.CENTER_X - total / 2 + (1 - e) * 18
-            y = T.CAPTION_CENTER_Y + T.SIZE_CAPTION * 0.70 * 0.5 + (1 - e) * 12
-            txt.runs(x, y, runs, 1.0, align="left")
-            break
+        runs, ease = visible_runs(c, frame)
+        if not runs:
+            continue
+        txt.font("pop", T.SIZE_CAPTION, "bold")
+        total = sum(txt.width(piece) for piece, _colour in runs)
+        x = T.CENTER_X - total / 2 + (1 - ease) * 18
+        y = T.CAPTION_CENTER_Y + T.SIZE_CAPTION * 0.70 * 0.5 + (1 - ease) * 12
+        txt.runs(x, y, runs, 1.0, align="left")
+        break
 
     wordmark(cr, txt, 1.0, 1.0)
