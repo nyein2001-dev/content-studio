@@ -1,0 +1,55 @@
+{
+  "brand": "Arkad's Ledger",
+  "series": "MAP OF MONEY",
+  "episode": 2,
+  "title": "Why one dollar buys two different lives",
+  "title_length": 39,
+  "description": "One American dollar buys about eight dollars worth of life in Nigeria. This short maps the price level ratio, the number that shows what your money actually buys once prices are local.\n\nThe World Bank measures the spread as a price level ratio. The United States is the reference at 1.000. The United Kingdom is 0.89, Germany 0.80, Japan 0.65, Mexico 0.54, India 0.23 and Nigeria 0.128. That is a 7.8 times gap between the highest and lowest economy in this set. Figures are real published data for 2025, the latest available release. The two numbers are both correct and answer different questions: an exchange rate is a trade quote, a price level is a shopping list.\n\nSources:\nWorld Bank, World Development Indicators, GDP per capita (current US$), NY.GDP.PCAP.CD, 2025: https://api.worldbank.org/v2/country/all/indicator/NY.GDP.PCAP.CD?format=json&date=2021:2025\nWorld Bank, World Development Indicators, GDP per capita, PPP (constant 2021 international $), NY.GDP.PCAP.PP.CD, 2025: https://api.worldbank.org/v2/country/all/indicator/NY.GDP.PCAP.PP.CD?format=json&date=2021:2025\nMap boundaries: Natural Earth 10m (public domain).\n\nIllustrative values and shapes are labelled on screen in the video.\nEducational content, not financial advice.\n\n#economics #money #purchasingpower #ArkadsLedger #Shorts",
+  "description_bytes": 1302,
+  "hashtags": [
+    "#economics",
+    "#money",
+    "#purchasingpower",
+    "#ArkadsLedger",
+    "#Shorts"
+  ],
+  "tags": [
+    "purchasing power parity",
+    "price level ratio",
+    "inflation explained",
+    "cost of living by country",
+    "exchange rate",
+    "world bank data",
+    "money explained",
+    "map of money",
+    "personal finance basics",
+    "global economics",
+    "arkads ledger"
+  ],
+  "tags_length": 211,
+  "pinned_comment": "Sources and data dates:\n- World Bank, World Development Indicators, NY.GDP.PCAP.CD (GDP per capita, current US$), data year 2025.\n- World Bank, World Development Indicators, NY.GDP.PCAP.PP.CD (GDP per capita, PPP), data year 2025.\n- Map boundaries: Natural Earth 10m.\n\nThe price level ratio is computed in the video as nominal GDP per capita divided by PPP GDP per capita. Every figure on screen comes from those two published series; nothing is estimated. Any illustrative value is labelled on screen.\n\nEducational content, not financial advice.",
+  "settings": {
+    "category": "Education",
+    "language": "English",
+    "made_for_kids": false,
+    "visibility": "Public",
+    "comments": true,
+    "scheduled": false,
+    "altered_or_synthetic_disclosure": true,
+    "disclosure_reason": "fully original vector animation with a locally generated neural narrator",
+    "disclosure_policy_url": "https://support.google.com/youtube/answer/14328491"
+  },
+  "checklist": [
+    "Signed in as the Arkad's Ledger channel, never another brand.",
+    "Custom cover uploaded from thumbnail/sample-thumb.jpg (1080x1920, under 2 MB).",
+    "Title, description, hashtags and the pinned comment pasted from this file.",
+    "Category Education, language English, audience not made for kids, visibility Public, comments on.",
+    "Altered or synthetic content disclosure set as recorded below.",
+    "Watched once on a phone with sound and once muted before publishing."
+  ],
+  "data_year": "2025",
+  "sources": [
+    "https://api.worldbank.org/v2/country/all/indicator/NY.GDP.PCAP.CD?format=json&date=2021:2025&per_page=1000&mrnev=2"
+  ],
+  "disclaimer": "Educational content, not financial advice."
+}

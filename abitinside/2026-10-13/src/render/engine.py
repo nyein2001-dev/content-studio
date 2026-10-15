@@ -16,12 +16,47 @@ from __future__ import annotations
 
 import cairo
 import numpy as np
+import sys
 
 from pathlib import Path
 
 import theme as T
 
+# Channel-independent drawing primitives and the frame->FFmpeg driver now live in
+# the shared package, so both channels rasterise, glow and pipe frames identically.
+# Only the brand-specific background plate, the brand glow tint and the text
+# binding stay here.
+_ROOT = Path(__file__).resolve().parents[4]
+if str(_ROOT) not in sys.path:
+    sys.path.insert(0, str(_ROOT))
+
+from videokit.engine import (  # noqa: E402,F401
+    FPS,
+    H,
+    W,
+    ENCODE_FLAGS,
+    dashed_rect,
+    line,
+    new_surface,
+    render_to_ffmpeg,
+    rrect,
+    to_rgb_bytes,
+)
+
 W, H, FPS = T.W, T.H, T.FPS
+
+
+def fill_colour(cr, colour: str, alpha: float = 1.0) -> None:
+    from videokit.engine import fill
+
+    fill(cr, colour, alpha)
+
+
+def stroke_colour(cr, colour: str, width: float = T.STROKE, alpha: float = 1.0) -> None:
+    from videokit.engine import stroke
+
+    stroke(cr, colour, width, alpha)
+
 
 def install_fonts() -> str:
     """Point fontconfig at the four TTFs this project owns. Idempotent."""
@@ -51,11 +86,6 @@ def install_fonts() -> str:
 
 
 # ------------------------------------------------------------------ surfaces
-def new_surface(w: int = W, h: int = H) -> tuple[cairo.ImageSurface, cairo.Context]:
-    surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, w, h)
-    return surf, cairo.Context(surf)
-
-
 def build_background() -> cairo.ImageSurface:
     """Deep navy vertical gradient + a soft glow behind the illustration + a
     sparse starfield + +/-1 level dither. Baked once, reused on every frame."""
@@ -223,157 +253,3 @@ def wrapped_lines(text: str, max_w: float, fn) -> list[str]:
     if cur:
         lines.append(cur)
     return lines
-
-
-# ------------------------------------------------------------------ shapes
-def rrect(cr: cairo.Context, x, y, w, h, r) -> None:
-    r = min(r, w / 2, h / 2)
-    cr.new_sub_path()
-    cr.arc(x + w - r, y + r, r, -1.5708, 0)
-    cr.arc(x + w - r, y + h - r, r, 0, 1.5708)
-    cr.arc(x + r, y + h - r, r, 1.5708, 3.1416)
-    cr.arc(x + r, y + r, r, 3.1416, 4.7124)
-    cr.close_path()
-
-
-def stroke_colour(cr, colour: str, width: float = T.STROKE, alpha: float = 1.0) -> None:
-    r, g, b = T.hex_to_rgb(colour)
-    cr.set_source_rgba(r, g, b, alpha)
-    cr.set_line_width(width)
-    cr.stroke()
-
-
-def fill_colour(cr, colour: str, alpha: float = 1.0) -> None:
-    r, g, b = T.hex_to_rgb(colour)
-    cr.set_source_rgba(r, g, b, alpha)
-    cr.fill()
-
-
-def line(cr, x0, y0, x1, y1, colour: str, width: float = T.STROKE,
-         alpha: float = 1.0, dash=None) -> None:
-    r, g, b = T.hex_to_rgb(colour)
-    cr.set_source_rgba(r, g, b, alpha)
-    cr.set_line_width(width)
-    if dash:
-        cr.set_dash(dash)
-    else:
-        cr.set_dash([])
-    cr.move_to(x0, y0)
-    cr.line_to(x1, y1)
-    cr.stroke()
-    cr.set_dash([])
-
-
-def dashed_rect(cr, x, y, w, h, r, colour, width=T.STROKE, alpha=1.0, dash=(10, 12)) -> None:
-    rrect(cr, x, y, w, h, r)
-    stroke_colour(cr, colour, width, alpha)
-
-
-def to_rgb_bytes(surf: cairo.ImageSurface) -> bytes:
-    """ARGB32 (premultiplied, BGRA in memory) -> packed RGB24 for FFmpeg."""
-    h = surf.get_height()
-    w = surf.get_width()
-    stride = surf.get_stride() // 4
-    a = np.frombuffer(surf.get_data(), dtype=np.uint8).reshape(h, stride, 4)
-    return np.ascontiguousarray(a[:, :w, [2, 1, 0]]).tobytes()
-
-
-# ------------------------------------------------------------------ the loop
-_STATE: dict = {}
-
-
-def _init_worker(timeline_path: str, frames_path: str) -> None:
-    import json
-    import sys
-
-    root = Path(__file__).resolve().parents[3]
-    if str(root) not in sys.path:
-        sys.path.insert(0, str(root))
-
-    install_fonts()
-    surf, cr = new_surface()
-    bg = build_background()
-    _STATE["surf"] = surf
-    _STATE["cr"] = cr
-    _STATE["txt"] = Text(cr)
-    _STATE["bg"] = bg
-    _STATE["tl"] = json.loads(Path(timeline_path).read_text(encoding="utf-8"))
-
-
-def _render_chunk(task):
-    start, count = task
-    from scenes import compose_frame
-
-    cr = _STATE["cr"]
-    txt = _STATE["txt"]
-    tl = _STATE["tl"]
-    bg = _STATE["bg"]
-    surf = _STATE["surf"]
-    out = []
-    for i in range(start, start + count):
-        cr.set_operator(cairo.OPERATOR_OVER)
-        cr.paint()
-        compose_frame(cr, txt, i, tl, bg, _STATE)
-        surf.flush()
-        out.append(to_rgb_bytes(surf))
-    return start, b"".join(out)
-
-
-def render_to_ffmpeg(out_path, timeline_path: str, workers: int = 2,
-                     chunk: int = 8, progress=None) -> int:
-    """Render every frame and pipe raw RGB straight into FFmpeg's stdin.
-
-    No PNG sequence is ever written to disk.
-    """
-    import json
-    import multiprocessing as mp
-    import os
-    import subprocess
-    import time
-
-    tl = json.loads(Path(timeline_path).read_text(encoding="utf-8"))
-    total = tl["total_frames"]
-    Path(out_path).parent.mkdir(parents=True, exist_ok=True)
-
-    cmd = [
-        os.environ["FFMPEG"], "-y", "-hide_banner", "-loglevel", "error",
-        "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS),
-        "-i", "-",
-        "-an",
-        "-c:v", "libx264", "-profile:v", "high", "-level", "4.2",
-        "-pix_fmt", "yuv420p", "-crf", "16", "-preset", "slow", "-tune", "animation",
-        "-g", "60", "-bf", "2",
-        "-colorspace", "bt709", "-color_primaries", "bt709", "-color_trc", "bt709",
-        "-r", str(FPS), "-video_track_timescale", "90000",
-        str(out_path),
-    ]
-    proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
-    tasks = [(s, min(chunk, total - s)) for s in range(0, total, chunk)]
-
-    t0 = time.time()
-    written = 0
-    ctx = mp.get_context("fork")
-    try:
-        if workers <= 1:
-            _init_worker(timeline_path, str(out_path))
-            for t in tasks:
-                _, blob = _render_chunk(t)
-                proc.stdin.write(blob)
-                written += t[1]
-                if progress:
-                    progress(written, total, time.time() - t0)
-        else:
-            with ctx.Pool(processes=workers, initializer=_init_worker,
-                          initargs=(timeline_path, str(out_path))) as pool:
-                for _, blob in pool.imap(_render_chunk, tasks, chunksize=1):
-                    proc.stdin.write(blob)
-                    written += blob.__len__() // (W * H * 3)
-                    if progress:
-                        progress(written, total, time.time() - t0)
-    finally:
-        proc.stdin.close()
-    err = proc.stderr.read().decode("utf-8", "replace")
-    rc = proc.wait()
-    if rc != 0:
-        raise RuntimeError(f"ffmpeg encode failed ({rc}): {err[:600]}")
-    return total

@@ -11,7 +11,14 @@ unset _ABIT_ENV_DIR
 export ABIT_REPO="$(cd "$ABIT_HOME/.." && pwd)"
 export ABIT_DAY_DIR="${ABIT_DAY_DIR:-$ABIT_HOME/2026-10-13}"
 
-export VENV_DIR="$ABIT_HOME/.venv"
+# One virtual environment for the whole studio, at the repository root.
+# Falls back to a channel-local .venv if the shared one is absent.
+if [ -x "$ABIT_REPO/.venv/bin/python" ]; then
+  VENV_DIR="$ABIT_REPO/.venv"
+else
+  VENV_DIR="$ABIT_HOME/.venv"
+fi
+export VENV_DIR
 export TOOLS_DIR="$ABIT_HOME/tools"
 export CDEPS_DIR="$TOOLS_DIR/cdeps"
 export TC_DIR="$TOOLS_DIR/toolchain"
@@ -49,6 +56,9 @@ export CXX="${CXX:-x86_64-conda-linux-gnu-g++}"
 export AR="${AR:-x86_64-conda-linux-gnu-ar}"
 
 export PATH="$FFMPEG_DIR/bin:$USERBIN:$MMAMBA_DIR/bin:$VENV_DIR/bin:$TC_DIR/bin:$CDEPS_DIR/bin:$PATH"
+
+# The shared engine both channels import from.
+export PYTHONPATH="$ABIT_REPO${PYTHONPATH:+:$PYTHONPATH}"
 
 export PY="$VENV_DIR/bin/python"
 export FFMPEG="$FFMPEG_DIR/bin/ffmpeg"

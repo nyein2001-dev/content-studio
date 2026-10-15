@@ -5,6 +5,9 @@ A Bit Inside - video/audio muxing (section 9).
 The renderer produces a silent, fully encoded video-only file. This module attaches
 the mastered audio twice: once to the full mix and once to the no-narration mix,
 producing the two deliverables without re-encoding the picture.
+
+The muxer itself is channel-independent and now lives in `videokit.mux`; this
+module keeps the channel's publish-naming policy and re-exports `mux` unchanged.
 """
 from __future__ import annotations
 
@@ -14,47 +17,11 @@ import sys
 import time
 from pathlib import Path
 
-FFMPEG = os.environ["FFMPEG"]
+_ROOT = Path(__file__).resolve().parents[4]
+if str(_ROOT) not in sys.path:
+    sys.path.insert(0, str(_ROOT))
 
-
-def mux(video_in: Path, audio_in: Path, out: Path) -> None:
-    """Mux into a sibling temp file and then replace the target.
-
-    Writing straight over an existing .mp4 on a Windows-mounted drive can fail with
-    "Permission denied" while the previous file is still mapped by the OS or an
-    indexer. Writing alongside and renaming afterwards avoids that; the delete and
-    retry cover the residual case.
-    """
-    tmp = out.with_suffix(".muxing.mp4")
-    if tmp.exists():
-        tmp.unlink()
-    cmd = [
-        FFMPEG, "-y", "-hide_banner", "-loglevel", "error",
-        "-i", str(video_in), "-i", str(audio_in),
-        "-map", "0:v:0", "-map", "1:a:0",
-        "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-ac", "2",
-        "-movflags", "+faststart", "-shortest", str(tmp),
-    ]
-    last = ""
-    for attempt in range(4):
-        r = subprocess.run(cmd, capture_output=True, text=True)
-        if r.returncode == 0 and tmp.exists():
-            break
-        last = r.stderr[:500]
-        time.sleep(2.0 * (attempt + 1))
-    else:
-        raise RuntimeError(f"mux failed after 4 attempts: {last}")
-
-    for attempt in range(4):
-        try:
-            if out.exists():
-                out.unlink()
-            os.replace(tmp, out)
-            return
-        except OSError as exc:                    # Windows file lock
-            last = str(exc)
-            time.sleep(2.0 * (attempt + 1))
-    raise RuntimeError(f"could not replace {out}: {last}")
+from videokit.mux import FFMPEG, mux  # noqa: E402,F401  (shared with every channel)
 
 
 def deliver(video_in: Path, audio_in: Path, music_audio: Path,

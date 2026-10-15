@@ -21,6 +21,7 @@ out/
 */__pycache__/
 __pycache__/
 *.pyc
+.pytest_cache/
 
 # Research and intermediate state
 */candidates_raw.json

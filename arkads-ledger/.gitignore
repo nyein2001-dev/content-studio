@@ -1,0 +1,24 @@
+# Python, models and machine caches
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.cache/
+
+# Fetched assets: setup.sh restores every one of these
+assets/fonts/
+assets/voices/
+assets/geo/
+tools/
+
+# Per-day build intermediates and regenerated media
+*/audio/*.wav
+*/video/*.mp4
+*/video/*.muxing.mp4
+*/tts_sentences.json
+*/align.json
+*/timeline.json
+*/scenes_plan.json
+*/candidates_raw.json
+*/verification_log.json
+*/render_notes.json

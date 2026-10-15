@@ -1,0 +1,7 @@
+# Shared studio environment. Channel setups fall back to a local .venv.
+.venv/
+
+# Bytecode and test caches anywhere in the tree
+__pycache__/
+*.pyc
+.pytest_cache/

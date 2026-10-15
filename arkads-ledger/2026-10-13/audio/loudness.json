@@ -1,0 +1,27 @@
+{
+  "target": {
+    "I": -16.0,
+    "TP": -1.5,
+    "LRA": 6.0
+  },
+  "measured_pass1": {
+    "input_i": "-13.21",
+    "input_tp": "-1.61",
+    "input_lra": "1.70",
+    "input_thresh": "-23.49",
+    "output_i": "-16.02",
+    "output_tp": "-4.43",
+    "output_lra": "1.40",
+    "output_thresh": "-26.22",
+    "normalization_type": "dynamic",
+    "target_offset": "0.02"
+  },
+  "measured_final": {
+    "integrated_lufs": -16.22716277784787,
+    "true_peak_dbtp": -1.6001267593806885,
+    "sample_peak_dbfs": -1.6201756676942933,
+    "duration_s": 104.26666666666667
+  },
+  "applied_gain_db": 1.92,
+  "pre_master_peak_dbfs": -1.7210792734923461
+}
